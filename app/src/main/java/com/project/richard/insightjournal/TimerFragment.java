@@ -43,7 +43,7 @@ public class TimerFragment extends Fragment {
     @BindView(R.id.timer) TimerView mTimerView;
     @OnClick(R.id.btn_timer_start)
     public void startTimer(){
-        mTimerView.start(30);
+        mTimerView.start(360);
     }
 
     public static TimerFragment newInstance() {

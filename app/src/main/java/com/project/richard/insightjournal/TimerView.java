@@ -43,7 +43,7 @@ public class TimerView extends View {
 
     private static final int ARC_START_ANGLE = 270; // 12 o'clock
 
-    private static final float THICKNESS_SCALE = 0.03f;
+    private static final float THICKNESS_SCALE = 0.05f;
 
     private Bitmap mBitmap;
     private Canvas mCanvas;
