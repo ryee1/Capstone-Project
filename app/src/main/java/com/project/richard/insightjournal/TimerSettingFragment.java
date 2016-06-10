@@ -44,7 +44,7 @@ public class TimerSettingFragment extends Fragment {
     public void start(){
         startActivity(new Intent(getActivity(), TimerActivity.class));
     }
-    @OnClick(R.id.timer_setting_toggle_button)
+    @OnClick(R.id.cardview_title_and_settings)
     public void toggleSettings(){
         expandableLayout.toggle();
     }

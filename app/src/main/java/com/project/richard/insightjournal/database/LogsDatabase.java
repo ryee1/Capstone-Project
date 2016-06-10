@@ -11,10 +11,10 @@
 ///**
 // * Created by a11 on 6/4/16.
 // */
-//public final class LogDatabase {
+//public final class LogsDatabase {
 //    public static final int VERSION = 1;
 //
-//    @Table(LogColumns.class) public static final String LOGS = "logs";
+//    @Table(LogsColumns.class) public static final String LOGS = "logs";
 //
 //    @OnCreate public static void onCreate(Context context, SQLiteDatabase db) {
 //    }
