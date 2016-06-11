@@ -19,11 +19,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.github.aakira.expandablelayout.ExpandableLayout;
 
@@ -47,6 +45,11 @@ public class TimerSettingFragment extends Fragment {
     @OnClick(R.id.cardview_title_and_settings)
     public void toggleSettings(){
         expandableLayout.toggle();
+    }
+    @OnClick(R.id.expandable_duration_button)
+    public void showTimePickerDialog(View v){
+        TimePickerDialogFragment dialogFragment = new TimePickerDialogFragment();
+        dialogFragment.show(getActivity().getSupportFragmentManager(), "timepicker");
     }
 
     public static final String ARG_PAGE = "ARG_PAGE";

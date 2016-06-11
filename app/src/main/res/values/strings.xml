@@ -5,4 +5,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_timer">TimerActivity</string>
+    <string name="seconds_spinner_text">Seconds</string>
+    <string name="minutes_spinner_text">Minutes</string>
+    <string name="hours_spinner_text">Hours</string>
+    <string name="second_spinner_text">Second</string>
+    <string name="minute_spinner_text">Minute</string>
+    <string name="hour_spinner_text">Hour</string>
+
 </resources>

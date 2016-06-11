@@ -21,7 +21,7 @@ public final class LogsProvider {
         @ContentUri(
                 path = "logs",
                 type = "vnd.android.cursor.dir/log",
-                defaultSort = LogsColumns.DATETIME_UTC + "DESC"
+                defaultSort = LogsColumns.DATETIME + "DESC"
         )
         public static final Uri LOGS = Uri.parse(BASE_CONTENT_URI + "/logs");
     }
