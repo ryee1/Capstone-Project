@@ -22,6 +22,10 @@
             android:name=".TimerActivity"
             android:label="@string/title_activity_timer"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <provider
+            android:authorities="com.project.richard.insightjournal.database.LogsProvider"
+            android:name="com.project.richard.insightjournal.LogsProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.project.richard.insightjournal;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -16,6 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.project.richard.insightjournal.database.LogsProvider;
+import com.project.richard.insightjournal.database.PresetsColumns;
 
 import java.util.Calendar;
 
@@ -35,7 +39,11 @@ public class TimePickerDialogFragment extends DialogFragment{
 
     @OnClick(R.id.confirm_button_time_picker)
     public void confirm(){
-        Log.e("a", "" + secSpinner.getSelectedItemPosition());
+        int second = secSpinner.getSelectedItemPosition(), minute = minSpinner.getSelectedItemPosition(),
+                hour = hourSpinner.getSelectedItemPosition();
+//        ContentValues cv = new ContentValues();
+//        cv.put(PresetsColumns.DURATION, 1);
+//        getContext().getContentResolver().insert(LogsProvider.Presets.PRESETS, cv);
     }
  @Override public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
      View view = inflater.inflate(R.layout.fragment_time_picker_dialog, container, false);

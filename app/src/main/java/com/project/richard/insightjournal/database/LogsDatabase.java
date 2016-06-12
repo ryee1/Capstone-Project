@@ -13,19 +13,20 @@ import net.simonvt.schematic.annotation.Table;
 /**
  * Created by a11 on 6/4/16.
  */
-@Database(version = LogsDatabase.VERSION)
+@Database(version = LogsDatabase.VERSION, packageName = "com.project.richard.insightjournal")
 public final class LogsDatabase {
     public static final int VERSION = 1;
 
-    @Table(LogsColumns.class)@IfNotExists public static final String LOGS = "logs";
+    @Table(LogsColumns.class) public static final String LOGS = "logs";
+    @Table(PresetsColumns.class) public static final String PRESETS = "presets";
 
-    @OnCreate public static void onCreate(Context context, SQLiteDatabase db) {
-    }
-
-    @OnUpgrade public static void onUpgrade(Context context, SQLiteDatabase db, int oldVersion,
-                                            int newVersion) {
-    }
-
-    @OnConfigure public static void onConfigure(SQLiteDatabase db) {
-    }
+//    @OnCreate public static void onCreate(Context context, SQLiteDatabase db) {
+//    }
+//
+//    @OnUpgrade public static void onUpgrade(Context context, SQLiteDatabase db, int oldVersion,
+//                                            int newVersion) {
+//    }
+//
+//    @OnConfigure public static void onConfigure(SQLiteDatabase db) {
+//    }
 }
