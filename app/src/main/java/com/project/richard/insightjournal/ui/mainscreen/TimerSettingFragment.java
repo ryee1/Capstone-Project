@@ -12,7 +12,7 @@
 //        See the License for the specific language governing permissions and
 //        limitations under the License.
 
-package com.project.richard.insightjournal;
+package com.project.richard.insightjournal.ui.mainscreen;
 
 
 import android.content.Intent;
@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.aakira.expandablelayout.ExpandableLayout;
+import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.ui.timerscreen.TimerActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

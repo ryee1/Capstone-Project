@@ -1,27 +1,17 @@
-package com.project.richard.insightjournal;
+package com.project.richard.insightjournal.ui.mainscreen;
 
 
-import android.app.Dialog;
-import android.app.TimePickerDialog;
-import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.project.richard.insightjournal.database.LogsProvider;
-import com.project.richard.insightjournal.database.PresetsColumns;
-
-import java.util.Calendar;
+import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.utils.TimerUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

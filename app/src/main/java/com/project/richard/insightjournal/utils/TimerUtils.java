@@ -1,6 +1,8 @@
-package com.project.richard.insightjournal;
+package com.project.richard.insightjournal.utils;
 
 import android.content.Context;
+
+import com.project.richard.insightjournal.R;
 
 import java.util.ArrayList;
 

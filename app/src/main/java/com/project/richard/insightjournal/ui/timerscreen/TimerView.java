@@ -20,7 +20,7 @@
 //        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //        SOFTWARE.
 
-package com.project.richard.insightjournal;
+package com.project.richard.insightjournal.ui.timerscreen;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -35,6 +35,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+
+import com.project.richard.insightjournal.R;
 
 import java.util.concurrent.TimeUnit;
 
