@@ -1,4 +1,4 @@
-package com.project.richard.insightjournal.ui.mainscreen;
+package com.project.richard.insightjournal.ui.mainpagerscreen;
 
 
 import android.os.Bundle;
@@ -13,24 +13,24 @@ import com.project.richard.insightjournal.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LogFragment extends Fragment {
-
-    public static LogFragment newInstance() {
+public class LinksFragment extends Fragment {
+    public static LinksFragment newInstance() {
         Bundle args = new Bundle();
-        LogFragment fragment = new LogFragment();
+        LinksFragment fragment = new LinksFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public LogFragment() {
+    public LinksFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log, container, false);
+        return inflater.inflate(R.layout.fragment_resources, container, false);
     }
 
 }

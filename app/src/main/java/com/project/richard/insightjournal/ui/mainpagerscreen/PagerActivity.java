@@ -1,4 +1,4 @@
-package com.project.richard.insightjournal.ui.mainscreen;
+package com.project.richard.insightjournal.ui.mainpagerscreen;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;

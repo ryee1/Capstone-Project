@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 public class TimerActivity extends AppCompatActivity {
 
@@ -17,7 +18,7 @@ public class TimerActivity extends AppCompatActivity {
 
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.timer_fragment_container, TimerFragment.newInstance())
+                    .add(R.id.timer_fragment_container, TimerFragment.newInstance(SharedPrefUtils.getIdPref(this)))
                     .commit();
         }
     }

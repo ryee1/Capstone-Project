@@ -20,8 +20,8 @@ public final class LogsDatabase {
     @Table(LogsColumns.class) public static final String LOGS = "logs";
     @Table(PresetsColumns.class) public static final String PRESETS = "presets";
 
-//    @OnCreate public static void onCreate(Context context, SQLiteDatabase db) {
-//    }
+    @OnCreate public static void onCreate(Context context, SQLiteDatabase db) {
+    }
 //
 //    @OnUpgrade public static void onUpgrade(Context context, SQLiteDatabase db, int oldVersion,
 //                                            int newVersion) {

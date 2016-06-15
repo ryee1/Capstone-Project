@@ -1,6 +1,7 @@
-package com.project.richard.insightjournal.ui.mainscreen;
+package com.project.richard.insightjournal.ui.mainpagerscreen;
 
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.database.LogsProvider;
+import com.project.richard.insightjournal.database.PresetsColumns;
+import com.project.richard.insightjournal.utils.SharedPrefUtils;
 import com.project.richard.insightjournal.utils.TimerUtils;
 
 import butterknife.BindView;
@@ -27,14 +31,7 @@ public class TimePickerDialogFragment extends DialogFragment{
     @BindView(R.id.spinner_minute) Spinner minSpinner;
     @BindView(R.id.spinner_hour) Spinner hourSpinner;
 
-    @OnClick(R.id.confirm_button_time_picker)
-    public void confirm(){
-        int second = secSpinner.getSelectedItemPosition(), minute = minSpinner.getSelectedItemPosition(),
-                hour = hourSpinner.getSelectedItemPosition();
-//        ContentValues cv = new ContentValues();
-//        cv.put(PresetsColumns.DURATION, 1);
-//        getContext().getContentResolver().insert(LogsProvider.Presets.PRESETS, cv);
-    }
+
  @Override public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
      View view = inflater.inflate(R.layout.fragment_time_picker_dialog, container, false);
      ButterKnife.bind(this, view);
@@ -49,5 +46,22 @@ public class TimePickerDialogFragment extends DialogFragment{
      minSpinner.setAdapter(minAdapter);
      hourSpinner.setAdapter(hourAdapter);
      return view;
+    }
+
+    @OnClick(R.id.confirm_button_time_picker)
+    public void confirm(){
+        int second = secSpinner.getSelectedItemPosition(), minute = minSpinner.getSelectedItemPosition(),
+                hour = hourSpinner.getSelectedItemPosition();
+        int duration = second + minute * 60 + hour * 60;
+        ContentValues cv = new ContentValues();
+        cv.put(PresetsColumns.DURATION, duration);
+        getContext().getContentResolver().update(LogsProvider.Presets.PRESETS, cv,
+                PresetsColumns._ID + " = " + SharedPrefUtils.getIdPref(getContext()), null);
+        getDialog().dismiss();
+    }
+
+    @OnClick(R.id.cancel_button_time_picker)
+    public void cancel(){
+        getDialog().cancel();
     }
 }

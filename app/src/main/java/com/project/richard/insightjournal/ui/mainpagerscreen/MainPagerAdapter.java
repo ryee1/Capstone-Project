@@ -1,4 +1,4 @@
-package com.project.richard.insightjournal.ui.mainscreen;
+package com.project.richard.insightjournal.ui.mainpagerscreen;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

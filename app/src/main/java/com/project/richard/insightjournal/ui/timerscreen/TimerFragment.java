@@ -41,15 +41,18 @@ import butterknife.OnClick;
  */
 public class TimerFragment extends Fragment {
 
+    public static final String PRESET_ID = "preset_id";
+
     @BindView(R.id.timer) TimerView mTimerView;
     @OnClick(R.id.btn_timer_start)
     public void startTimer(){
         mTimerView.start(360);
     }
 
-    public static TimerFragment newInstance() {
+    public static TimerFragment newInstance(int id) {
         Bundle args = new Bundle();
         TimerFragment fragment = new TimerFragment();
+        args.putInt(PRESET_ID, id);
         fragment.setArguments(args);
         return fragment;
     }

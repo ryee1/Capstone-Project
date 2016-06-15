@@ -51,7 +51,7 @@
             app:ael_orientation="vertical">
             <Button
                 android:layout_centerHorizontal="true"
-                android:id="@+id/expandable_title_button"
+                android:id="@+id/title_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="9sp"
@@ -59,18 +59,18 @@
 
             <Button
                 android:layout_centerHorizontal="true"
-                android:id="@+id/expandable_prep_button"
+                android:id="@+id/prep_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/expandable_title_button"
+                android:layout_below="@id/title_button"
                 android:text="Preparation 11:00" />
 
             <Button
                 android:layout_centerHorizontal="true"
-                android:id="@+id/expandable_duration_button"
+                android:id="@+id/duration_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/expandable_prep_button"
+                android:layout_below="@id/prep_button"
                 android:text="Duration 11:00" />
             </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
