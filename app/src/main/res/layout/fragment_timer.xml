@@ -1,20 +1,29 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.timerscreen.TimerFragment">
+    android:layout_height="match_parent">
 
-    <com.project.richard.insightjournal.ui.timerscreen.TimerView
-        android:id="@+id/timer"
+    <com.github.jiahuanyu.circletimerview.CircleTimerView
+        android:id="@+id/circle_timer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+    </com.github.jiahuanyu.circletimerview.CircleTimerView>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:circleColor="@color/colorPrimary"
-        android:layout_gravity="center_vertical|center_horizontal"/>
-
-    <Button
-        android:id="@+id/btn_timer_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"/>
+        android:layout_gravity="bottom|center"
+        android:layout_margin="16dp">
+        <Button
+            android:id="@+id/btn_timer_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/btn_timer_stop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:layout_weight="1"/>
+    </LinearLayout>
 </FrameLayout>

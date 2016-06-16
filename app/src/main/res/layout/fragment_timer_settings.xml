@@ -19,9 +19,9 @@
                                             card_view:cardCornerRadius="4dp">
 
             <LinearLayout
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -29,11 +29,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="/Meditation 1"/>
+
                 <TextView
                     android:id='@+id/preparation_duration_textview'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Preparation 00:05"/>
+
                 <TextView
                     android:id='@+id/meditation_duration_textview'
                     android:layout_width="wrap_content"
@@ -41,6 +43,7 @@
                     android:text="Duration 11:11"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
             android:id="@+id/expandableLayout"
             android:layout_width="match_parent"
@@ -49,49 +52,92 @@
             app:ael_expanded="false"
             app:ael_interpolator="bounce"
             app:ael_orientation="vertical">
+
             <Button
-                android:layout_centerHorizontal="true"
                 android:id="@+id/title_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="9sp"
-                android:text="Title Blah" />
+                android:layout_centerHorizontal="true"
+                android:text="Title Blah"
+                android:textSize="9sp"/>
 
             <Button
-                android:layout_centerHorizontal="true"
                 android:id="@+id/prep_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title_button"
-                android:text="Preparation 11:00" />
+                android:layout_centerHorizontal="true"
+                android:text="Preparation 11:00"/>
 
             <Button
-                android:layout_centerHorizontal="true"
                 android:id="@+id/duration_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/prep_button"
-                android:text="Duration 11:00" />
-            </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+                android:layout_centerHorizontal="true"
+                android:text="Duration 11:00"/>
+        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                             android:id="@+id/cardview_short_term"
-                                            android:layout_width="200dp"
-                                            android:layout_height="200dp"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
                                             android:layout_gravity="center"
+                                            android:layout_margin="16dp"
                                             android:clickable="true"
                                             android:foreground="?android:attr/selectableItemBackground"
-                                            card_view:cardCornerRadius="4dp"></android.support.v7.widget.CardView>
+                                            card_view:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Short Term Goal"
+                    android:textSize="32sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Today I blahblahasdfasdfasdflj dkfjdk dfkjdfkdj dkjfdkjfk"
+                    android:id="@+id/short_term_goals_textview"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
 
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                             android:id="@+id/cardview_long_term"
-                                            android:layout_width="200dp"
-                                            android:layout_height="200dp"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
                                             android:layout_gravity="center"
+                                            android:layout_margin="16dp"
                                             android:clickable="true"
                                             android:foreground="?android:attr/selectableItemBackground"
-                                            card_view:cardCornerRadius="4dp"></android.support.v7.widget.CardView>
+                                            card_view:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Long Term Goal"
+                    android:textSize="32sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Today I blahblahasdfasdfasdflj dkfjdk dfkjdfkdj dkjfdkjfk"
+                    android:id="@+id/long_term_goals_textview"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
 
         <Button

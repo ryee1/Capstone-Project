@@ -31,6 +31,8 @@ public class TimePickerDialogFragment extends DialogFragment{
     @BindView(R.id.spinner_minute) Spinner minSpinner;
     @BindView(R.id.spinner_hour) Spinner hourSpinner;
 
+    public static final String DURATION_FRAGMENT_TAG = "duration_fragment_tag";
+    public static final String PREP_FRAGMENT_TAG = "prep_fragment_tag";
 
  @Override public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
      View view = inflater.inflate(R.layout.fragment_time_picker_dialog, container, false);
@@ -52,11 +54,19 @@ public class TimePickerDialogFragment extends DialogFragment{
     public void confirm(){
         int second = secSpinner.getSelectedItemPosition(), minute = minSpinner.getSelectedItemPosition(),
                 hour = hourSpinner.getSelectedItemPosition();
-        int duration = second + minute * 60 + hour * 60;
+        int duration = second + minute * 60 + hour * 3600;
+        String column = null;
+
+        if(getTag().equals(DURATION_FRAGMENT_TAG)){
+            column = PresetsColumns.DURATION;
+        }
+        else if(getTag().equals(PREP_FRAGMENT_TAG)){
+            column = PresetsColumns.PREPARATION_TIME;
+        }
         ContentValues cv = new ContentValues();
-        cv.put(PresetsColumns.DURATION, duration);
+        cv.put(column, duration);
         getContext().getContentResolver().update(LogsProvider.Presets.PRESETS, cv,
-                PresetsColumns.TITLE + " = " + '"' + SharedPrefUtils.getTitlePref(getContext()) + '"', null);
+                PresetsColumns.TITLE + " = ?", new String[] {SharedPrefUtils.getTitlePref(getContext())});
         getDialog().dismiss();
     }
 

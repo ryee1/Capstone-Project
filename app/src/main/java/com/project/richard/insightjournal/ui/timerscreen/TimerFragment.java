@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.jiahuanyu.circletimerview.CircleTimerView;
 import com.project.richard.insightjournal.R;
 
 import butterknife.BindView;
@@ -41,18 +42,14 @@ import butterknife.OnClick;
  */
 public class TimerFragment extends Fragment {
 
-    public static final String PRESET_ID = "preset_id";
+    public static final String PRESET_TITLE = "preset_title";
 
-    @BindView(R.id.timer) TimerView mTimerView;
-    @OnClick(R.id.btn_timer_start)
-    public void startTimer(){
-        mTimerView.start(360);
-    }
+    @BindView(R.id.circle_timer_view) CircleTimerView mTimerView;
 
     public static TimerFragment newInstance(String title) {
         Bundle args = new Bundle();
         TimerFragment fragment = new TimerFragment();
-        args.putString(PRESET_ID, title);
+        args.putString(PRESET_TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,7 +65,18 @@ public class TimerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, view);
+        mTimerView.setCurrentTime(2);
+        mTimerView.setHintText("hello");
+        mTimerView.startTimer();
         return view;
     }
 
+    @Override public void onResume() {
+        super.onResume();
+    }
+
+    @OnClick(R.id.btn_timer_start)
+    public void startTimer(){
+        mTimerView.startTimer();
+    }
 }

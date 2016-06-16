@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':CircleTimerViewLib'
+project(':CircleTimerViewLib').projectDir = new File('libs/CircleTimerViewLib')

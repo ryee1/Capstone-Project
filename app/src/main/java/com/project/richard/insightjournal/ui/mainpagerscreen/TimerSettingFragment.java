@@ -93,11 +93,16 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     }
 
     @OnClick(R.id.duration_button)
-    public void showTimePickerDialog(View v) {
+    public void onDurationButtonClick(View v) {
         TimePickerDialogFragment dialogFragment = new TimePickerDialogFragment();
-        dialogFragment.show(getActivity().getSupportFragmentManager(), "timepicker");
+        dialogFragment.show(getActivity().getSupportFragmentManager(), TimePickerDialogFragment.DURATION_FRAGMENT_TAG);
     }
 
+    @OnClick(R.id.prep_button)
+    public void onPrepButtonClick(View v){
+        TimePickerDialogFragment dialogFragment = new TimePickerDialogFragment();
+        dialogFragment.show(getActivity().getSupportFragmentManager(), TimePickerDialogFragment.PREP_FRAGMENT_TAG);
+    }
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cursorLoader = null;
         if (id == LOADER_PRESET_ID) {
