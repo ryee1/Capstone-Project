@@ -33,7 +33,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
 
     private static final String LOG_TAG = TimerSettingFragment.class.getName();
 
-    private int mCurrentPresetId;
+    private String mCurrentPresetTitle;
 
     @BindView(R.id.expandableLayout) ExpandableLayout expandableLayout;
     @BindView(R.id.meditation_title_textview) TextView titleTextView;
@@ -59,6 +59,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         mPage = getArguments().getInt(ARG_PAGE);
 
         getLoaderManager().initLoader(LOADER_PRESET_ID, null, this);
+
     }
 
     @Override
@@ -72,12 +73,12 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
 
     @Override public void onResume() {
         super.onResume();
-        mCurrentPresetId = SharedPrefUtils.getIdPref(getContext());
+        mCurrentPresetTitle = SharedPrefUtils.getTitlePref(getContext());
     }
 
     @Override public void onPause() {
         //TODO
-        //SharedPrefUtils.addIdPref(getContext(), mCurrentPresetId);
+        //SharedPrefUtils.addTitlePref(getContext(), mCurrentPresetTitle);
         super.onPause();
     }
 
@@ -100,25 +101,32 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cursorLoader = null;
         if (id == LOADER_PRESET_ID) {
-            cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null,
-                    PresetsColumns._ID + " = " + SharedPrefUtils.getIdPref(getContext()), null, null);
+
+            if(SharedPrefUtils.getTitlePref(getContext()).equals(SharedPrefUtils.EMPTY_PRESET_PREF)){
+                cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null, null, null, null);
+            }
+            else{
+                cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null,
+                        PresetsColumns.TITLE + " = " + '"' + SharedPrefUtils.getTitlePref(getContext()) + '"', null, null);
+            }
         }
         return cursorLoader;
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (!data.moveToFirst()) {
+            SharedPrefUtils.addTitlePref(getContext(), "Default Preset");
             getContext().getContentResolver().insert(LogsProvider.Presets.PRESETS,
                     ContentValuesUtil.presetContentValues("Default Preset", 5, 30));
-            titleTextView.setText("Default");
+            titleTextView.setText("Default Preset");
             return;
         }
         titleTextView.setText(data.getString(data.getColumnIndex(PresetsColumns.TITLE)));
-        durationTextView.setText(data.getInt(data.getColumnIndex(PresetsColumns.DURATION)));
-
+        prepTextView.setText("Preparation Timer: " + data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)));
+        durationTextView.setText("Duration: " + data.getInt(data.getColumnIndex(PresetsColumns.DURATION)));
     }
 
     @Override public void onLoaderReset(Loader<Cursor> loader) {
-
+        
     }
 }

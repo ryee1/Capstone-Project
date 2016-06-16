@@ -49,10 +49,10 @@ public class TimerFragment extends Fragment {
         mTimerView.start(360);
     }
 
-    public static TimerFragment newInstance(int id) {
+    public static TimerFragment newInstance(String title) {
         Bundle args = new Bundle();
         TimerFragment fragment = new TimerFragment();
-        args.putInt(PRESET_ID, id);
+        args.putString(PRESET_ID, title);
         fragment.setArguments(args);
         return fragment;
     }

@@ -56,7 +56,7 @@ public class TimePickerDialogFragment extends DialogFragment{
         ContentValues cv = new ContentValues();
         cv.put(PresetsColumns.DURATION, duration);
         getContext().getContentResolver().update(LogsProvider.Presets.PRESETS, cv,
-                PresetsColumns._ID + " = " + SharedPrefUtils.getIdPref(getContext()), null);
+                PresetsColumns._ID + " = " + '"' + SharedPrefUtils.getTitlePref(getContext()) + '"', null);
         getDialog().dismiss();
     }
 

@@ -8,16 +8,16 @@ import android.content.SharedPreferences;
  */
 public class SharedPrefUtils {
     public static final String MAINSCREEN_PREF = "main_screen_pref";
+    public static final String EMPTY_PRESET_PREF = "empty_preset_pref";
+    public static final String PRESET_TITLE_PREF = "preset_title_pref";
 
-    public static final String PRESET_ID_PREF = "preset_id_pref";
-
-    public static void addIdPref(Context context, int id){
+    public static void addTitlePref(Context context, String title){
         SharedPreferences.Editor editor = context.getSharedPreferences(MAINSCREEN_PREF, 0).edit();
-        editor.putInt(PRESET_ID_PREF, id).commit();
+        editor.putString(PRESET_TITLE_PREF, title).commit();
     }
 
-    public static int getIdPref(Context context){
+    public static String getTitlePref(Context context){
         SharedPreferences pref = context.getSharedPreferences(MAINSCREEN_PREF, 0);
-        return pref.getInt(PRESET_ID_PREF, 0);
+        return pref.getString(PRESET_TITLE_PREF, EMPTY_PRESET_PREF);
     }
 }
