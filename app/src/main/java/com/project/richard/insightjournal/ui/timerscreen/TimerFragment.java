@@ -23,14 +23,21 @@
 package com.project.richard.insightjournal.ui.timerscreen;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.github.jiahuanyu.circletimerview.CircleTimerView;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.events.OnTickEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,8 +50,13 @@ import butterknife.OnClick;
 public class TimerFragment extends Fragment {
 
     public static final String PRESET_TITLE = "preset_title";
+    public static final String TIMER_STARTED_KEY = "timer_started_key";
+    public static final String DURATION_KEY = "duration_key";
 
-    @BindView(R.id.circle_timer_view) CircleTimerView mTimerView;
+    @BindView(R.id.circle_timer_view) CircularProgressBar mCircleTimerView;
+    @BindView(R.id.digital_timer_view) TextView mDigitalTimerView;
+
+    private boolean mTimerStarted;
 
     public static TimerFragment newInstance(String title) {
         Bundle args = new Bundle();
@@ -65,18 +77,55 @@ public class TimerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, view);
-        mTimerView.setCurrentTime(2);
-        mTimerView.setHintText("hello");
-        mTimerView.startTimer();
+
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(TIMER_STARTED_KEY, mTimerStarted);
+        if(mTimerStarted){
+//            outState.putInt(DURATION_KEY, mCircleTimerView.start(););
+        }
+    }
+
+    @Override
+    public void onViewStateRestored( Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if(savedInstanceState == null){
+            return;
+        }
+        mTimerStarted = savedInstanceState.getBoolean(TIMER_STARTED_KEY);
+        if(mTimerStarted && mCircleTimerView.getProgress() != 0){
+            Log.e("df", mCircleTimerView.getProgress()+"");
+            mCircleTimerView.setProgress(savedInstanceState.getInt(DURATION_KEY));
+            mCircleTimerView.setProgressWithAnimation(60, 60);
+        }
     }
 
     @Override public void onResume() {
         super.onResume();
+        EventBus.getDefault().register(this);
     }
 
+    @Override public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe public void onTickEvent(OnTickEvent event){
+        mDigitalTimerView.setText(event.currentTick + "");
+    }
     @OnClick(R.id.btn_timer_start)
     public void startTimer(){
-        mTimerView.startTimer();
+        if(mTimerStarted) {
+            mCircleTimerView.setProgressWithAnimation(100, 7000);
+            mTimerStarted = true;
+            getActivity().startService(new Intent(getActivity(), TimerService.class));
+        }
+        else{
+
+        }
     }
 }

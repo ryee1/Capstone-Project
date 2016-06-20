@@ -21,11 +21,15 @@
         <activity
             android:name=".ui.timerscreen.TimerActivity"
             android:label="@string/title_activity_timer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".ui.timerscreen.TimerService" />
+
         <provider
+            android:name=".LogsProvider"
             android:authorities="com.project.richard.insightjournal.database.LogsProvider"
-            android:name="com.project.richard.insightjournal.LogsProvider"
-            android:exported="false"/>
+            android:exported="false" />
+
     </application>
 
 </manifest>

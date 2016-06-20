@@ -1,29 +1,49 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.github.jiahuanyu.circletimerview.CircleTimerView
-        android:id="@+id/circle_timer_view"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-    </com.github.jiahuanyu.circletimerview.CircleTimerView>
+        android:layout_height="wrap_content">
+
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
+            android:id="@+id/circle_timer_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cpb_background_progressbar_color="#FFCDD2"
+            app:cpb_background_progressbar_width="5dp"
+            app:cpb_progressbar_color="#F44336"
+            app:cpb_progressbar_width="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/digital_timer_view"
+            android:text="TEST TIMER"
+            />
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_margin="16dp">
+
         <Button
             android:id="@+id/btn_timer_start"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Start"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Start" />
+
         <Button
             android:id="@+id/btn_timer_stop"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Stop"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Stop" />
     </LinearLayout>
 </FrameLayout>
