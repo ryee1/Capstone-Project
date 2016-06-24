@@ -116,16 +116,23 @@ public class TimerFragment extends Fragment {
 
     @Subscribe public void onTickEvent(OnTickEvent event){
         mDigitalTimerView.setText(event.currentTick + "");
+        Log.e("onTickEvent", event.currentTick / 70000 * 100 + "");
+        mCircleTimerView.setProgress(event.currentTick / 70000 * 100);
+
     }
     @OnClick(R.id.btn_timer_start)
     public void startTimer(){
-        if(mTimerStarted) {
-            mCircleTimerView.setProgressWithAnimation(100, 7000);
+        if(!mTimerStarted) {
             mTimerStarted = true;
             getActivity().startService(new Intent(getActivity(), TimerService.class));
         }
         else{
 
         }
+    }
+
+    @OnClick(R.id.btn_timer_stop)
+    public void stopTimer(){
+        getActivity().stopService(new Intent(getActivity(), TimerService.class));
     }
 }
