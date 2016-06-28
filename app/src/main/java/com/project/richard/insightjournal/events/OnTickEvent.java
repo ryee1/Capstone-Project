@@ -6,10 +6,6 @@ package com.project.richard.insightjournal.events;
 public class OnTickEvent {
     public long currentTick;
 
-    public OnTickEvent(long currentTick) {
-        this.currentTick = currentTick;
-    }
-
     public OnTickEvent() {
     }
 }

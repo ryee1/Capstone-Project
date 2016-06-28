@@ -11,5 +11,7 @@
     <string name="second_spinner_text">Second</string>
     <string name="minute_spinner_text">Minute</string>
     <string name="hour_spinner_text">Hour</string>
+    <string name="timer_start_button_onstart">Start</string>
+    <string name="timer_start_button_onpause">Pause</string>
 
 </resources>
