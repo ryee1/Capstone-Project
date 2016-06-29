@@ -59,6 +59,9 @@ import butterknife.OnClick;
 public class TimerFragment extends Fragment {
 
     private static final String TAG = TimerFragment.class.getSimpleName();
+    private static final String BOOLEAN_TIMER_RUNNING = "boolean_timer_running";
+    private static final String LONG_TIMER_DURATION = "long_timer_duration";
+
     public static final String PRESET_TITLE = "preset_title";
     public static final String TIMER_STARTED_KEY = "timer_started_key";
     public static final String DURATION_KEY = "duration_key";
@@ -92,6 +95,7 @@ public class TimerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, view);
+
         Cursor c = getActivity().getContentResolver().query(LogsProvider.Presets.PRESETS, null,
                 PresetsColumns.TITLE + " = ?", new String[]{getArguments().getString(PRESET_TITLE)}, null);
         if (c != null && c.moveToFirst()) {
@@ -100,30 +104,15 @@ public class TimerFragment extends Fragment {
         } else {
             Log.e(TAG, "Cannot find Preset");
         }
+
+        if (savedInstanceState != null) {
+            mTimerRunning = savedInstanceState.getBoolean(BOOLEAN_TIMER_RUNNING);
+            mDigitalTimerView.setText(savedInstanceState.getLong(LONG_TIMER_DURATION) + "");
+            mCircleTimerView.setProgress((float)savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
+            Log.e(TAG, (savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100) + "" );
+        }
+
         return view;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(TIMER_STARTED_KEY, mTimerRunning);
-        if (mTimerRunning) {
-//            outState.putInt(DURATION_KEY, mCircleTimerView.start(););
-        }
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState == null) {
-            return;
-        }
-        mTimerRunning = savedInstanceState.getBoolean(TIMER_STARTED_KEY);
-        if (mTimerRunning && mCircleTimerView.getProgress() != 0) {
-            Log.e("df", mCircleTimerView.getProgress() + "");
-            mCircleTimerView.setProgress(savedInstanceState.getInt(DURATION_KEY));
-            mCircleTimerView.setProgressWithAnimation(60, 60);
-        }
     }
 
     @Override public void onResume() {
@@ -131,7 +120,7 @@ public class TimerFragment extends Fragment {
         EventBus.getDefault().register(this);
         Intent intent = new Intent(getActivity(), TimerService.class);
         getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
+        getActivity().startService(intent);
     }
 
     @Override public void onPause() {
@@ -140,21 +129,38 @@ public class TimerFragment extends Fragment {
         if (mBound) {
             getActivity().unbindService(mConnection);
             mBound = false;
+            Log.e(TAG, "unbind service");
+        }
+
+        // Only stop the service if the timer hasn't been started yet.
+        if (mTimerService.getDuration() == mMaxDuration) {
+            getActivity().stopService(new Intent(getActivity(), TimerService.class));
+        } else {
+            mTimerService.foreground();
         }
     }
 
-    @Override public void onStart() {
-        super.onStart();
-    }
-
-    @Override public void onStop() {
-        super.onStop();
+    @Override public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(BOOLEAN_TIMER_RUNNING, mTimerRunning);
+        outState.putLong(LONG_TIMER_DURATION, mTimerService.getDuration());
+        super.onSaveInstanceState(outState);
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override public void onServiceConnected(ComponentName name, IBinder service) {
             mTimerService = ((TimerService.TimerBinder) service).getTimerService();
             mBound = true;
+            mTimerService.background();
+
+            //If service first run, duration == 0. Set duration to mMaxDuration
+            if (mTimerService.getDuration() == 0) {
+                mTimerService.setDuration(mMaxDuration);
+            }
+
+            //If service's duration doesn't match the maxduration, that means timer is already running
+            if (mTimerService.getDuration() != mMaxDuration) {
+                mTimerRunning = true;
+            }
         }
 
         @Override public void onServiceDisconnected(ComponentName name) {
@@ -166,11 +172,11 @@ public class TimerFragment extends Fragment {
     public void onTickEvent(OnTickEvent event) {
         mDigitalTimerView.setText(event.currentTick + "");
         mCircleTimerView.setProgress((float) event.currentTick / mMaxDuration * 100);
-        Log.e("?", event.currentTick + " " + mMaxDuration + " " + (float) event.currentTick / mMaxDuration);
     }
 
     @Subscribe
     public void onTickFinishedEvent(OnTickFinishedEvent event) {
+        mTimerRunning = false;
         mDigitalTimerView.setText(event.finishedTick + "");
         mCircleTimerView.setProgress(event.finishedTick);
     }
@@ -178,19 +184,19 @@ public class TimerFragment extends Fragment {
     @OnClick(R.id.btn_timer_start)
     public void startTimer() {
         if (!mTimerRunning) {
-            mStartButton.setText(R.string.timer_start_button_onstart);
-            mTimerRunning = true;
-//            getActivity().startService(new Intent(getActivity(), TimerService.class));
-            mTimerService.startTimer(mMaxDuration);
-        } else {
             mStartButton.setText(R.string.timer_start_button_onpause);
+            mTimerRunning = true;
+            mTimerService.startTimer(mTimerService.getDuration());
+        } else {
+            mStartButton.setText(R.string.timer_start_button_onstart);
             mTimerRunning = false;
-            mTimerService.startTimer(mMaxDuration);
+            mTimerService.pauseTimer();
         }
     }
 
     @OnClick(R.id.btn_timer_stop)
     public void stopTimer() {
-        mTimerService.resetDuration();
+        mTimerService.stopTimer();
+        mTimerRunning = false;
     }
 }
