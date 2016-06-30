@@ -5,6 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.project.richard.insightjournal.ui.mainpagerscreen.linksscreen.LinksFragment;
+import com.project.richard.insightjournal.ui.mainpagerscreen.logsscreen.LogFragment;
+import com.project.richard.insightjournal.ui.mainpagerscreen.timersettingscreen.TimerSettingFragment;
+
 /**
  * Created by a11 on 6/3/16.
  */

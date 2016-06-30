@@ -75,7 +75,6 @@ public class TimerService extends Service {
     }
 
     public void stopTimer() {
-        mDuration = 0;
         onTickFinishedEvent.finishedTick = mDuration;
         EventBus.getDefault().post(onTickFinishedEvent);
         stopSelf();

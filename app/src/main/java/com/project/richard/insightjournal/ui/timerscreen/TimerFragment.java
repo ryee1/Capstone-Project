@@ -108,8 +108,8 @@ public class TimerFragment extends Fragment {
         if (savedInstanceState != null) {
             mTimerRunning = savedInstanceState.getBoolean(BOOLEAN_TIMER_RUNNING);
             mDigitalTimerView.setText(savedInstanceState.getLong(LONG_TIMER_DURATION) + "");
-            mCircleTimerView.setProgress((float)savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
-            Log.e(TAG, (savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100) + "" );
+            mCircleTimerView.setProgress((float) savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
+            Log.e(TAG, (savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100) + "");
         }
 
         return view;
@@ -178,8 +178,24 @@ public class TimerFragment extends Fragment {
     public void onTickFinishedEvent(OnTickFinishedEvent event) {
         mTimerRunning = false;
         mDigitalTimerView.setText(event.finishedTick + "");
-        mCircleTimerView.setProgress(event.finishedTick);
+        mCircleTimerView.setProgress((float)event.finishedTick / mMaxDuration * 100);
+        StopTimerDialogFragment dialog = new StopTimerDialogFragment();
+        dialog.show(getActivity().getSupportFragmentManager(), "D");
     }
+
+    //TODO implement proper back navigation when timer is running
+//    @Subscribe
+//    public void onTimerBackPressed(OnTimerBackPressed event) {
+//        if (mTimerRunning) {
+//            Intent intent = new Intent(Intent.ACTION_MAIN);
+//            intent.addCategory(Intent.CATEGORY_HOME);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//        }
+//        else{
+//
+//        }
+//    }
 
     @OnClick(R.id.btn_timer_start)
     public void startTimer() {

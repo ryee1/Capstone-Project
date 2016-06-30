@@ -22,4 +22,22 @@ public class TimerActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+    //TODO implement proper back navigation when timer is running
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+//        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+//                && keyCode == KeyEvent.KEYCODE_BACK
+//                && event.getRepeatCount() == 0) {
+//            onBackPressed();
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
+//
+//
+//    @Override
+//    public void onBackPressed() {
+//        EventBus.getDefault().post(new OnTimerBackPressed());
+//    }
 }

@@ -1,4 +1,4 @@
-package com.project.richard.insightjournal.ui.mainpagerscreen;
+package com.project.richard.insightjournal.ui.mainpagerscreen.logsscreen;
 
 
 import android.os.Bundle;

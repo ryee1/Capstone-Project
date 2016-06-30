@@ -1,4 +1,4 @@
-package com.project.richard.insightjournal.ui.mainpagerscreen;
+package com.project.richard.insightjournal.ui.mainpagerscreen.timersettingscreen;
 
 
 import android.content.ContentValues;
