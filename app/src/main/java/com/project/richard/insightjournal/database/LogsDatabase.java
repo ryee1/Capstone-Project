@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import net.simonvt.schematic.annotation.Database;
-import net.simonvt.schematic.annotation.IfNotExists;
-import net.simonvt.schematic.annotation.OnConfigure;
 import net.simonvt.schematic.annotation.OnCreate;
 import net.simonvt.schematic.annotation.OnUpgrade;
 import net.simonvt.schematic.annotation.Table;
@@ -15,18 +13,20 @@ import net.simonvt.schematic.annotation.Table;
  */
 @Database(version = LogsDatabase.VERSION, packageName = "com.project.richard.insightjournal")
 public final class LogsDatabase {
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
 
     @Table(LogsColumns.class) public static final String LOGS = "logs";
     @Table(PresetsColumns.class) public static final String PRESETS = "presets";
 
     @OnCreate public static void onCreate(Context context, SQLiteDatabase db) {
     }
-//
-//    @OnUpgrade public static void onUpgrade(Context context, SQLiteDatabase db, int oldVersion,
-//                                            int newVersion) {
-//    }
-//
+
+    @OnUpgrade public static void onUpgrade(Context context, SQLiteDatabase db, int oldVersion,
+                                            int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + LOGS);
+        db.execSQL("DROP TABLE IF EXISTS " + PRESETS);
+    }
+
 //    @OnConfigure public static void onConfigure(SQLiteDatabase db) {
 //    }
 }

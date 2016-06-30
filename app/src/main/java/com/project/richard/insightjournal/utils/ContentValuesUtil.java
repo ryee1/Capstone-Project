@@ -2,6 +2,7 @@ package com.project.richard.insightjournal.utils;
 
 import android.content.ContentValues;
 
+import com.project.richard.insightjournal.database.LogsColumns;
 import com.project.richard.insightjournal.database.PresetsColumns;
 
 /**
@@ -14,6 +15,16 @@ public class ContentValuesUtil {
         cv.put(PresetsColumns.TITLE, title);
         cv.put(PresetsColumns.PREPARATION_TIME, prepTime);
         cv.put(PresetsColumns.DURATION, duration);
+        return cv;
+    }
+
+    public static ContentValues stopTimerDialogContentValues(long duration, long date, String title,
+                                                             String journal){
+        ContentValues cv = new ContentValues();
+        cv.put(LogsColumns.SESSION_DURATION, duration);
+        cv.put(LogsColumns.SESSION_DATETIME, date);
+        cv.put(LogsColumns.TITLE, title);
+        cv.put(LogsColumns.JOURNAL_ENTRY, journal);
         return cv;
     }
 }

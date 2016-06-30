@@ -71,6 +71,7 @@ public class TimerFragment extends Fragment {
     @BindView(R.id.btn_timer_start) Button mStartButton;
     @BindView(R.id.btn_timer_stop) Button mStopButton;
 
+    private String mTitle;
     private long mMaxDuration;
     private boolean mTimerRunning;
     private boolean mBound;
@@ -96,8 +97,9 @@ public class TimerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         ButterKnife.bind(this, view);
 
+        mTitle = getArguments().getString(PRESET_TITLE);
         Cursor c = getActivity().getContentResolver().query(LogsProvider.Presets.PRESETS, null,
-                PresetsColumns.TITLE + " = ?", new String[]{getArguments().getString(PRESET_TITLE)}, null);
+                PresetsColumns.TITLE + " = ?", new String[]{mTitle}, null);
         if (c != null && c.moveToFirst()) {
             mMaxDuration = c.getLong(c.getColumnIndex(PresetsColumns.DURATION)) * 1000;
             c.close();
@@ -179,8 +181,9 @@ public class TimerFragment extends Fragment {
         mTimerRunning = false;
         mDigitalTimerView.setText(event.finishedTick + "");
         mCircleTimerView.setProgress((float)event.finishedTick / mMaxDuration * 100);
-        StopTimerDialogFragment dialog = new StopTimerDialogFragment();
-        dialog.show(getActivity().getSupportFragmentManager(), "D");
+        StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(event.finishedTick,
+                System.currentTimeMillis() / 1000L, mTitle);
+        dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
     }
 
     //TODO implement proper back navigation when timer is running
