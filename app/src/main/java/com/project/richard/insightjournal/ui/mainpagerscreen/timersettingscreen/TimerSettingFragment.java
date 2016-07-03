@@ -11,6 +11,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLayout;
@@ -20,6 +21,7 @@ import com.project.richard.insightjournal.database.PresetsColumns;
 import com.project.richard.insightjournal.ui.timerscreen.TimerActivity;
 import com.project.richard.insightjournal.utils.ContentValuesUtil;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
+import com.project.richard.insightjournal.utils.TimerUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +41,9 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @BindView(R.id.meditation_title_textview) TextView titleTextView;
     @BindView(R.id.meditation_duration_textview) TextView durationTextView;
     @BindView(R.id.preparation_duration_textview) TextView prepTextView;
+    @BindView(R.id.duration_button) Button durationButton;
+    @BindView(R.id.prep_button) Button prepButton;
+    @BindView(R.id.title_button) Button titleButton;
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final int LOADER_PRESET_ID = 0;
@@ -128,7 +133,8 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         }
         titleTextView.setText(data.getString(data.getColumnIndex(PresetsColumns.TITLE)));
         prepTextView.setText("Preparation Timer: " + data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)));
-        durationTextView.setText("Duration: " + data.getInt(data.getColumnIndex(PresetsColumns.DURATION)));
+        durationTextView.setText("Duration: " + TimerUtils.millisToDigital(data.getLong(data.getColumnIndex(PresetsColumns.DURATION))));
+        durationButton.setText("Duration: " + TimerUtils.millisToDigital(data.getLong(data.getColumnIndex(PresetsColumns.DURATION))));
     }
 
     @Override public void onLoaderReset(Loader<Cursor> loader) {

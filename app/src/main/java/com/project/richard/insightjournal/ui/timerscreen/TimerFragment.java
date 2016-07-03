@@ -44,6 +44,7 @@ import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.database.PresetsColumns;
 import com.project.richard.insightjournal.events.OnTickEvent;
 import com.project.richard.insightjournal.events.OnTickFinishedEvent;
+import com.project.richard.insightjournal.utils.TimerUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -172,16 +173,17 @@ public class TimerFragment extends Fragment {
 
     @Subscribe
     public void onTickEvent(OnTickEvent event) {
-        mDigitalTimerView.setText(event.currentTick + "");
+        mDigitalTimerView.setText(TimerUtils.millisToDigital(event.currentTick));
         mCircleTimerView.setProgress((float) event.currentTick / mMaxDuration * 100);
     }
 
     @Subscribe
     public void onTickFinishedEvent(OnTickFinishedEvent event) {
         mTimerRunning = false;
-        mDigitalTimerView.setText(event.finishedTick + "");
+        mDigitalTimerView.setText(TimerUtils.millisToDigital(event.finishedTick));
         mCircleTimerView.setProgress((float)event.finishedTick / mMaxDuration * 100);
-        StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(event.finishedTick,
+        StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
+                TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
                 System.currentTimeMillis() / 1000L, mTitle);
         dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
     }

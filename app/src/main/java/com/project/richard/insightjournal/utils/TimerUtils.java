@@ -1,10 +1,12 @@
 package com.project.richard.insightjournal.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.project.richard.insightjournal.R;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by a11 on 6/10/16.
@@ -40,4 +42,17 @@ public class TimerUtils {
         return hourArray;
     }
 
+    public static long millisToMillisRemaining(long maxDuration, long duration){
+        return maxDuration - duration;
+    }
+
+    public static String millisToDigital(long duration){
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(duration) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration));
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(duration) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration));
+        long hours = TimeUnit.MILLISECONDS.toHours(duration);
+        Log.e("tag", "sec: " + seconds + " min " + minutes + " hr " + hours + " dur " + duration);
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
 }

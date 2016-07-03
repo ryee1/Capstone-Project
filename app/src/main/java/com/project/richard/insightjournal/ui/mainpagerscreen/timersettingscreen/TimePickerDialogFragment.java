@@ -52,9 +52,9 @@ public class TimePickerDialogFragment extends DialogFragment{
 
     @OnClick(R.id.confirm_button_time_picker)
     public void confirm(){
-        int second = secSpinner.getSelectedItemPosition(), minute = minSpinner.getSelectedItemPosition(),
+        long second = secSpinner.getSelectedItemPosition(), minute = minSpinner.getSelectedItemPosition(),
                 hour = hourSpinner.getSelectedItemPosition();
-        int duration = second + minute * 60 + hour * 3600;
+        long duration = (second + minute * 60 + hour * 3600) * 1000;
         String column = null;
 
         if(getTag().equals(DURATION_FRAGMENT_TAG)){
