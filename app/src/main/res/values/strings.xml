@@ -13,5 +13,7 @@
     <string name="hour_spinner_text">Hour</string>
     <string name="timer_start_button_onstart">Start</string>
     <string name="timer_start_button_onpause">Pause</string>
+    <string name="short_term_goals_settings_hint">Set your short term goals...</string>
+    <string name="long_term_goals_settings_hint">Set your long term goals...</string>
 
 </resources>

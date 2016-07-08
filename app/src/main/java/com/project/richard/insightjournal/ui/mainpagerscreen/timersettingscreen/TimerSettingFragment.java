@@ -18,10 +18,14 @@ import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.database.PresetsColumns;
+import com.project.richard.insightjournal.events.OnGoalsDialogConfirm;
 import com.project.richard.insightjournal.ui.timerscreen.TimerActivity;
 import com.project.richard.insightjournal.utils.ContentValuesUtil;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
 import com.project.richard.insightjournal.utils.TimerUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,12 +36,17 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimerSettingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class TimerSettingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final String LOG_TAG = TimerSettingFragment.class.getName();
+    private static final String TAG = TimerSettingFragment.class.getSimpleName();
 
     private String mCurrentPresetTitle;
     private Unbinder unbinder;
+
+    public static final String ARG_PAGE = "ARG_PAGE";
+    public static final int LOADER_PRESET_ID = 0;
+
+    private int mPage;
 
     @BindView(R.id.expandableLayout) ExpandableLayout expandableLayout;
     @BindView(R.id.meditation_title_textview) TextView titleTextView;
@@ -48,11 +57,6 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @BindView(R.id.title_button) Button titleButton;
     @BindView(R.id.long_term_goals_textview) TextView longTermGoals;
     @BindView(R.id.short_term_goals_textview) TextView shortTermGoals;
-
-    public static final String ARG_PAGE = "ARG_PAGE";
-    public static final int LOADER_PRESET_ID = 0;
-
-    private int mPage;
 
     public static TimerSettingFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -80,14 +84,20 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         return view;
     }
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
+        EventBus.getDefault().register(this);
         mCurrentPresetTitle = SharedPrefUtils.getTitlePref(getContext());
+        shortTermGoals.setText(SharedPrefUtils.getShortTermGoalsPref(getContext()));
+        longTermGoals.setText(SharedPrefUtils.getLongTermGoalsPref(getContext()));
     }
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         //TODO
         //SharedPrefUtils.addTitlePref(getContext(), mCurrentPresetTitle);
+        EventBus.getDefault().unregister(this);
         super.onPause();
     }
 
@@ -96,6 +106,17 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         unbinder.unbind();
 
     }
+
+    @Subscribe
+    public void onGoalsDialogConfirm(OnGoalsDialogConfirm event){
+        if(event.goalsCategory.equals(GoalsDialogFragment.SHORT_TERM_FRAGMENT_TAG)) {
+            shortTermGoals.setText(SharedPrefUtils.getShortTermGoalsPref(getContext()));
+        }
+        else if(event.goalsCategory.equals(GoalsDialogFragment.LONG_TERM_FRAGMENT_TAG)){
+            longTermGoals.setText(SharedPrefUtils.getLongTermGoalsPref(getContext()));
+        }
+    }
+
     @OnClick(R.id.timer_setting_start_button)
     public void start() {
         startActivity(new Intent(getActivity(), TimerActivity.class));
@@ -113,25 +134,29 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     }
 
     @OnClick(R.id.prep_button)
-    public void onPrepButtonClick(View v){
+    public void onPrepButtonClick(View v) {
         TimePickerDialogFragment dialogFragment = new TimePickerDialogFragment();
         dialogFragment.show(getActivity().getSupportFragmentManager(), TimePickerDialogFragment.PREP_FRAGMENT_TAG);
     }
 
     @OnClick(R.id.cardview_short_term)
-    public void onShortTermClick(){
+    public void onShortTermGoalsClick() {
         GoalsDialogFragment dialogFragment = new GoalsDialogFragment();
         dialogFragment.show(getActivity().getSupportFragmentManager(), GoalsDialogFragment.SHORT_TERM_FRAGMENT_TAG);
+    }
+    @OnClick(R.id.cardview_long_term)
+    public void onLongTermGoalsClick() {
+        GoalsDialogFragment dialogFragment = new GoalsDialogFragment();
+        dialogFragment.show(getActivity().getSupportFragmentManager(), GoalsDialogFragment.LONG_TERM_FRAGMENT_TAG);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cursorLoader = null;
         if (id == LOADER_PRESET_ID) {
 
-            if(SharedPrefUtils.getTitlePref(getContext()).equals(SharedPrefUtils.EMPTY_PRESET_PREF)){
+            if (SharedPrefUtils.getTitlePref(getContext()).equals(SharedPrefUtils.EMPTY_PRESET_PREF)) {
                 cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null, null, null, null);
-            }
-            else{
+            } else {
                 cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null,
                         PresetsColumns.TITLE + " = " + '"' + SharedPrefUtils.getTitlePref(getContext()) + '"', null, null);
             }
@@ -154,6 +179,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override public void onLoaderReset(Loader<Cursor> loader) {
-        
+
     }
+
 }
