@@ -52,6 +52,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 
 /**
@@ -67,16 +68,17 @@ public class TimerFragment extends Fragment {
     public static final String TIMER_STARTED_KEY = "timer_started_key";
     public static final String DURATION_KEY = "duration_key";
 
-    @BindView(R.id.circle_timer_view) CircularProgressBar mCircleTimerView;
-    @BindView(R.id.digital_timer_view) TextView mDigitalTimerView;
-    @BindView(R.id.btn_timer_start) Button mStartButton;
-    @BindView(R.id.btn_timer_stop) Button mStopButton;
-
     private String mTitle;
     private long mMaxDuration;
     private boolean mTimerRunning;
     private boolean mBound;
     private TimerService mTimerService;
+    private Unbinder unbinder;
+
+    @BindView(R.id.circle_timer_view) CircularProgressBar mCircleTimerView;
+    @BindView(R.id.digital_timer_view) TextView mDigitalTimerView;
+    @BindView(R.id.btn_timer_start) Button mStartButton;
+    @BindView(R.id.btn_timer_stop) Button mStopButton;
 
     public static TimerFragment newInstance(String title) {
         Bundle args = new Bundle();
@@ -96,13 +98,13 @@ public class TimerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         mTitle = getArguments().getString(PRESET_TITLE);
         Cursor c = getActivity().getContentResolver().query(LogsProvider.Presets.PRESETS, null,
                 PresetsColumns.TITLE + " = ?", new String[]{mTitle}, null);
         if (c != null && c.moveToFirst()) {
-            mMaxDuration = c.getLong(c.getColumnIndex(PresetsColumns.DURATION)) * 1000;
+            mMaxDuration = c.getLong(c.getColumnIndex(PresetsColumns.DURATION));
             c.close();
         } else {
             Log.e(TAG, "Cannot find Preset");
@@ -171,6 +173,12 @@ public class TimerFragment extends Fragment {
         }
     };
 
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+
+    }
+
     @Subscribe
     public void onTickEvent(OnTickEvent event) {
         mDigitalTimerView.setText(TimerUtils.millisToDigital(event.currentTick));
@@ -185,6 +193,7 @@ public class TimerFragment extends Fragment {
         StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
                 TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
                 System.currentTimeMillis() / 1000L, mTitle);
+        Log.e(TAG, mMaxDuration + " " + event.finishedTick);
         dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
     }
 

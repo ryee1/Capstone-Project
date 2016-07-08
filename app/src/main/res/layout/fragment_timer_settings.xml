@@ -103,7 +103,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Today I blahblahasdfasdfasdflj dkfjdk dfkjdfkdj dkjfdkjfk"
+                    android:text="Enter your short term goals"
                     android:id="@+id/short_term_goals_textview"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -134,11 +134,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Today I blahblahasdfasdfasdflj dkfjdk dfkjdfkdj dkjfdkjfk"
+                    android:text="Enter your long term goals"
                     android:id="@+id/long_term_goals_textview"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>
-
 
         <Button
             android:id="@+id/timer_setting_start_button"

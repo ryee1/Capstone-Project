@@ -20,6 +20,7 @@ import com.project.richard.insightjournal.utils.TimerUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 
 /**
@@ -27,16 +28,18 @@ import butterknife.OnClick;
  */
 public class TimePickerDialogFragment extends DialogFragment{
 
+    public static final String DURATION_FRAGMENT_TAG = "duration_fragment_tag";
+    public static final String PREP_FRAGMENT_TAG = "prep_fragment_tag";
+
+    private Unbinder unbinder;
     @BindView(R.id.spinner_second) Spinner secSpinner;
     @BindView(R.id.spinner_minute) Spinner minSpinner;
     @BindView(R.id.spinner_hour) Spinner hourSpinner;
 
-    public static final String DURATION_FRAGMENT_TAG = "duration_fragment_tag";
-    public static final String PREP_FRAGMENT_TAG = "prep_fragment_tag";
-
- @Override public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
+ @Override
+ public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
      View view = inflater.inflate(R.layout.fragment_time_picker_dialog, container, false);
-     ButterKnife.bind(this, view);
+     unbinder = ButterKnife.bind(this, view);
 
      ArrayAdapter<String> secAdapter = new ArrayAdapter<String>(getContext(),
              R.layout.support_simple_spinner_dropdown_item, TimerUtils.createSecondsArrayList(getContext()));
@@ -48,6 +51,12 @@ public class TimePickerDialogFragment extends DialogFragment{
      minSpinner.setAdapter(minAdapter);
      hourSpinner.setAdapter(hourAdapter);
      return view;
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+
     }
 
     @OnClick(R.id.confirm_button_time_picker)

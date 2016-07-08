@@ -26,6 +26,7 @@ import com.project.richard.insightjournal.utils.TimerUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 
 /**
@@ -36,6 +37,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     private static final String LOG_TAG = TimerSettingFragment.class.getName();
 
     private String mCurrentPresetTitle;
+    private Unbinder unbinder;
 
     @BindView(R.id.expandableLayout) ExpandableLayout expandableLayout;
     @BindView(R.id.meditation_title_textview) TextView titleTextView;
@@ -44,6 +46,8 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @BindView(R.id.duration_button) Button durationButton;
     @BindView(R.id.prep_button) Button prepButton;
     @BindView(R.id.title_button) Button titleButton;
+    @BindView(R.id.long_term_goals_textview) TextView longTermGoals;
+    @BindView(R.id.short_term_goals_textview) TextView shortTermGoals;
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final int LOADER_PRESET_ID = 0;
@@ -71,7 +75,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timer_settings, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         return view;
     }
@@ -87,6 +91,11 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         super.onPause();
     }
 
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+
+    }
     @OnClick(R.id.timer_setting_start_button)
     public void start() {
         startActivity(new Intent(getActivity(), TimerActivity.class));
@@ -108,6 +117,13 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         TimePickerDialogFragment dialogFragment = new TimePickerDialogFragment();
         dialogFragment.show(getActivity().getSupportFragmentManager(), TimePickerDialogFragment.PREP_FRAGMENT_TAG);
     }
+
+    @OnClick(R.id.cardview_short_term)
+    public void onShortTermClick(){
+        GoalsDialogFragment dialogFragment = new GoalsDialogFragment();
+        dialogFragment.show(getActivity().getSupportFragmentManager(), GoalsDialogFragment.SHORT_TERM_FRAGMENT_TAG);
+    }
+
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cursorLoader = null;
         if (id == LOADER_PRESET_ID) {

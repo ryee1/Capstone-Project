@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
  * Created by a11 on 6/10/16.
  */
 public class TimerUtils {
+
+    private static final String TAG = TimerUtils.class.getSimpleName();
     public static ArrayList<String> createSecondsArrayList(Context context) {
         ArrayList<String> secArray = new ArrayList<>();
         secArray.add(0, 0 + " " + context.getString(R.string.second_spinner_text));
@@ -43,6 +45,7 @@ public class TimerUtils {
     }
 
     public static long millisToMillisRemaining(long maxDuration, long duration){
+        Log.e("tag", "max: " + maxDuration + " dur: " + duration);
         return maxDuration - duration;
     }
 
@@ -52,7 +55,7 @@ public class TimerUtils {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(duration) -
                 TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration));
         long hours = TimeUnit.MILLISECONDS.toHours(duration);
-        Log.e("tag", "sec: " + seconds + " min " + minutes + " hr " + hours + " dur " + duration);
+        Log.e(TAG, "hr: " + hours + " min: " + minutes + " sec: " + seconds + " dur: " + duration);
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 }
