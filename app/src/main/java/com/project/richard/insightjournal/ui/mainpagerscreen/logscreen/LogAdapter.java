@@ -10,22 +10,27 @@ import android.widget.TextView;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsColumns;
+import com.project.richard.insightjournal.events.OnLogRvClickEvent;
+import com.project.richard.insightjournal.utils.TimerUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 /**
  * Created by richard on 6/29/16.
  */
-public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
+public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
-    private static final String LOG_TAG = LogAdapter.class.getSimpleName();
+    private static final String TAG = LogAdapter.class.getSimpleName();
+    private static final int TIMESTAMP_TAG = 0;
     private Cursor mCursor;
     final private Context mContext;
-    final private LogAdapterOnClickHandler mClickHandler;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         final private int mMaxLines = 2;
 
@@ -39,8 +44,10 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
             ButterKnife.bind(this, itemView);
         }
 
-        @Override public void onClick(View v) {
-
+        @OnLongClick(R.id.log_linearlayout_rv)
+        public boolean onLongClick(View view){
+            EventBus.getDefault().post(new OnLogRvClickEvent((long)view.getTag()));
+            return true;
         }
 
         @OnClick(R.id.log_linearlayout_rv)
@@ -53,13 +60,9 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
             }
         }
     }
-    public interface LogAdapterOnClickHandler{
-        void onClick();
-    }
 
-    public LogAdapter(Context mContext, LogAdapterOnClickHandler mClickHandler) {
+    public LogAdapter(Context mContext) {
         this.mContext = mContext;
-        this.mClickHandler = mClickHandler;
     }
 
 
@@ -71,10 +74,11 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
     @Override public void onBindViewHolder(ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
-        holder.duration.setText(String.format("%d",mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DURATION))));
-        holder.datetime.setText(String.format("%d", mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
+        holder.duration.setText(TimerUtils.millisToDigital(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DURATION))));
+        holder.datetime.setText(TimerUtils.unixTimeToDate( mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
         holder.title.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.TITLE))));
         holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
+        holder.itemView.setTag(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)));
     }
 
 

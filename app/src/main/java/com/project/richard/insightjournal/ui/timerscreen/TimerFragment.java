@@ -112,7 +112,7 @@ public class TimerFragment extends Fragment {
 
         if (savedInstanceState != null) {
             mTimerRunning = savedInstanceState.getBoolean(BOOLEAN_TIMER_RUNNING);
-            mDigitalTimerView.setText(savedInstanceState.getLong(LONG_TIMER_DURATION) + "");
+            mDigitalTimerView.setText(TimerUtils.millisToDigital(savedInstanceState.getLong(LONG_TIMER_DURATION)));
             mCircleTimerView.setProgress((float) savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
             Log.e(TAG, (savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100) + "");
         }

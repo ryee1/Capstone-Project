@@ -173,9 +173,18 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
             return;
         }
         titleTextView.setText(data.getString(data.getColumnIndex(PresetsColumns.TITLE)));
-        prepTextView.setText("Preparation Timer: " + data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)));
-        durationTextView.setText("Duration: " + TimerUtils.millisToDigital(data.getLong(data.getColumnIndex(PresetsColumns.DURATION))));
-        durationButton.setText("Duration: " + TimerUtils.millisToDigital(data.getLong(data.getColumnIndex(PresetsColumns.DURATION))));
+        prepButton.setText("Preparation Timer: " + TimerUtils.millisToDigital(
+                data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)))
+        );
+        prepTextView.setText("Preparation Timer: " + TimerUtils.millisToDigital(
+                data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)))
+        );
+        durationTextView.setText("Duration: " + TimerUtils.millisToDigital(
+                data.getLong(data.getColumnIndex(PresetsColumns.DURATION)))
+        );
+        durationButton.setText("Duration: " + TimerUtils.millisToDigital(
+                data.getLong(data.getColumnIndex(PresetsColumns.DURATION)))
+        );
     }
 
     @Override public void onLoaderReset(Loader<Cursor> loader) {

@@ -16,6 +16,10 @@ import android.view.ViewGroup;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
+import com.project.richard.insightjournal.events.OnLogRvClickEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,12 +59,27 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
         View view = inflater.inflate(R.layout.fragment_log, container, false);
         ButterKnife.bind(this, view);
 
-        mLogAdapter = new LogAdapter(getContext(), null);
+        mLogAdapter = new LogAdapter(getContext());
 
         recyclerView.setAdapter(mLogAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         return view;
+    }
+
+    @Override public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe
+    public void onLogRvClickEvent(OnLogRvClickEvent event){
+        Log.e(TAG, "timestamp: " +event.timestamp);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

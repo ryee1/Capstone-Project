@@ -5,7 +5,10 @@ import android.util.Log;
 
 import com.project.richard.insightjournal.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -57,5 +60,12 @@ public class TimerUtils {
         long hours = TimeUnit.MILLISECONDS.toHours(duration);
         Log.e(TAG, "hr: " + hours + " min: " + minutes + " sec: " + seconds + " dur: " + duration);
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
+
+    public static String unixTimeToDate(long unixTime){
+        Date date = new Date(unixTime);
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy a");
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return format.format(date);
     }
 }

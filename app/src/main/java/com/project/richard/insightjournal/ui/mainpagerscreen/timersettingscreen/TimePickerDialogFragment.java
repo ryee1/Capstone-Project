@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import butterknife.Unbinder;
  */
 public class TimePickerDialogFragment extends DialogFragment{
 
+    private static final String TAG = TimePickerDialogFragment.class.getSimpleName();
     public static final String DURATION_FRAGMENT_TAG = "duration_fragment_tag";
     public static final String PREP_FRAGMENT_TAG = "prep_fragment_tag";
 
@@ -67,13 +69,16 @@ public class TimePickerDialogFragment extends DialogFragment{
         String column = null;
 
         if(getTag().equals(DURATION_FRAGMENT_TAG)){
+            Log.e(TAG, "dur fragment tag dur: " + duration);
             column = PresetsColumns.DURATION;
         }
         else if(getTag().equals(PREP_FRAGMENT_TAG)){
+            Log.e(TAG, "prep fragment tag dur: " + duration);
             column = PresetsColumns.PREPARATION_TIME;
         }
         ContentValues cv = new ContentValues();
         cv.put(column, duration);
+        Log.e(TAG, SharedPrefUtils.getTitlePref(getContext()));
         getContext().getContentResolver().update(LogsProvider.Presets.PRESETS, cv,
                 PresetsColumns.TITLE + " = ?", new String[] {SharedPrefUtils.getTitlePref(getContext())});
         getDialog().dismiss();
