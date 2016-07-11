@@ -3,12 +3,14 @@ package com.project.richard.insightjournal.ui.timerscreen;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 public class TimerActivity extends AppCompatActivity {
 
+    private static final String TAG = TimerActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,8 +38,14 @@ public class TimerActivity extends AppCompatActivity {
 //    }
 //
 //
-//    @Override
-//    public void onBackPressed() {
-//        EventBus.getDefault().post(new OnTimerBackPressed());
-//    }
+    @Override
+    public void onBackPressed() {
+        TimerFragment f = (TimerFragment)getSupportFragmentManager().findFragmentById(R.id.timer_fragment_container);
+        if (f != null){
+            f.stopTimerOnBackpress();
+        }
+        else{
+            Log.e(TAG, "onBackPress null fragment error");
+        }
+    }
 }

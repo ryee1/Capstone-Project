@@ -179,6 +179,10 @@ public class TimerFragment extends Fragment {
 
     }
 
+    public void stopTimerOnBackpress(){
+        mTimerService.stopTimer();
+        mTimerRunning = false;
+    }
     @Subscribe
     public void onTickEvent(OnTickEvent event) {
         mDigitalTimerView.setText(TimerUtils.millisToDigital(event.currentTick));

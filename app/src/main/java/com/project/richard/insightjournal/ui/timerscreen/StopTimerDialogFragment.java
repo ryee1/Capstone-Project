@@ -3,6 +3,7 @@ package com.project.richard.insightjournal.ui.timerscreen;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
+import com.project.richard.insightjournal.ui.mainpagerscreen.PagerActivity;
 import com.project.richard.insightjournal.utils.ContentValuesUtil;
 
 import butterknife.BindView;
@@ -54,21 +56,19 @@ public class StopTimerDialogFragment extends DialogFragment {
         Log.e(TAG, "dur: " + duration);
         builder.setView(view)
                 .setMessage("????")
-                .setPositiveButton("Log Session", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         getActivity().getContentResolver().insert(LogsProvider.Logs.LOGS,
                                 ContentValuesUtil.stopTimerDialogContentValues(duration, date,
                                         title, journalEditText.getText().toString()));
+                        Intent intent = new Intent(getActivity(), PagerActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                     }
                 })
-                .setNegativeButton("Don't Log", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setNeutralButton("Reset Timer", new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-
+                        getDialog().dismiss();
                     }
                 });
         return builder.create();
