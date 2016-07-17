@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.events.OnGoalsDialogConfirm;
-import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,15 +44,7 @@ public class GoalsDialogFragment extends DialogFragment {
 
     @OnClick(R.id.confirm_goals_dialog)
     public void confirm() {
-        OnGoalsDialogConfirm event = new OnGoalsDialogConfirm();
-        if(getTag().equals(SHORT_TERM_FRAGMENT_TAG)) {
-            event.goalsCategory = SHORT_TERM_FRAGMENT_TAG;
-            SharedPrefUtils.setShortTermGoalsPref(getContext(), editGoals.getText().toString());
-        }
-        else if(getTag().equals(LONG_TERM_FRAGMENT_TAG)){
-            event.goalsCategory = LONG_TERM_FRAGMENT_TAG;
-            SharedPrefUtils.setLongTermGoalsPref(getContext(), editGoals.getText().toString());
-        }
+        OnGoalsDialogConfirm event = new OnGoalsDialogConfirm(editGoals.getText().toString());
         EventBus.getDefault().post(event);
         getDialog().dismiss();
     }

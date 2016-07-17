@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bullet_point"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/goal_rv_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <ImageButton
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/goals_rv_delete_button"
+        style="?android:borderlessButtonStyle"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_delete_black_24dp"/>
+</LinearLayout>

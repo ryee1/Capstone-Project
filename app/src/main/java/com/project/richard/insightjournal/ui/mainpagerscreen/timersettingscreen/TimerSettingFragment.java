@@ -1,6 +1,7 @@
 package com.project.richard.insightjournal.ui.mainpagerscreen.timersettingscreen;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.database.GoalsColumns;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.database.PresetsColumns;
 import com.project.richard.insightjournal.events.OnGoalsDialogConfirm;
@@ -36,18 +40,21 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimerSettingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class TimerSettingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = TimerSettingFragment.class.getSimpleName();
 
     private String mCurrentPresetTitle;
     private Unbinder unbinder;
+    private GoalsAdapter mGoalsAdapter;
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final int LOADER_PRESET_ID = 0;
+    public static final int LOADER_GOAL_ID = 1;
 
     private int mPage;
 
+    @BindView(R.id.goals_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.expandableLayout) ExpandableLayout expandableLayout;
     @BindView(R.id.meditation_title_textview) TextView titleTextView;
     @BindView(R.id.meditation_duration_textview) TextView durationTextView;
@@ -55,8 +62,6 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @BindView(R.id.duration_button) Button durationButton;
     @BindView(R.id.prep_button) Button prepButton;
     @BindView(R.id.title_button) Button titleButton;
-    @BindView(R.id.long_term_goals_textview) TextView longTermGoals;
-    @BindView(R.id.short_term_goals_textview) TextView shortTermGoals;
 
     public static TimerSettingFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -72,6 +77,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         mPage = getArguments().getInt(ARG_PAGE);
 
         getLoaderManager().initLoader(LOADER_PRESET_ID, null, this);
+        getLoaderManager().initLoader(LOADER_GOAL_ID, null, this);
 
     }
 
@@ -81,6 +87,12 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         View view = inflater.inflate(R.layout.fragment_timer_settings, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        mGoalsAdapter = new GoalsAdapter();
+
+        recyclerView.setAdapter(mGoalsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false));
+
         return view;
     }
 
@@ -89,8 +101,6 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         super.onResume();
         EventBus.getDefault().register(this);
         mCurrentPresetTitle = SharedPrefUtils.getTitlePref(getContext());
-        shortTermGoals.setText(SharedPrefUtils.getShortTermGoalsPref(getContext()));
-        longTermGoals.setText(SharedPrefUtils.getLongTermGoalsPref(getContext()));
     }
 
     @Override
@@ -108,13 +118,11 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     }
 
     @Subscribe
-    public void onGoalsDialogConfirm(OnGoalsDialogConfirm event){
-        if(event.goalsCategory.equals(GoalsDialogFragment.SHORT_TERM_FRAGMENT_TAG)) {
-            shortTermGoals.setText(SharedPrefUtils.getShortTermGoalsPref(getContext()));
-        }
-        else if(event.goalsCategory.equals(GoalsDialogFragment.LONG_TERM_FRAGMENT_TAG)){
-            longTermGoals.setText(SharedPrefUtils.getLongTermGoalsPref(getContext()));
-        }
+    public void onGoalsDialogConfirm(OnGoalsDialogConfirm event) {
+        ContentValues cv = new ContentValues();
+        cv.put(GoalsColumns.GOALS, event.goal);
+        getContext().getContentResolver().insert(LogsProvider.Goals.GOALS, cv);
+
     }
 
     @OnClick(R.id.timer_setting_start_button)
@@ -139,16 +147,12 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         dialogFragment.show(getActivity().getSupportFragmentManager(), TimePickerDialogFragment.PREP_FRAGMENT_TAG);
     }
 
-    @OnClick(R.id.cardview_short_term)
-    public void onShortTermGoalsClick() {
+    @OnClick(R.id.timer_settings_add_goal_button)
+    public void onAddGoalClick() {
         GoalsDialogFragment dialogFragment = new GoalsDialogFragment();
         dialogFragment.show(getActivity().getSupportFragmentManager(), GoalsDialogFragment.SHORT_TERM_FRAGMENT_TAG);
     }
-    @OnClick(R.id.cardview_long_term)
-    public void onLongTermGoalsClick() {
-        GoalsDialogFragment dialogFragment = new GoalsDialogFragment();
-        dialogFragment.show(getActivity().getSupportFragmentManager(), GoalsDialogFragment.LONG_TERM_FRAGMENT_TAG);
-    }
+
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cursorLoader = null;
@@ -161,34 +165,44 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
                         PresetsColumns.TITLE + " = " + '"' + SharedPrefUtils.getTitlePref(getContext()) + '"', null, null);
             }
         }
+        else if(id == LOADER_GOAL_ID){
+            cursorLoader = new CursorLoader(getContext(), LogsProvider.Goals.GOALS, null, null, null, null);
+        }
         return cursorLoader;
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (!data.moveToFirst()) {
-            SharedPrefUtils.addTitlePref(getContext(), "Default Preset");
-            getContext().getContentResolver().insert(LogsProvider.Presets.PRESETS,
-                    ContentValuesUtil.presetContentValues("Default Preset", 5, 30));
-            titleTextView.setText("Default Preset");
-            return;
+        if(loader.getId() == LOADER_PRESET_ID) {
+            if (!data.moveToFirst()) {
+                SharedPrefUtils.addTitlePref(getContext(), "Default Preset");
+                getContext().getContentResolver().insert(LogsProvider.Presets.PRESETS,
+                        ContentValuesUtil.presetContentValues("Default Preset", 5, 30));
+                titleTextView.setText("Default Preset");
+                return;
+            }
+            titleTextView.setText(data.getString(data.getColumnIndex(PresetsColumns.TITLE)));
+            prepButton.setText("Preparation Timer: " + TimerUtils.millisToDigital(
+                    data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)))
+            );
+            prepTextView.setText("Preparation Timer: " + TimerUtils.millisToDigital(
+                    data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)))
+            );
+            durationTextView.setText("Duration: " + TimerUtils.millisToDigital(
+                    data.getLong(data.getColumnIndex(PresetsColumns.DURATION)))
+            );
+            durationButton.setText("Duration: " + TimerUtils.millisToDigital(
+                    data.getLong(data.getColumnIndex(PresetsColumns.DURATION)))
+            );
         }
-        titleTextView.setText(data.getString(data.getColumnIndex(PresetsColumns.TITLE)));
-        prepButton.setText("Preparation Timer: " + TimerUtils.millisToDigital(
-                data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)))
-        );
-        prepTextView.setText("Preparation Timer: " + TimerUtils.millisToDigital(
-                data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)))
-        );
-        durationTextView.setText("Duration: " + TimerUtils.millisToDigital(
-                data.getLong(data.getColumnIndex(PresetsColumns.DURATION)))
-        );
-        durationButton.setText("Duration: " + TimerUtils.millisToDigital(
-                data.getLong(data.getColumnIndex(PresetsColumns.DURATION)))
-        );
+        else if(loader.getId() == LOADER_GOAL_ID){
+            mGoalsAdapter.swapCursor(data);
+        }
     }
 
     @Override public void onLoaderReset(Loader<Cursor> loader) {
-
+        if(loader.getId() == LOADER_GOAL_ID){
+            mGoalsAdapter.swapCursor(null);
+        }
     }
 
 }

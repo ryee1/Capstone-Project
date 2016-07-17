@@ -9,13 +9,9 @@ import static net.simonvt.schematic.annotation.DataType.Type.INTEGER;
 import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 
 /**
- * Created by a11 on 6/4/16.
+ * Created by richard on 7/13/16.
  */
-public interface LogsColumns {
+public interface GoalsColumns {
     @DataType(INTEGER) @PrimaryKey @AutoIncrement String _ID = "_id";
-    @DataType(INTEGER) @NotNull String SESSION_DURATION = "session_duration";
-    @DataType(INTEGER) @NotNull String SESSION_DATETIME = "session_datetime";
-    @DataType(TEXT) @NotNull String TITLE = "title";
-    @DataType(TEXT) String JOURNAL_ENTRY = "journal_entry";
-    String PRESET_ID = "preset_id";
+    @DataType(TEXT) @NotNull String GOALS = "goals";
 }

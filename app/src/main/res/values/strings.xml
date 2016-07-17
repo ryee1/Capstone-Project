@@ -15,5 +15,6 @@
     <string name="timer_start_button_onpause">Pause</string>
     <string name="short_term_goals_settings_hint">Set your short term goals...</string>
     <string name="long_term_goals_settings_hint">Set your long term goals...</string>
+    <string name="bullet_point">\u2022</string>
 
 </resources>

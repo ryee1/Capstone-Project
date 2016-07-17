@@ -23,14 +23,14 @@ import butterknife.OnLongClick;
 /**
  * Created by richard on 6/29/16.
  */
-public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
+public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
 
     private static final String TAG = LogAdapter.class.getSimpleName();
     private static final int TIMESTAMP_TAG = 0;
     private Cursor mCursor;
     final private Context mContext;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class LogViewHolder extends RecyclerView.ViewHolder{
 
         final private int mMaxLines = 2;
 
@@ -39,7 +39,7 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
         @BindView(R.id.title_log_recyclerview) TextView title;
         @BindView(R.id.journal_log_recyclerview) TextView journal;
 
-        public ViewHolder(View itemView) {
+        public LogViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -66,13 +66,13 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
     }
 
 
-    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override public LogViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.log_recyclerview, parent, false);
-        return new ViewHolder(view);
+        return new LogViewHolder(view);
     }
 
-    @Override public void onBindViewHolder(ViewHolder holder, int position) {
+    @Override public void onBindViewHolder(LogViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         holder.duration.setText(TimerUtils.millisToDigital(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DURATION))));
         holder.datetime.setText(TimerUtils.unixTimeToDate( mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));

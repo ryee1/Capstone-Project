@@ -23,6 +23,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -34,7 +35,7 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
     private static final int LOG_LOADER = 0;
 
     private LogAdapter mLogAdapter;
-
+    private Unbinder unbinder;
     @BindView(R.id.log_recyclerview) RecyclerView recyclerView;
 
     public static LogFragment newInstance() {
@@ -57,7 +58,7 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_log, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         mLogAdapter = new LogAdapter(getContext());
 
@@ -75,6 +76,11 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
     @Override public void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Subscribe

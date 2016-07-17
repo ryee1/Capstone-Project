@@ -44,5 +44,13 @@ public final class LogsProvider {
         public static final Uri PRESETS = Uri.parse(BASE_CONTENT_URI + "/presets");
     }
 
+    @TableEndpoint(table = LogsDatabase.Tables.GOALS) public static class Goals {
+        @ContentUri(
+                path = "goals",
+                type = "vnd.android.cursor.dir/goal"
+        )
+        public static final Uri GOALS = Uri.parse(BASE_CONTENT_URI + "/goals");
+    }
+
 
 }
