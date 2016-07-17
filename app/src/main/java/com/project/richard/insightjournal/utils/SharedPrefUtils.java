@@ -2,6 +2,7 @@ package com.project.richard.insightjournal.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.project.richard.insightjournal.R;
 
@@ -14,6 +15,19 @@ public class SharedPrefUtils {
     public static final String PRESET_TITLE_PREF = "preset_title_pref";
     public static final String SHORT_TERM_GOALS_PREF = "short_term_goals_pref";
     public static final String LONG_TERM_GOALS_PREF = "long_term_goals_pref";
+    public static final String IS_FIRST_START = "is_first_start";
+
+    public static boolean isFirstStart(Context context){
+        SharedPreferences getPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        return getPrefs.getBoolean(IS_FIRST_START, true);
+    }
+
+    public static void setFirstStart(Context context){
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(context).edit();
+        editor.putBoolean(IS_FIRST_START, false).commit();
+    }
 
     public static void addTitlePref(Context context, String title){
         SharedPreferences.Editor editor = context.getSharedPreferences(TIMER_SETTING_SCREEN_PREF, 0).edit();
