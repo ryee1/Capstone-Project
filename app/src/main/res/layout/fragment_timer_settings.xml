@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/fragment_timer_settings_linearlayout">
 
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -80,15 +84,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minLines="10"
-                android:text="HHHHHH HHHHH HHHHD KJKJKJK"/>
-        </LinearLayout>
+                android:text="HHHHHH HHHHH HHHHD KJKJKJK"
+                android:id="@+id/fragment_timer_settings_footer"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_add_black_18dp"
-            android:id="@+id/fab_timer_setting"/>
-    </android.support.design.widget.CoordinatorLayout>
-</android.support.v4.widget.NestedScrollView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_timer_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_black_18dp"
+        app:layout_anchor="@id/fragment_timer_settings_linearlayout"
+        app:layout_anchorGravity="bottom|center"
+        />
+</android.support.design.widget.CoordinatorLayout>
