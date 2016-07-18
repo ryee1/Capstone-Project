@@ -2,6 +2,7 @@ package com.project.richard.insightjournal.ui.mainpagerscreen.timersettingscreen
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         @BindView(R.id.goal_rv_textview) TextView goalTextView;
         @BindView(R.id.goals_rv_delete_button) ImageButton goalDeleteButton;
-
+        @BindView(R.id.goals_rv_edit_button) ImageButton goalEditButton;
         public GoalsViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -63,6 +64,17 @@ public class GoalsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mCursor.moveToPosition(goalHolder.getAdapterPosition());
                 mContext.getContentResolver().delete(LogsProvider.Goals.GOALS, GoalsColumns._ID + " = ?",
                         new String[]{"" + mCursor.getInt(mCursor.getColumnIndex(GoalsColumns._ID))});
+            }
+        });
+        goalHolder.goalEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                mCursor.moveToPosition(goalHolder.getAdapterPosition());
+                AddGoalDialogFragment dialogFragment = AddGoalDialogFragment.newInstance(
+                        mCursor.getString(mCursor.getColumnIndex(GoalsColumns.GOALS)),
+                        mCursor.getInt(mCursor.getColumnIndex(GoalsColumns._ID))
+                );
+                dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
+                        AddGoalDialogFragment.EDIT_GOAL_FRAGMENT_TAG);
             }
         });
     }

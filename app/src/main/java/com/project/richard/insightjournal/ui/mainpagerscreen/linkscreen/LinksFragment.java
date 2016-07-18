@@ -1,4 +1,4 @@
-package com.project.richard.insightjournal.ui.mainpagerscreen.linksscreen;
+package com.project.richard.insightjournal.ui.mainpagerscreen.linkscreen;
 
 
 import android.os.Bundle;

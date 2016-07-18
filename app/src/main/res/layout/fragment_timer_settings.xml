@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_add_black_24dp"/>
+                    android:src="@drawable/ic_add_black_18dp"/>
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_add_black_24dp"
+            android:src="@drawable/ic_add_black_18dp"
             android:id="@+id/fab_timer_setting"/>
     </android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.NestedScrollView>

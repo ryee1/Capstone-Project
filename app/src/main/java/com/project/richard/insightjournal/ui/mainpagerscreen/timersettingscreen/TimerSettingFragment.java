@@ -141,10 +141,9 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
 
     @OnClick(R.id.goal_add_button)
     public void onAddGoalClick() {
-        GoalsDialogFragment dialogFragment = new GoalsDialogFragment();
-        dialogFragment.show(getActivity().getSupportFragmentManager(), GoalsDialogFragment.SHORT_TERM_FRAGMENT_TAG);
+        AddGoalDialogFragment dialogFragment = new AddGoalDialogFragment();
+        dialogFragment.show(getActivity().getSupportFragmentManager(), AddGoalDialogFragment.ADD_GOAL_FRAGMENT_TAG);
     }
-
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cursorLoader = null;
