@@ -163,7 +163,7 @@ public class TimerFragment extends Fragment {
             }
 
             //If service's duration doesn't match the maxduration, that means timer is already running
-            if (mTimerService.getDuration() != mMaxDuration) {
+            if (timerRan()) {
                 mTimerRunning = true;
             }
         }
@@ -173,6 +173,9 @@ public class TimerFragment extends Fragment {
         }
     };
 
+    public boolean timerRan(){
+        return mTimerService.getDuration() != mMaxDuration;
+    }
     @Override public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

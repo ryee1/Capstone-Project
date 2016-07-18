@@ -12,9 +12,7 @@ import android.widget.TextView;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.GoalsColumns;
-import com.project.richard.insightjournal.events.OnGoalDeleteEvent;
-
-import org.greenrobot.eventbus.EventBus;
+import com.project.richard.insightjournal.database.LogsProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +23,6 @@ import butterknife.ButterKnife;
 public class GoalsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = GoalsAdapter.class.getSimpleName();
-
-    private final int PRESET = 0, SESSION_TITLE = 1, GOALS = 2;
 
     private final Context mContext;
     private Cursor mCursor;
@@ -59,15 +55,16 @@ public class GoalsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         mCursor.moveToPosition(position);
-        GoalsViewHolder goalHolder = (GoalsViewHolder) holder;
+        final GoalsViewHolder goalHolder = (GoalsViewHolder) holder;
         Log.e(TAG, mCursor.getString(mCursor.getColumnIndex(GoalsColumns.GOALS)));
         goalHolder.goalTextView.setText(mCursor.getString(mCursor.getColumnIndex(GoalsColumns.GOALS)));
         goalHolder.goalDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                EventBus.getDefault().post(new OnGoalDeleteEvent());
+                mCursor.moveToPosition(goalHolder.getAdapterPosition());
+                mContext.getContentResolver().delete(LogsProvider.Goals.GOALS, GoalsColumns._ID + " = ?",
+                        new String[]{"" + mCursor.getInt(mCursor.getColumnIndex(GoalsColumns._ID))});
             }
         });
-
     }
 
     @Override

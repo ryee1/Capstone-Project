@@ -41,11 +41,12 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         TimerFragment f = (TimerFragment)getSupportFragmentManager().findFragmentById(R.id.timer_fragment_container);
-        if (f != null){
+        Log.e(TAG, "timerfirstrunonbackpress: " + f.timerRan());
+        if (f != null && f.timerRan()){
             f.stopTimerOnBackpress();
         }
         else{
-            Log.e(TAG, "onBackPress null fragment error");
+            super.onBackPressed();
         }
     }
 }
