@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.events.OnLogRvClickEvent;
+import com.project.richard.insightjournal.ui.DividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,6 +66,7 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
         recyclerView.setAdapter(mLogAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         return view;
     }
 

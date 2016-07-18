@@ -1,5 +1,6 @@
 package com.project.richard.insightjournal.ui.mainpagerscreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.ui.introscreen.IntroActivity;
+import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +28,11 @@ public class PagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        if(SharedPrefUtils.isFirstStart(this)){
+            SharedPrefUtils.setFirstStart(this);
+            Intent i = new Intent(PagerActivity.this, IntroActivity.class);
+            startActivity(i);
+        }
         setSupportActionBar(toolbar);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), PagerActivity.this));
         tabLayout.setupWithViewPager(viewPager);

@@ -3,6 +3,7 @@ package com.project.richard.insightjournal.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.project.richard.insightjournal.R;
 
@@ -20,13 +21,14 @@ public class SharedPrefUtils {
     public static boolean isFirstStart(Context context){
         SharedPreferences getPrefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
+        Log.e("BLAH", getPrefs.getBoolean(IS_FIRST_START, true) + " ??");
         return getPrefs.getBoolean(IS_FIRST_START, true);
     }
 
     public static void setFirstStart(Context context){
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(context).edit();
-        editor.putBoolean(IS_FIRST_START, false).commit();
+        editor.putBoolean(IS_FIRST_START, false).apply();
     }
 
     public static void addTitlePref(Context context, String title){
