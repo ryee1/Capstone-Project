@@ -14,11 +14,12 @@ import net.simonvt.schematic.annotation.Table;
  */
 @Database(version = LogsDatabase.VERSION, packageName = "com.project.richard.insightjournal")
 public final class LogsDatabase {
-    public static final int VERSION = 2;
+    public static final int VERSION = 1;
 
     public static class Tables {
 
         @Table(GoalsColumns.class) @IfNotExists public static final String GOALS = "goals";
+        @Table(GoalsLogColumns.class) @IfNotExists public static final String GOALS_LOG = "goals_log";
     }
 
     @Table(LogsColumns.class) public static final String LOGS = "logs";
@@ -32,6 +33,7 @@ public final class LogsDatabase {
         db.execSQL("DROP TABLE IF EXISTS " + LOGS);
         db.execSQL("DROP TABLE IF EXISTS " + PRESETS);
         db.execSQL("DROP TABLE IF EXISTS " + Tables.GOALS);
+        db.execSQL("DROP TABLE IF EXISTS " + Tables.GOALS_LOG);
     }
 
 

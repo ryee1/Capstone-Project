@@ -6,14 +6,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsColumns;
 import com.project.richard.insightjournal.events.OnLogRvClickEvent;
 import com.project.richard.insightjournal.utils.TimerUtils;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +33,7 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
     private static final int TIMESTAMP_TAG = 0;
     private Cursor mCursor;
     final private Context mContext;
+    private final Gson gson = new Gson();
 
     public static class LogViewHolder extends RecyclerView.ViewHolder{
 
@@ -38,6 +43,7 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
         @BindView(R.id.datetime_log_recyclerview) TextView datetime;
         @BindView(R.id.title_log_recyclerview) TextView title;
         @BindView(R.id.journal_log_recyclerview) TextView journal;
+        @BindView(R.id.goals_container_log_recyclerview) LinearLayout goalsContainer;
 
         public LogViewHolder(View itemView) {
             super(itemView);
@@ -79,8 +85,22 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
         holder.title.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.TITLE))));
         holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
         holder.itemView.setTag(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)));
+
+        HashMap<String, Boolean> hashMap =
+                gson.fromJson(mCursor.getString(mCursor.getColumnIndex(LogsColumns.GOALS)), HashMap.class);
+        for(String goal : hashMap.keySet()){
+            holder.goalsContainer.addView(generateGoalView(goal, hashMap.get(goal)));
+        }
+
     }
 
+    private View generateGoalView(String goal, Boolean goalReached){
+        TextView tv = new TextView(mContext);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        tv.setText(goal);
+        return tv;
+    }
 
     @Override
     public int getItemCount() {

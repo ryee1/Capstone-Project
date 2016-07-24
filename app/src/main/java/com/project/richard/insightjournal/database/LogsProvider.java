@@ -39,7 +39,6 @@ public final class LogsProvider {
         @ContentUri(
                 path = "presets",
                 type = "vnd.android.cursor.dir/preset"
-//                defaultSort = LogsColumns.DATETIME_END + "DESC"
         )
         public static final Uri PRESETS = Uri.parse(BASE_CONTENT_URI + "/presets");
     }
@@ -52,5 +51,12 @@ public final class LogsProvider {
         public static final Uri GOALS = Uri.parse(BASE_CONTENT_URI + "/goals");
     }
 
+    @TableEndpoint(table = LogsDatabase.Tables.GOALS_LOG) public static class GoalsLog {
+        @ContentUri(
+                path = "goals_log",
+                type = "vnd.android.cursor.dir/goal"
+        )
+        public static final Uri GOALS_LOG = Uri.parse(BASE_CONTENT_URI + "/goals_log");
+    }
 
 }

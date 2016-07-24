@@ -1,6 +1,7 @@
 package com.project.richard.insightjournal.ui.introscreen;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
@@ -11,9 +12,11 @@ import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 public class IntroActivity extends AppIntro {
 
+    private static final String TAG = IntroActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "Intro Ran");
         addSlide(AppIntroFragment.newInstance("sadf", "blahbl", R.drawable.ic_arrow_forward_white_24px, R.color.cardview_shadow_end_color));
     }
 

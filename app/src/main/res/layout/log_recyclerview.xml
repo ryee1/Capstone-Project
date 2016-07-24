@@ -29,4 +29,10 @@
         android:maxLines="2"
         android:text='Empty Journal'/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/goals_container_log_recyclerview"/>
+
 </LinearLayout>

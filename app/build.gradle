@@ -35,4 +35,5 @@ dependencies {
     compile 'com.mikhaellopez:circularprogressbar:1.1.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.github.paolorotolo:appintro:4.0.0'
+    compile 'com.google.code.gson:gson:2.6.2'
 }

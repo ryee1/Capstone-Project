@@ -164,7 +164,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if(loader.getId() == LOADER_PRESET_ID) {
+        if(loader.getId() == LOADER_PRESET_ID && data.getCount() != 0) {
             data.moveToFirst();
             titleButton.setText(data.getString(data.getColumnIndex(PresetsColumns.TITLE)));
             prepButton.setText("Preparation Timer: " + TimerUtils.millisToDigital(

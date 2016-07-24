@@ -19,12 +19,13 @@ public class ContentValuesUtil {
     }
 
     public static ContentValues stopTimerDialogContentValues(long duration, long date, String title,
-                                                             String journal){
+                                                             String journal, String goalsJson){
         ContentValues cv = new ContentValues();
         cv.put(LogsColumns.SESSION_DURATION, duration);
         cv.put(LogsColumns.SESSION_DATETIME, date);
         cv.put(LogsColumns.TITLE, title);
         cv.put(LogsColumns.JOURNAL_ENTRY, journal);
+        cv.put(LogsColumns.GOALS, goalsJson);
         return cv;
     }
 }
