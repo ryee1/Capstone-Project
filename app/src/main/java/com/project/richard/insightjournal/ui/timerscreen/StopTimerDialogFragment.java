@@ -29,6 +29,7 @@ import com.project.richard.insightjournal.ui.mainpagerscreen.PagerActivity;
 import com.project.richard.insightjournal.utils.ContentValuesUtil;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +46,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
 
 
     private static AsyncQueryHandler mAsyncQueryHandler;
-    private HashMap<String, Boolean> mGoalsHashMap;
+    private LinkedHashMap<String, Boolean> mGoalsHashMap;
     private Unbinder unbinder;
 
     @BindView(R.id.edittext_stop_timer_dialog) EditText journalEditText;
@@ -121,7 +122,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
     @Override public void onLoadFinished(Loader<Cursor> loader, final Cursor data) {
         Log.e(TAG, data.getCount() + " count");
         if(data.getCount() != 0){
-            mGoalsHashMap = new HashMap<>();
+            mGoalsHashMap = new LinkedHashMap<>();
             while(data.moveToNext()) {
                 final String goal = data.getString(data.getColumnIndex(GoalsColumns.GOALS));
                 View v = LayoutInflater.from(getContext()).inflate(R.layout.goal_layout_goals_dialog, null);

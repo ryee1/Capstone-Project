@@ -17,7 +17,7 @@ import com.project.richard.insightjournal.utils.TimerUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,12 +86,11 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
         holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
         holder.itemView.setTag(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)));
 
-        HashMap<String, Boolean> hashMap =
-                gson.fromJson(mCursor.getString(mCursor.getColumnIndex(LogsColumns.GOALS)), HashMap.class);
+        LinkedHashMap<String, Boolean> hashMap =
+                gson.fromJson(mCursor.getString(mCursor.getColumnIndex(LogsColumns.GOALS)), LinkedHashMap.class);
         for(String goal : hashMap.keySet()){
             holder.goalsContainer.addView(generateGoalView(goal, hashMap.get(goal)));
         }
-
     }
 
     private View generateGoalView(String goal, Boolean goalReached){
