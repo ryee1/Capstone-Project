@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/colorCardorDialog"
     android:orientation="vertical"
+    style="@style/cardviewStyle"
     >
 
     <LinearLayout

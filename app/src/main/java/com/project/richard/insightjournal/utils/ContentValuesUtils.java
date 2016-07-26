@@ -8,7 +8,7 @@ import com.project.richard.insightjournal.database.PresetsColumns;
 /**
  * Created by a11 on 6/14/16.
  */
-public class ContentValuesUtil {
+public class ContentValuesUtils {
 
     public static ContentValues presetContentValues(String title, int prepTime, int duration){
         ContentValues cv = new ContentValues();

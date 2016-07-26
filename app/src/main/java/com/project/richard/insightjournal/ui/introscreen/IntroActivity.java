@@ -7,7 +7,7 @@ import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
-import com.project.richard.insightjournal.utils.ContentValuesUtil;
+import com.project.richard.insightjournal.utils.ContentValuesUtils;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 public class IntroActivity extends AppIntro {
@@ -26,7 +26,7 @@ public class IntroActivity extends AppIntro {
 
         SharedPrefUtils.addTitlePref(this, "Default Preset");
         getContentResolver().insert(LogsProvider.Presets.PRESETS,
-                ContentValuesUtil.presetContentValues("Default Preset", 5, 30));
+                ContentValuesUtils.presetContentValues("Default Preset", 5, 30));
         finish();
     }
 }

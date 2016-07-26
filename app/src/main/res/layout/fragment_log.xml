@@ -1,14 +1,12 @@
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mainpagerscreen.logscreen.LogFragment"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    tools:context=".ui.mainpagerscreen.logscreen.LogFragment">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/log_recyclerview"/>
-</FrameLayout>
+</RelativeLayout>

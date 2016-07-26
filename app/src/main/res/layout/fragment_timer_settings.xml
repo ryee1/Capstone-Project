@@ -12,8 +12,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -26,47 +24,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:clickable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 card_view:cardCornerRadius="4dp"
                 >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:orientation="vertical"
                     >
 
                     <Button
+                        style="@style/presetButtonsStyle"
                         android:id="@+id/title_preset_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="/Meditation 1"/>
+                        android:layout_height="wrap_content"/>
 
                     <Button
+                        style="@style/presetButtonsStyle"
                         android:id='@+id/preparation_preset_button'
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Preparation 00:05"/>
+                        android:layout_height="wrap_content"/>
 
                     <Button
+                        style="@style/presetButtonsStyle"
                         android:id='@+id/duration_preset_button'
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Duration 11:11"/>
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:orientation="horizontal">
+                          android:orientation="horizontal"
+                          android:background="@color/colorCardorDialog">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Session Goals"/>
+                    android:text="@string/session_goals_textview_timer_settings"/>
 
                 <ImageButton
                     android:id="@+id/goal_add_button"
@@ -76,6 +73,12 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_add_black_18dp"/>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/horizontal_line"
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/goals_recyclerview"

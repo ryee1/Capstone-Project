@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsColumns;
 import com.project.richard.insightjournal.events.OnLogRvClickEvent;
+import com.project.richard.insightjournal.utils.AnimUtils;
 import com.project.richard.insightjournal.utils.TimerUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,7 +28,7 @@ import butterknife.OnLongClick;
 /**
  * Created by richard on 6/29/16.
  */
-public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
+public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
 
     private static final String TAG = LogAdapter.class.getSimpleName();
     private static final int TIMESTAMP_TAG = 0;
@@ -35,7 +36,7 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
     final private Context mContext;
     private final Gson gson = new Gson();
 
-    public static class LogViewHolder extends RecyclerView.ViewHolder{
+    public static class LogViewHolder extends RecyclerView.ViewHolder {
 
         final private int mMaxLines = 2;
 
@@ -44,6 +45,7 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
         @BindView(R.id.title_log_recyclerview) TextView title;
         @BindView(R.id.journal_log_recyclerview) TextView journal;
         @BindView(R.id.goals_container_log_recyclerview) LinearLayout goalsContainer;
+        @BindView(R.id.toggle_layout_log_recyclerview) LinearLayout expandableView;
 
         public LogViewHolder(View itemView) {
             super(itemView);
@@ -51,18 +53,25 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
         }
 
         @OnLongClick(R.id.log_linearlayout_rv)
-        public boolean onLongClick(View view){
-            EventBus.getDefault().post(new OnLogRvClickEvent((long)view.getTag()));
+        public boolean onLongClick(View view) {
+            EventBus.getDefault().post(new OnLogRvClickEvent((long) view.getTag()));
             return true;
         }
 
         @OnClick(R.id.log_linearlayout_rv)
-        public void toggleJournalTextView(){
-            if(journal.getMaxLines() == 2) {
-                journal.setMaxLines(99999);
-            }
-            else{
-                journal.setMaxLines(mMaxLines);
+        public void toggleExpandableView(View v) {
+//            if(journal.getMaxLines() == 2) {
+//                journal.setMaxLines(99999);
+//            }
+//            else{
+//                journal.setMaxLines(mMaxLines);
+//            }
+            if (expandableView.getVisibility() == View.VISIBLE) {
+                AnimUtils.slideUp(v.getContext(), v);
+                expandableView.setVisibility(View.GONE);
+            } else {
+                AnimUtils.slideDown(v.getContext(), v);
+                expandableView.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -81,19 +90,21 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
     @Override public void onBindViewHolder(LogViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         holder.duration.setText(TimerUtils.millisToDigital(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DURATION))));
-        holder.datetime.setText(TimerUtils.unixTimeToDate( mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
+        holder.datetime.setText(TimerUtils.unixTimeToDate(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
         holder.title.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.TITLE))));
         holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
         holder.itemView.setTag(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)));
 
+        holder.goalsContainer.removeAllViews();
         LinkedHashMap<String, Boolean> hashMap =
                 gson.fromJson(mCursor.getString(mCursor.getColumnIndex(LogsColumns.GOALS)), LinkedHashMap.class);
-        for(String goal : hashMap.keySet()){
+        for (String goal : hashMap.keySet()) {
             holder.goalsContainer.addView(generateGoalView(goal, hashMap.get(goal)));
         }
+
     }
 
-    private View generateGoalView(String goal, Boolean goalReached){
+    private View generateGoalView(String goal, Boolean goalReached) {
         TextView tv = new TextView(mContext);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -103,15 +114,15 @@ public class  LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> 
 
     @Override
     public int getItemCount() {
-        if(null == mCursor) return 0;
+        if (null == mCursor) return 0;
         return mCursor.getCount();
     }
 
-    public Cursor getCursor(){
+    public Cursor getCursor() {
         return mCursor;
     }
 
-    public void swapCursor(Cursor newCursor){
+    public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
     }

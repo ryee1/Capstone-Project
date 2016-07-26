@@ -26,7 +26,7 @@ import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.GoalsColumns;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.ui.mainpagerscreen.PagerActivity;
-import com.project.richard.insightjournal.utils.ContentValuesUtil;
+import com.project.richard.insightjournal.utils.ContentValuesUtils;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -79,7 +79,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         mAsyncQueryHandler.startInsert(0, null, LogsProvider.Logs.LOGS,
-                                ContentValuesUtil.stopTimerDialogContentValues(duration, date,
+                                ContentValuesUtils.stopTimerDialogContentValues(duration, date,
                                 title, journalEditText.getText().toString(), hashMapToJson(mGoalsHashMap)));
                         Intent intent = new Intent(getActivity(), PagerActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
