@@ -2,6 +2,7 @@ package com.project.richard.insightjournal.ui.mainpagerscreen.logscreen;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,6 +110,9 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         tv.setText(goal);
+        int backgroundColor = goalReached ? ContextCompat.getColor(mContext, R.color.colorPositiveGoal) :
+                ContextCompat.getColor(mContext, R.color.colorNegativeGoal);
+        tv.setBackgroundColor(backgroundColor);
         return tv;
     }
 
