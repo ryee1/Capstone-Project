@@ -1,7 +1,10 @@
 package com.project.richard.insightjournal.ui.mainpagerscreen.timersettingscreen;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -62,8 +65,19 @@ public class GoalsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         goalHolder.goalDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 mCursor.moveToPosition(goalHolder.getAdapterPosition());
-                mContext.getContentResolver().delete(LogsProvider.Goals.GOALS, GoalsColumns._ID + " = ?",
-                        new String[]{"" + mCursor.getInt(mCursor.getColumnIndex(GoalsColumns._ID))});
+                final AlertDialog.Builder confirmDialog = new AlertDialog.Builder(mContext);
+                confirmDialog
+                        .setPositiveButton(mContext.getString(R.string.dialog_confirm), new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialog, int which) {
+                                mCursor.moveToPosition(goalHolder.getAdapterPosition());
+                                new DeleteGoalTask().execute(mCursor.getInt(mCursor.getColumnIndex(GoalsColumns._ID)));
+                            }
+                        })
+                        .setNegativeButton(mContext.getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
             }
         });
         goalHolder.goalEditButton.setOnClickListener(new View.OnClickListener() {
@@ -94,5 +108,16 @@ public class GoalsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mCursor = newCursor;
         notifyDataSetChanged();
     }
+    private class DeleteGoalTask extends AsyncTask<Integer, Void, Void> {
 
+        @Override protected Void doInBackground(Integer... params) {
+            mContext.getContentResolver().delete(LogsProvider.Goals.GOALS, GoalsColumns._ID + " = "
+                    + params[0], null);
+            return null;
+        }
+
+        @Override protected void onPostExecute(Void aVoid) {
+            notifyDataSetChanged();
+        }
+    }
 }

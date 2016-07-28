@@ -17,8 +17,6 @@ import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.ui.DividerItemDecoration;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -68,13 +66,11 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
     }
 
     @Override public void onPause() {
-        EventBus.getDefault().unregister(this);
         super.onPause();
     }
 
     @Override public void onResume() {
         super.onResume();
-        EventBus.getDefault().register(this);
     }
 
     @Override public void onDestroyView() {

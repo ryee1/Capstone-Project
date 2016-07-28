@@ -70,7 +70,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
     }
 
 
-    @Override public void onBindViewHolder(final LogViewHolder holder, final int position) {
+    @Override public void onBindViewHolder(final LogViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         holder.duration.setText(TimerUtils.millisToDigital(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DURATION))));
         holder.datetime.setText(TimerUtils.unixTimeToDate(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
@@ -89,7 +89,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
                 confirmDialog
                         .setPositiveButton(mContext.getString(R.string.dialog_confirm), new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-                        mCursor.moveToPosition(position);
+                        mCursor.moveToPosition(holder.getAdapterPosition());
                         new DeleteLogTask().execute(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)));
                     }
                 })
@@ -112,12 +112,12 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
                 if (holder.expandableView.getVisibility() == View.VISIBLE) {
                     AnimUtils.slideUp(v.getContext(), v);
                     holder.expandableView.setVisibility(View.GONE);
-                    mCursor.moveToPosition(position);
+                    mCursor.moveToPosition(holder.getAdapterPosition());
                     mStatesMap.put(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)), false);
                 } else {
                     AnimUtils.slideDown(v.getContext(), v);
                     holder.expandableView.setVisibility(View.VISIBLE);
-                    mCursor.moveToPosition(position);
+                    mCursor.moveToPosition(holder.getAdapterPosition());
                     mStatesMap.put(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)), true);
                 }
             }

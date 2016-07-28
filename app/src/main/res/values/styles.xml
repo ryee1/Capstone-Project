@@ -13,9 +13,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="cardviewStyle">
         <item name="android:paddingLeft">8dp</item>
@@ -27,8 +27,15 @@
 
     <style name="presetButtonsStyle">
         <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:textSize">12sp</item>
     </style>
-    <style name="cardviewTextView">
+
+    <style name="cardviewTextViewStyle">
 
     </style>
+
 </resources>
