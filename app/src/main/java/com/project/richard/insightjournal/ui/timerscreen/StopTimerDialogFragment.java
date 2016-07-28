@@ -113,11 +113,6 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
         return gson.toJson(hashMap);
     }
 
-    private void printHash(HashMap<String, Boolean> hashMap){
-        for(String s : hashMap.keySet()){
-            Log.e(TAG, s + " " +hashMap.get(s).toString());
-        }
-    }
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getContext(), LogsProvider.Goals.GOALS, null, null, null, null);
     }
@@ -128,7 +123,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
             mGoalsHashMap = new LinkedHashMap<>();
             while(data.moveToNext()) {
                 final String goal = data.getString(data.getColumnIndex(GoalsColumns.GOALS));
-                final View view = LayoutInflater.from(getContext()).inflate(R.layout.goal_layout_goals_dialog, null);
+                final View view = LayoutInflater.from(getContext()).inflate(R.layout.goal_layout_stop_timer_dialog, null);
                 TextView goalTextView = (TextView) view.findViewById(R.id.goal_textview_goals_dialog);
                 ImageButton goalPositive = (ImageButton) view.findViewById(R.id.goal_positive_stop_timer_dialog);
                 ImageButton goalNegative = (ImageButton) view.findViewById(R.id.goal_negative_stop_timer_dialog);

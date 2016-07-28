@@ -17,5 +17,7 @@
     <string name="long_term_goals_settings_hint">Set your long term goals...</string>
     <string name="bullet_point">\u2022</string>
     <string name="session_goals_textview_timer_settings">Session Goals</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_cancel">Cancel</string>
 
 </resources>
