@@ -19,5 +19,6 @@
     <string name="session_goals_textview_timer_settings">Session Goals</string>
     <string name="dialog_confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="add_goal_button_text">Add Goal</string>
 
 </resources>

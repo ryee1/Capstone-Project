@@ -14,6 +14,8 @@
         android:id="@+id/edittext_stop_timer_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="60dp"/>
+        android:minLines="4"
+        android:hint="Enter your journal entry here"
+        android:gravity="top|left"/>
 
 </LinearLayout>

@@ -9,12 +9,13 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/fragment_timer_setting_nested_scrollview">
 
         <LinearLayout
             android:id="@+id/fragment_timer_settings_linearlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="16dp">
 
@@ -55,28 +56,30 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <LinearLayout
+            <RelativeLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@color/colorCardorDialog"
-                android:orientation="horizontal">
+                android:background="@color/colorCardorDialog">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/session_goals_textview_timer_settings"/>
-
-                <ImageButton
-                    android:id="@+id/goal_add_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/ic_add_black_18dp"/>
-            </LinearLayout>
+                    android:layout_centerInParent="true"
+                    android:text="@string/session_goals_textview_timer_settings"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/goal_add_button"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    style="@style/presetButtonsStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_goal_button_text"/>
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -87,14 +90,13 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/goals_recyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
 
-            <TextView
+            <View
                 android:id="@+id/fragment_timer_settings_footer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minLines="10"
-                android:text="HHHHHH HHHHH HHHHD KJKJKJK"/>
+                android:minLines="2"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
@@ -107,7 +109,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_meditation_yoga_posture"
         android:scaleType="center"
-        app:layout_anchor="@id/fragment_timer_settings_linearlayout"
+        app:layout_anchor="@id/fragment_timer_setting_nested_scrollview"
         app:layout_anchorGravity="bottom|center"
         />
 </android.support.design.widget.CoordinatorLayout>

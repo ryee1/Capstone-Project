@@ -56,6 +56,11 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
         View view = inflater.inflate(R.layout.fragment_log, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+//        TabLayout toolbar = (TabLayout) getActivity().findViewById(R.id.sliding_tabs_main);
+//        TextView t = new TextView(getContext());
+//        t.setText("HELLO");
+//        toolbar.addView(t);
+
         mLogAdapter = new LogAdapter(getContext());
 
         recyclerView.setAdapter(mLogAdapter);

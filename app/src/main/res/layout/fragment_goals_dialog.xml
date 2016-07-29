@@ -8,6 +8,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:minLines="5"
+        android:gravity="top|left"
         android:hint="Enter your goals here"
         android:id="@+id/edittext_goals_dialog"/>
 

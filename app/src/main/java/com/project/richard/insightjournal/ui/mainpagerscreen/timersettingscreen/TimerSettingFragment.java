@@ -87,6 +87,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         recyclerView.setAdapter(mGoalsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
+
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
 
         return view;
