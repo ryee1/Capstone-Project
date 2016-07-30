@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.project.richard.insightjournal.R;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,10 +63,16 @@ public class TimerUtils {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    public static String unixTimeToTime(long unixTime){
+        Date date = new Date(unixTime);
+        DateFormat format = SimpleDateFormat.getTimeInstance();
+        format.setTimeZone(TimeZone.getDefault());
+        return format.format(date);
+    }
     public static String unixTimeToDate(long unixTime){
         Date date = new Date(unixTime);
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy a");
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        DateFormat format = SimpleDateFormat.getDateInstance();
+        format.setTimeZone(TimeZone.getDefault());
         return format.format(date);
     }
 }

@@ -10,6 +10,9 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -56,10 +59,7 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
         View view = inflater.inflate(R.layout.fragment_log, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-//        TabLayout toolbar = (TabLayout) getActivity().findViewById(R.id.sliding_tabs_main);
-//        TextView t = new TextView(getContext());
-//        t.setText("HELLO");
-//        toolbar.addView(t);
+        setHasOptionsMenu(true);
 
         mLogAdapter = new LogAdapter(getContext());
 
@@ -68,6 +68,19 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         return view;
+    }
+
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_log, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_toggle_log:
+                mLogAdapter.toggleStatesMap();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override public void onPause() {

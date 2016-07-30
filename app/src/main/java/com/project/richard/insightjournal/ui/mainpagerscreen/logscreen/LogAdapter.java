@@ -38,10 +38,12 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
     final private Context mContext;
     private final Gson gson = new Gson();
     private final HashMap<Long, Boolean> mStatesMap;
+    private boolean showAllViews = false;
     public static class LogViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.duration_log_recyclerview) TextView duration;
-        @BindView(R.id.datetime_log_recyclerview) TextView datetime;
+        @BindView(R.id.date_log_recyclerview) TextView date;
+        @BindView(R.id.time_log_recyclerview) TextView time;
         @BindView(R.id.title_log_recyclerview) TextView title;
         @BindView(R.id.journal_log_recyclerview) TextView journal;
         @BindView(R.id.goals_container_log_recyclerview) LinearLayout goalsContainer;
@@ -73,7 +75,8 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
     @Override public void onBindViewHolder(final LogViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         holder.duration.setText(TimerUtils.millisToDigital(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DURATION))));
-        holder.datetime.setText(TimerUtils.unixTimeToDate(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
+        holder.date.setText(TimerUtils.unixTimeToDate(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
+        holder.time.setText(TimerUtils.unixTimeToTime(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
         holder.title.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.TITLE))));
         holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
         holder.itemView.setTag(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)));
@@ -157,6 +160,23 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void toggleStatesMap(){
+        mCursor.moveToFirst();
+        if(showAllViews){
+            showAllViews = false;
+        }
+        else{
+            showAllViews = true;
+        }
+        if(mCursor.getCount() > 0 && mCursor.moveToFirst()){
+            while(!mCursor.isAfterLast()){
+                mStatesMap.put(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)),
+                        showAllViews);
+                mCursor.moveToNext();
+            }
+            notifyDataSetChanged();
+        }
+    }
     private class DeleteLogTask extends AsyncTask<Long, Void, Void>{
 
         @Override protected Void doInBackground(Long... params) {

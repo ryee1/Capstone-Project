@@ -197,10 +197,10 @@ public class TimerFragment extends Fragment {
         mTimerRunning = false;
         mDigitalTimerView.setText(TimerUtils.millisToDigital(event.finishedTick));
         mCircleTimerView.setProgress((float)event.finishedTick / mMaxDuration * 100);
-        StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
+            StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
                 TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
-                System.currentTimeMillis() / 1000L, mTitle);
-        Log.e(TAG, mMaxDuration + " " + event.finishedTick);
+                System.currentTimeMillis(), mTitle);
+        Log.e(TAG, "dateunix: " + System.currentTimeMillis());
         dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
     }
 
