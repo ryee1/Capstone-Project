@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<ScrollView
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/goals_container_stop_timer_dialog"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        >
 
-    <EditText
-        android:id="@+id/edittext_stop_timer_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minLines="4"
-        android:hint="Enter your journal entry here"
-        android:gravity="top|left"/>
+        <LinearLayout
+            android:id="@+id/goals_container_stop_timer_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/edittext_stop_timer_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:hint="Enter your journal entry here"
+            android:minLines="4"/>
+
+    </LinearLayout>
+</ScrollView>

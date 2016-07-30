@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="8dp">
 
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -41,7 +41,7 @@
                         style="@style/presetButtonsStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
-
+                    
                     <Button
                         android:id='@+id/preparation_preset_button'
                         style="@style/presetButtonsStyle"
@@ -60,7 +60,7 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/colorCardorDialog">
 
                 <TextView
@@ -92,11 +92,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <View
+            <TextView
+                android:layout_marginTop="8dp"
                 android:id="@+id/fragment_timer_settings_footer"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="2"/>
+                android:background="@color/colorCardorDialog"
+                android:minLines="4"
+                />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

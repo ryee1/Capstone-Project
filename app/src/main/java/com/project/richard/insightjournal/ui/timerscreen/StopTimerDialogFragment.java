@@ -53,7 +53,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
     @BindView(R.id.edittext_stop_timer_dialog) EditText journalEditText;
     @BindView(R.id.goals_container_stop_timer_dialog) LinearLayout goalsContainer;
     @BindColor(R.color.colorNegativeGoal) int colorNegativeGoal;
-    @BindColor(R.color.colorPositiveGoal) int colorPositiveeGoal;
+    @BindColor(R.color.colorPositiveGoal) int colorPositiveGoal;
 
     public static StopTimerDialogFragment newInstance(long duration, long date, String title) {
         StopTimerDialogFragment f = new StopTimerDialogFragment();
@@ -123,24 +123,25 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
             mGoalsHashMap = new LinkedHashMap<>();
             while(data.moveToNext()) {
                 final String goal = data.getString(data.getColumnIndex(GoalsColumns.GOALS));
-                final View view = LayoutInflater.from(getContext()).inflate(R.layout.goal_layout_stop_timer_dialog, null);
+                final View view = LayoutInflater.from(getContext()).inflate(R.layout.goal_layout_stop_timer_dialog,
+                        goalsContainer, false);
                 TextView goalTextView = (TextView) view.findViewById(R.id.goal_textview_goals_dialog);
-                ImageButton goalPositive = (ImageButton) view.findViewById(R.id.goal_positive_stop_timer_dialog);
-                ImageButton goalNegative = (ImageButton) view.findViewById(R.id.goal_negative_stop_timer_dialog);
+                final ImageButton goalToggle = (ImageButton) view.findViewById(R.id.goal_toggle_stop_timer_dialog);
                 goalTextView.setText(goal);
                 view.setBackgroundColor(colorNegativeGoal);
                 goalsContainer.addView(view);
                 mGoalsHashMap.put(goal, false);
-                goalPositive.setOnClickListener(new View.OnClickListener() {
+                goalToggle.setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View v) {
-                        mGoalsHashMap.put(goal, true);
-                        view.setBackgroundColor(colorPositiveeGoal);
-                    }
-                });
-                goalNegative.setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                        mGoalsHashMap.put(goal, false);
-                        view.setBackgroundColor(colorNegativeGoal);
+                        if(mGoalsHashMap.get(goal) != null && mGoalsHashMap.get(goal)){
+                            mGoalsHashMap.put(goal, false);
+                            view.setBackgroundColor(colorNegativeGoal);
+                            ((ImageButton) v).setImageResource(R.drawable.ic_thumb_down_black_18dp);
+                        }else {
+                            mGoalsHashMap.put(goal, true);
+                            view.setBackgroundColor(colorPositiveGoal);
+                            ((ImageButton) v).setImageResource(R.drawable.ic_thumb_up_black_18dp);
+                        }
                     }
                 });
             }
