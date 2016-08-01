@@ -169,6 +169,7 @@ public class TimerFragment extends Fragment {
                 mTimerService.setPrep(mMaxPrep);
             }
 
+            mCircleTimerView.setProgress((float) mTimerService.getDuration() / mMaxDuration * 100);
             //If service's duration doesn't match the maxduration, that means timer is already running
             if (timerRan()) {
                 mTimerRunning = true;
@@ -222,19 +223,6 @@ public class TimerFragment extends Fragment {
         dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
     }
 
-    //TODO implement proper back navigation when timer is running
-//    @Subscribe
-//    public void onTimerBackPressed(OnTimerBackPressed event) {
-//        if (mTimerRunning) {
-//            Intent intent = new Intent(Intent.ACTION_MAIN);
-//            intent.addCategory(Intent.CATEGORY_HOME);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//        }
-//        else{
-//
-//        }
-//    }
 
     @OnClick(R.id.btn_timer_start)
     public void startTimer() {

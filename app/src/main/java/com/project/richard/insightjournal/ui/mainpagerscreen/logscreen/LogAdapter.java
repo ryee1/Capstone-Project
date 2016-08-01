@@ -184,6 +184,11 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
             notifyDataSetChanged();
         }
     }
+
+    public boolean isShowAllViews(){
+        return showAllViews;
+    }
+
     private class DeleteLogTask extends AsyncTask<Long, Void, Void>{
 
         @Override protected Void doInBackground(Long... params) {

@@ -10,7 +10,6 @@
     <item
         android:id="@+id/action_toggle_log"
         android:orderInCategory="100"
-        android:title="DFDFD"
-        android:icon="@drawable/ic_meditation_yoga_posture"
+        android:title=""
         app:showAsAction="always" />
 </menu>

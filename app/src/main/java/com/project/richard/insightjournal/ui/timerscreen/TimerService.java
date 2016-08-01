@@ -125,8 +125,6 @@ public class TimerService extends Service {
     public void background(){
         stopForeground(true);
     }
-    public static final long timerOffset = 200;
-
     private Notification createNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle("Insight Timer")

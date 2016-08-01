@@ -72,6 +72,13 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_log, menu);
+        MenuItem toggleLog = menu.findItem(R.id.action_toggle_log);
+        if(mLogAdapter.isShowAllViews()){
+            toggleLog.setIcon(R.drawable.ic_visibility_off_white_18dp);
+        }
+        else{
+            toggleLog.setIcon(R.drawable.ic_visibility_black_18dp);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -79,6 +86,12 @@ public class LogFragment extends Fragment implements LoaderManager.LoaderCallbac
         switch(item.getItemId()){
             case R.id.action_toggle_log:
                 mLogAdapter.toggleStatesMap();
+                if(mLogAdapter.isShowAllViews()){
+                    item.setIcon(R.drawable.ic_visibility_off_white_18dp);
+                }
+                else{
+                    item.setIcon(R.drawable.ic_visibility_black_18dp);
+                }
         }
         return super.onOptionsItemSelected(item);
     }
