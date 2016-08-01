@@ -78,7 +78,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
 
         mAsyncQueryHandler= new AsyncQueryHandler(getActivity().getContentResolver()){};
         builder.setView(view)
-                .setMessage("????")
+                .setMessage("Log Session")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         mAsyncQueryHandler.startInsert(0, null, LogsProvider.Logs.LOGS,

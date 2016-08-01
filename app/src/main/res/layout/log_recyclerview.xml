@@ -4,10 +4,10 @@
     android:id="@+id/log_linearlayout_rv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorCardorDialog"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:background="@color/colorCardorDialog"
     >
 
     <TextView
@@ -47,10 +47,29 @@
         android:visibility="gone">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_horizontal"
+            android:text="JOURNAL"
+            android:elevation="4dp"/>
+
+        <TextView
             android:id="@+id/journal_log_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text='Empty Journal'/>
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:elevation="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_horizontal"
+            android:text="GOALS"/>
 
         <LinearLayout
             android:id="@+id/goals_container_log_recyclerview"

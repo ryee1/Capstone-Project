@@ -42,8 +42,10 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.database.PresetsColumns;
+import com.project.richard.insightjournal.events.OnPrepTickEvent;
 import com.project.richard.insightjournal.events.OnTickEvent;
 import com.project.richard.insightjournal.events.OnTickFinishedEvent;
+import com.project.richard.insightjournal.ui.mainpagerscreen.PagerActivity;
 import com.project.richard.insightjournal.utils.TimerUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -70,10 +72,14 @@ public class TimerFragment extends Fragment {
 
     private String mTitle;
     private long mMaxDuration;
+    private long mMaxPrep;
     private boolean mTimerRunning;
     private boolean mBound;
     private TimerService mTimerService;
     private Unbinder unbinder;
+
+    //threshold in milliseconds for session logging dialog screen to pop up
+    private long mDialogThreshold = 10000;
 
     @BindView(R.id.circle_timer_view) CircularProgressBar mCircleTimerView;
     @BindView(R.id.digital_timer_view) TextView mDigitalTimerView;
@@ -105,6 +111,7 @@ public class TimerFragment extends Fragment {
                 PresetsColumns.TITLE + " = ?", new String[]{mTitle}, null);
         if (c != null && c.moveToFirst()) {
             mMaxDuration = c.getLong(c.getColumnIndex(PresetsColumns.DURATION));
+            mMaxPrep = c.getLong(c.getColumnIndex(PresetsColumns.PREPARATION_TIME));
             c.close();
         } else {
             Log.e(TAG, "Cannot find Preset");
@@ -114,7 +121,6 @@ public class TimerFragment extends Fragment {
             mTimerRunning = savedInstanceState.getBoolean(BOOLEAN_TIMER_RUNNING);
             mDigitalTimerView.setText(TimerUtils.millisToDigital(savedInstanceState.getLong(LONG_TIMER_DURATION)));
             mCircleTimerView.setProgress((float) savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
-            Log.e(TAG, (savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100) + "");
         }
 
         return view;
@@ -160,6 +166,7 @@ public class TimerFragment extends Fragment {
             //If service first run, duration == 0. Set duration to mMaxDuration
             if (mTimerService.getDuration() == 0) {
                 mTimerService.setDuration(mMaxDuration);
+                mTimerService.setPrep(mMaxPrep);
             }
 
             //If service's duration doesn't match the maxduration, that means timer is already running
@@ -186,6 +193,12 @@ public class TimerFragment extends Fragment {
         mTimerService.stopTimer();
         mTimerRunning = false;
     }
+
+    @Subscribe
+    public void onPrepTickEvent(OnPrepTickEvent event){
+        mDigitalTimerView.setText(TimerUtils.millisToDigital(event.currentTick));
+    }
+
     @Subscribe
     public void onTickEvent(OnTickEvent event) {
         mDigitalTimerView.setText(TimerUtils.millisToDigital(event.currentTick));
@@ -197,10 +210,15 @@ public class TimerFragment extends Fragment {
         mTimerRunning = false;
         mDigitalTimerView.setText(TimerUtils.millisToDigital(event.finishedTick));
         mCircleTimerView.setProgress((float)event.finishedTick / mMaxDuration * 100);
+        if(mMaxDuration - event.finishedTick < mDialogThreshold){
+            Intent intent = new Intent(getActivity(), PagerActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return;
+        }
             StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
                 TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
                 System.currentTimeMillis(), mTitle);
-        Log.e(TAG, "dateunix: " + System.currentTimeMillis());
         dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
     }
 
@@ -223,7 +241,7 @@ public class TimerFragment extends Fragment {
         if (!mTimerRunning) {
             mStartButton.setText(R.string.timer_start_button_onpause);
             mTimerRunning = true;
-            mTimerService.startTimer(mTimerService.getDuration());
+            mTimerService.startTimer(mTimerService.getDuration(), mTimerService.getPrep());
         } else {
             mStartButton.setText(R.string.timer_start_button_onstart);
             mTimerRunning = false;

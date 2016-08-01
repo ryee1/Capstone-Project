@@ -20,5 +20,6 @@
     <string name="dialog_confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="add_goal_button_text">Add Goal</string>
+    <string name="no_journal_entry_log_rv">Blank Entry</string>
 
 </resources>

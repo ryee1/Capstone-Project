@@ -78,7 +78,12 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
         holder.date.setText(TimerUtils.unixTimeToDate(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
         holder.time.setText(TimerUtils.unixTimeToTime(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
         holder.title.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.TITLE))));
-        holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
+        if(mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY)).trim().length() > 0){
+            holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
+        }
+        else{
+            holder.journal.setText(R.string.no_journal_entry_log_rv);
+        }
         holder.itemView.setTag(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME)));
 
         holder.editButton.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +143,9 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
         TextView tv = new TextView(mContext);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 1, 0, 1);
         tv.setText(goal);
+        tv.setLayoutParams(params);
         int backgroundColor = goalReached ? ContextCompat.getColor(mContext, R.color.colorPositiveGoal) :
                 ContextCompat.getColor(mContext, R.color.colorNegativeGoal);
         tv.setBackgroundColor(backgroundColor);

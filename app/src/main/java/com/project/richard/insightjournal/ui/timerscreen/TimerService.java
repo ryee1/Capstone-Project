@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.events.OnPrepTickEvent;
 import com.project.richard.insightjournal.events.OnTickEvent;
 import com.project.richard.insightjournal.events.OnTickFinishedEvent;
 
@@ -25,9 +26,11 @@ public class TimerService extends Service {
 
     private final IBinder mBinder = new TimerBinder();
     private final OnTickEvent onTickEvent = new OnTickEvent();
+    private final OnPrepTickEvent onPrepTickEvent = new OnPrepTickEvent();
     private final OnTickFinishedEvent onTickFinishedEvent = new OnTickFinishedEvent();
     private CountDownTimer mCountDownTimer;
     private long mDuration;
+    private long mPrep;
 
     public class TimerBinder extends Binder {
         TimerService getTimerService() {
@@ -44,28 +47,44 @@ public class TimerService extends Service {
         return mBinder;
     }
 
-    public void startTimer(long duration) {
+    public void startTimer(long duration, long prep) {
         if (mCountDownTimer != null)
             mCountDownTimer.cancel();
-        mCountDownTimer = new CountDownTimer(duration, 100) {
-            @Override public void onTick(long millisUntilFinished) {
-                mDuration = millisUntilFinished;
-                onTickEvent.currentTick = mDuration;
-                EventBus.getDefault().post(onTickEvent);
-            }
+        if (prep != 0) {
+            mCountDownTimer = new CountDownTimer(prep, 100) {
+                @Override public void onTick(long millisUntilFinished) {
+                    mPrep = millisUntilFinished;
+                    onPrepTickEvent.currentTick = mPrep;
+                    EventBus.getDefault().post(onPrepTickEvent);
 
-            @Override public void onFinish() {
-                mDuration = 0;
-                onTickFinishedEvent.finishedTick = mDuration;
-                EventBus.getDefault().post(onTickFinishedEvent);
-                stopSelf();
-            }
-        }.start();
+                }
+
+                @Override public void onFinish() {
+                    mPrep = 0;
+                    startTimer(mDuration, mPrep);
+                }
+            }.start();
+        } else {
+            mCountDownTimer = new CountDownTimer(duration, 100) {
+                @Override public void onTick(long millisUntilFinished) {
+                    mDuration = millisUntilFinished;
+                    onTickEvent.currentTick = mDuration;
+                    EventBus.getDefault().post(onTickEvent);
+                }
+
+                @Override public void onFinish() {
+                    mDuration = 0;
+                    onTickFinishedEvent.finishedTick = mDuration;
+                    EventBus.getDefault().post(onTickFinishedEvent);
+                    stopSelf();
+                }
+            }.start();
+        }
     }
-
     public void pauseTimer() {
         mCountDownTimer.cancel();
     }
+
 
     @Override public void onDestroy() {
         if (mCountDownTimer != null)
@@ -88,6 +107,14 @@ public class TimerService extends Service {
 
     public long getDuration() {
         return mDuration;
+    }
+
+    public long getPrep() {
+        return mPrep;
+    }
+
+    public void setPrep(long mPrep) {
+        this.mPrep = mPrep;
     }
 
     public void foreground(){
