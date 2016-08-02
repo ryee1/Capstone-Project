@@ -14,4 +14,5 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
 public interface GoalsColumns {
     @DataType(INTEGER) @PrimaryKey @AutoIncrement String _ID = "_id";
     @DataType(TEXT) @NotNull String GOALS = "goals";
+    @DataType(TEXT) @NotNull String TYPE = "type";
 }

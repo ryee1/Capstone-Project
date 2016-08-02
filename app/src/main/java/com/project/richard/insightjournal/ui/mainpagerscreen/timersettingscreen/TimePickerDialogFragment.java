@@ -78,9 +78,8 @@ public class TimePickerDialogFragment extends DialogFragment{
         }
         ContentValues cv = new ContentValues();
         cv.put(column, duration);
-        Log.e(TAG, SharedPrefUtils.getTitlePref(getContext()));
         getContext().getContentResolver().update(LogsProvider.Presets.PRESETS, cv,
-                PresetsColumns.TITLE + " = ?", new String[] {SharedPrefUtils.getTitlePref(getContext())});
+                PresetsColumns.TYPE + " = ?", new String[] {SharedPrefUtils.getTypePref(getContext())});
         getDialog().dismiss();
     }
 

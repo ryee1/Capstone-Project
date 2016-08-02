@@ -10,11 +10,12 @@ import com.project.richard.insightjournal.database.PresetsColumns;
  */
 public class ContentValuesUtils {
 
-    public static ContentValues presetContentValues(String title, int prepTime, int duration){
+    public static ContentValues presetContentValues(String type, int prepTime, int duration, int recordToggleOn){
         ContentValues cv = new ContentValues();
-        cv.put(PresetsColumns.TITLE, title);
+        cv.put(PresetsColumns.TYPE, type);
         cv.put(PresetsColumns.PREPARATION_TIME, prepTime);
         cv.put(PresetsColumns.DURATION, duration);
+        cv.put(PresetsColumns.RECORD_TOGGLE_ON, recordToggleOn);
         return cv;
     }
 

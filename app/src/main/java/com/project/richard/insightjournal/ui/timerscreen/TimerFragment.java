@@ -28,8 +28,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,6 +40,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
@@ -60,23 +65,24 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimerFragment extends Fragment {
+public class TimerFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = TimerFragment.class.getSimpleName();
     private static final String BOOLEAN_TIMER_RUNNING = "boolean_timer_running";
     private static final String LONG_TIMER_DURATION = "long_timer_duration";
 
-    public static final String PRESET_TITLE = "preset_title";
+    public static final String PRESET_TYPE = "preset_type";
     public static final String TIMER_STARTED_KEY = "timer_started_key";
     public static final String DURATION_KEY = "duration_key";
 
-    private String mTitle;
+    private String mType;
     private long mMaxDuration;
     private long mMaxPrep;
     private boolean mTimerRunning;
     private boolean mBound;
     private TimerService mTimerService;
     private Unbinder unbinder;
+    private GoogleApiClient mGoogleApiClient;
 
     //threshold in milliseconds for session logging dialog screen to pop up
     private long mDialogThreshold = 10000;
@@ -89,7 +95,7 @@ public class TimerFragment extends Fragment {
     public static TimerFragment newInstance(String title) {
         Bundle args = new Bundle();
         TimerFragment fragment = new TimerFragment();
-        args.putString(PRESET_TITLE, title);
+        args.putString(PRESET_TYPE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -106,9 +112,9 @@ public class TimerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        mTitle = getArguments().getString(PRESET_TITLE);
+        mType = getArguments().getString(PRESET_TYPE);
         Cursor c = getActivity().getContentResolver().query(LogsProvider.Presets.PRESETS, null,
-                PresetsColumns.TITLE + " = ?", new String[]{mTitle}, null);
+                PresetsColumns.TYPE + " = ?", new String[]{mType}, null);
         if (c != null && c.moveToFirst()) {
             mMaxDuration = c.getLong(c.getColumnIndex(PresetsColumns.DURATION));
             mMaxPrep = c.getLong(c.getColumnIndex(PresetsColumns.PREPARATION_TIME));
@@ -122,7 +128,15 @@ public class TimerFragment extends Fragment {
             mDigitalTimerView.setText(TimerUtils.millisToDigital(savedInstanceState.getLong(LONG_TIMER_DURATION)));
             mCircleTimerView.setProgress((float) savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
         }
-
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .enableAutoManage(getActivity(), this)
+                .addApi(LocationServices.API)
+                .build();
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+            Log.e(TAG, mLastLocation.getLatitude() + " lat");
+        }
         return view;
     }
 
@@ -219,7 +233,7 @@ public class TimerFragment extends Fragment {
         }
             StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
                 TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
-                System.currentTimeMillis(), mTitle);
+                System.currentTimeMillis(), mType);
         dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
     }
 
@@ -241,5 +255,9 @@ public class TimerFragment extends Fragment {
     public void stopTimer() {
         mTimerService.stopTimer();
         mTimerRunning = false;
+    }
+
+    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.e(TAG, "Connectoin failed");
     }
 }

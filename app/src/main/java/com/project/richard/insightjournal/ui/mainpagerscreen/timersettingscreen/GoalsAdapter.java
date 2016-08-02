@@ -85,7 +85,8 @@ public class GoalsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mCursor.moveToPosition(goalHolder.getAdapterPosition());
                 AddGoalDialogFragment dialogFragment = AddGoalDialogFragment.newInstance(
                         mCursor.getString(mCursor.getColumnIndex(GoalsColumns.GOALS)),
-                        mCursor.getInt(mCursor.getColumnIndex(GoalsColumns._ID))
+                        mCursor.getInt(mCursor.getColumnIndex(GoalsColumns._ID)),
+                        mCursor.getString(mCursor.getColumnIndex(GoalsColumns.TYPE))
                 );
                 dialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),
                         AddGoalDialogFragment.EDIT_GOAL_FRAGMENT_TAG);

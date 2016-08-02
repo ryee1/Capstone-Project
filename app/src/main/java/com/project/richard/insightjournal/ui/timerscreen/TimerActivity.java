@@ -20,7 +20,7 @@ public class TimerActivity extends AppCompatActivity {
 
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.timer_fragment_container, TimerFragment.newInstance(SharedPrefUtils.getTitlePref(this)))
+                    .add(R.id.timer_fragment_container, TimerFragment.newInstance(SharedPrefUtils.getTypePref(this)))
                     .commit();
         }
     }

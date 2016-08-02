@@ -36,7 +36,7 @@ public class SharedPrefUtils {
         editor.putString(PRESET_TITLE_PREF, title).commit();
     }
 
-    public static String getTitlePref(Context context){
+    public static String getTypePref(Context context){
         SharedPreferences pref = context.getSharedPreferences(TIMER_SETTING_SCREEN_PREF, 0);
         return pref.getString(PRESET_TITLE_PREF, EMPTY_PRESET_PREF);
     }

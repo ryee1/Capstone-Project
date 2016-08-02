@@ -24,16 +24,18 @@ public class AddGoalDialogFragment extends DialogFragment {
     public static final String EDIT_GOAL_FRAGMENT_TAG = "edit_goal_fragment_tag";
     public static final String GOAL_BUNDLE_TAG = "goal_fragment_tag";
     public static final String ID_BUNDLE_TAG = "id_fragment_tag";
+    public static final String TYPE_BUNDLE_TAG = "type_bundle_tag";
 
     private Unbinder unbinder;
 
     @BindView(R.id.edittext_goals_dialog) EditText editGoals;
 
-    public static AddGoalDialogFragment newInstance(String goal, int id){
+    public static AddGoalDialogFragment newInstance(String goal, int id, String type){
         Bundle args = new Bundle();
         AddGoalDialogFragment f = new AddGoalDialogFragment();
         args.putString(GOAL_BUNDLE_TAG, goal);
         args.putInt(ID_BUNDLE_TAG, id);
+        args.putString(TYPE_BUNDLE_TAG, type);
         f.setArguments(args);
         return f;
     }
@@ -62,6 +64,7 @@ public class AddGoalDialogFragment extends DialogFragment {
         if(getTag().equals(ADD_GOAL_FRAGMENT_TAG)) {
             ContentValues cv = new ContentValues();
             cv.put(GoalsColumns.GOALS, editGoals.getText().toString());
+            cv.put(GoalsColumns.TYPE, getArguments().getString(TYPE_BUNDLE_TAG));
             getContext().getContentResolver().insert(LogsProvider.Goals.GOALS, cv);
             getDialog().dismiss();
         }

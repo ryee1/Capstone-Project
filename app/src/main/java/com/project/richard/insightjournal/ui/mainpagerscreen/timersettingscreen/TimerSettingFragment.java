@@ -11,11 +11,12 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.GoalsColumns;
@@ -32,6 +33,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -43,7 +45,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
 
     private static final String TAG = TimerSettingFragment.class.getSimpleName();
 
-    private String mCurrentPresetTitle;
+    private String mCurrentPresetType;
     private Unbinder unbinder;
     private GoalsAdapter mGoalsAdapter;
 
@@ -57,6 +59,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @BindView(R.id.duration_preset_button) Button durationButton;
     @BindView(R.id.preparation_preset_button) Button prepButton;
     @BindView(R.id.title_preset_button) Button titleButton;
+    @BindView(R.id.toggle_preset_type_switch) Switch togglePresetTypeSwitch;
 
     public static TimerSettingFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -97,13 +100,13 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     public void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
-        mCurrentPresetTitle = SharedPrefUtils.getTitlePref(getContext());
+        mCurrentPresetType = SharedPrefUtils.getTypePref(getContext());
     }
 
     @Override
     public void onPause() {
         //TODO
-        //SharedPrefUtils.addTitlePref(getContext(), mCurrentPresetTitle);
+        //SharedPrefUtils.addTitlePref(getContext(), mCurrentPresetType);
         EventBus.getDefault().unregister(this);
         super.onPause();
     }
@@ -142,20 +145,27 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
 
     @OnClick(R.id.goal_add_button)
     public void onAddGoalClick() {
-        AddGoalDialogFragment dialogFragment = new AddGoalDialogFragment();
+        AddGoalDialogFragment dialogFragment = AddGoalDialogFragment.newInstance(null, -1, mCurrentPresetType);
         dialogFragment.show(getActivity().getSupportFragmentManager(), AddGoalDialogFragment.ADD_GOAL_FRAGMENT_TAG);
+    }
+
+    @OnCheckedChanged(R.id.toggle_preset_type_switch)
+    public void onPresetTypeCheckChanged(CompoundButton compoundButton, boolean isChecked){
+        ContentValues cv = new ContentValues();
+        cv.put(PresetsColumns.RECORD_TOGGLE_ON, isChecked);
+        getActivity().getContentResolver().update(LogsProvider.Presets.PRESETS, cv, PresetsColumns.TYPE
+                + " = '" + mCurrentPresetType + "'", null);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cursorLoader = null;
-        Log.e(TAG, "pppp");
         if (id == LOADER_PRESET_ID) {
 
-            if (SharedPrefUtils.getTitlePref(getContext()).equals(SharedPrefUtils.EMPTY_PRESET_PREF)) {
+            if (SharedPrefUtils.getTypePref(getContext()).equals(SharedPrefUtils.EMPTY_PRESET_PREF)) {
                 cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null, null, null, null);
             } else {
                 cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null,
-                        PresetsColumns.TITLE + " = " + '"' + SharedPrefUtils.getTitlePref(getContext()) + '"', null, null);
+                        PresetsColumns.TYPE + " = " + '"' + SharedPrefUtils.getTypePref(getContext()) + '"', null, null);
             }
         }
         else if(id == LOADER_GOAL_ID){
@@ -167,13 +177,25 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(loader.getId() == LOADER_PRESET_ID && data.getCount() != 0) {
             data.moveToFirst();
-            titleButton.setText(data.getString(data.getColumnIndex(PresetsColumns.TITLE)));
+            titleButton.setText(data.getString(data.getColumnIndex(PresetsColumns.TYPE)));
+            if(data.getString(data.getColumnIndex(PresetsColumns.TYPE)).equals(PresetsColumns.SITTING_MEDITAION)){
+                togglePresetTypeSwitch.setText("Track Breaths");
+            }
+            else{
+                togglePresetTypeSwitch.setText("Track Steps");
+            }
             prepButton.setText("Preparation Timer: " + TimerUtils.millisToDigital(
                     data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)))
             );
             durationButton.setText("Duration: " + TimerUtils.millisToDigital(
                     data.getLong(data.getColumnIndex(PresetsColumns.DURATION)))
             );
+            if(data.getInt(data.getColumnIndex(PresetsColumns.RECORD_TOGGLE_ON)) == 1){
+                togglePresetTypeSwitch.setChecked(true);
+            }
+            else{
+                togglePresetTypeSwitch.setChecked(false);
+            }
         }
         else if(loader.getId() == LOADER_GOAL_ID){
             mGoalsAdapter.swapCursor(data);
