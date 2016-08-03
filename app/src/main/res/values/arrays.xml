@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="meditation_types">
+        <item></item>
+        <item>@string/sitting_meditation</item>
+        <item>@string/walking_meditation</item>
+    </string-array>
+</resources>

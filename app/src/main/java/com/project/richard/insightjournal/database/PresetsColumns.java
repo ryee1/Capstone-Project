@@ -13,8 +13,8 @@ import static net.simonvt.schematic.annotation.DataType.Type.TEXT;
  */
 public interface PresetsColumns {
 
-    public static final String WALKING_MEDITAION = "walking meditation";
-    public static final String SITTING_MEDITAION = "sitting meditation";
+    public static final String WALKING_MEDITAION = "walking_meditation";
+    public static final String SITTING_MEDITAION = "sitting_meditation";
 
     @DataType(INTEGER) @PrimaryKey @AutoIncrement String _ID = "_id";
     @DataType(TEXT) @NotNull String TYPE = "type";

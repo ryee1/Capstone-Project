@@ -21,5 +21,10 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="add_goal_button_text">Add Goal</string>
     <string name="no_journal_entry_log_rv">Blank Entry</string>
-
+    <string name="sitting_meditation">Sitting Meditation</string>
+    <string name="walking_meditation">Walking Meditation</string>
+    <string name="track_breaths">Track Breaths</string>
+    <string name="track_steps">Track Steps</string>
+    <string name="preparation_timer_text_button">"Preparation Timer: "</string>
+    <string name="duration_timer_text_button">"Duration: "</string>
 </resources>

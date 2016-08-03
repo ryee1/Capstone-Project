@@ -2,13 +2,14 @@ package com.project.richard.insightjournal.ui.mainpagerscreen.timersettingscreen
 
 
 import android.content.ContentValues;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -58,7 +59,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @BindView(R.id.goals_recyclerview) RecyclerView recyclerView;
     @BindView(R.id.duration_preset_button) Button durationButton;
     @BindView(R.id.preparation_preset_button) Button prepButton;
-    @BindView(R.id.title_preset_button) Button titleButton;
+    @BindView(R.id.type_preset_button) Button titleButton;
     @BindView(R.id.toggle_preset_type_switch) Switch togglePresetTypeSwitch;
 
     public static TimerSettingFragment newInstance(int page) {
@@ -127,9 +128,21 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
 
     @OnClick(R.id.fab_timer_setting)
     public void start() {
-        startActivity(new Intent(getActivity(), TimerActivity.class));
+        startActivity(TimerActivity.newIntent(getContext(), togglePresetTypeSwitch.isChecked()));
     }
 
+
+    @OnClick(R.id.type_preset_button)
+    public void onTypeButtonClick(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("WWWWWWW")
+                .setItems(R.array.meditation_types, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                    }
+                }).show();
+    }
 
     @OnClick(R.id.duration_preset_button)
     public void onDurationButtonClick(View v) {
@@ -177,17 +190,18 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     @Override public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(loader.getId() == LOADER_PRESET_ID && data.getCount() != 0) {
             data.moveToFirst();
-            titleButton.setText(data.getString(data.getColumnIndex(PresetsColumns.TYPE)));
             if(data.getString(data.getColumnIndex(PresetsColumns.TYPE)).equals(PresetsColumns.SITTING_MEDITAION)){
-                togglePresetTypeSwitch.setText("Track Breaths");
+                titleButton.setText(getResources().getString(R.string.sitting_meditation));
+                togglePresetTypeSwitch.setText(R.string.track_breaths);
             }
             else{
-                togglePresetTypeSwitch.setText("Track Steps");
+                titleButton.setText(getResources().getString(R.string.walking_meditation));
+                togglePresetTypeSwitch.setText(R.string.track_steps);
             }
-            prepButton.setText("Preparation Timer: " + TimerUtils.millisToDigital(
+            prepButton.setText(getResources().getString(R.string.preparation_timer_text_button) + TimerUtils.millisToDigital(
                     data.getInt(data.getColumnIndex(PresetsColumns.PREPARATION_TIME)))
             );
-            durationButton.setText("Duration: " + TimerUtils.millisToDigital(
+            durationButton.setText(getResources().getString(R.string.duration_timer_text_button) + TimerUtils.millisToDigital(
                     data.getLong(data.getColumnIndex(PresetsColumns.DURATION)))
             );
             if(data.getInt(data.getColumnIndex(PresetsColumns.RECORD_TOGGLE_ON)) == 1){
