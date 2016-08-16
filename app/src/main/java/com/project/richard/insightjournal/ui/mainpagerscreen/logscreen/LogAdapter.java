@@ -111,10 +111,11 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
         holder.goalsContainer.removeAllViews();
         LinkedHashMap<String, Boolean> hashMap =
                 gson.fromJson(mCursor.getString(mCursor.getColumnIndex(LogsColumns.GOALS)), LinkedHashMap.class);
-        for (String goal : hashMap.keySet()) {
-            holder.goalsContainer.addView(generateGoalView(goal, hashMap.get(goal)));
+        if(hashMap != null && !hashMap.isEmpty()) {
+            for (String goal : hashMap.keySet()) {
+                holder.goalsContainer.addView(generateGoalView(goal, hashMap.get(goal)));
+            }
         }
-
         holder.logLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 if (holder.expandableView.getVisibility() == View.VISIBLE) {

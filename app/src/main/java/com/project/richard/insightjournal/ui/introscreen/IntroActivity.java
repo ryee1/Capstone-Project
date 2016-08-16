@@ -23,9 +23,11 @@ public class IntroActivity extends AppIntro {
     public void onDonePressed() {
         // Do something when users tap on Done button.
 
-        SharedPrefUtils.addTitlePref(this, PresetsColumns.SITTING_MEDITAION);
+        SharedPrefUtils.setTitlePref(this, PresetsColumns.SITTING_MEDITAION);
         getContentResolver().insert(LogsProvider.Presets.PRESETS,
                 ContentValuesUtils.presetContentValues(PresetsColumns.SITTING_MEDITAION, 10000, 600000, 1));
+        getContentResolver().insert(LogsProvider.Presets.PRESETS,
+                ContentValuesUtils.presetContentValues(PresetsColumns.WALKING_MEDITAION, 10000, 600000, 1));
         finish();
     }
 }

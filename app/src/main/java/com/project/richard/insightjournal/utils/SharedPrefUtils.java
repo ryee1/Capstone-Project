@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.project.richard.insightjournal.R;
-
 /**
  * Created by a11 on 6/14/16.
  */
@@ -31,7 +29,7 @@ public class SharedPrefUtils {
         editor.putBoolean(IS_FIRST_START, false).apply();
     }
 
-    public static void addTitlePref(Context context, String title){
+    public static void setTitlePref(Context context, String title){
         SharedPreferences.Editor editor = context.getSharedPreferences(TIMER_SETTING_SCREEN_PREF, 0).edit();
         editor.putString(PRESET_TITLE_PREF, title).commit();
     }
@@ -41,22 +39,4 @@ public class SharedPrefUtils {
         return pref.getString(PRESET_TITLE_PREF, EMPTY_PRESET_PREF);
     }
 
-    public static void setShortTermGoalsPref(Context context, String shortTermGoal){
-        SharedPreferences.Editor editor = context.getSharedPreferences(TIMER_SETTING_SCREEN_PREF, 0).edit();
-        editor.putString(SHORT_TERM_GOALS_PREF, shortTermGoal).commit();
-    }
-
-    public static String getShortTermGoalsPref(Context context){
-        SharedPreferences pref = context.getSharedPreferences(TIMER_SETTING_SCREEN_PREF, 0);
-        return pref.getString(SHORT_TERM_GOALS_PREF, context.getString(R.string.short_term_goals_settings_hint));
-    }
-    public static void setLongTermGoalsPref(Context context, String longTermGoal){
-        SharedPreferences.Editor editor = context.getSharedPreferences(TIMER_SETTING_SCREEN_PREF, 0).edit();
-        editor.putString(LONG_TERM_GOALS_PREF, longTermGoal).commit();
-    }
-
-    public static String getLongTermGoalsPref(Context context){
-        SharedPreferences pref = context.getSharedPreferences(TIMER_SETTING_SCREEN_PREF, 0);
-        return pref.getString(LONG_TERM_GOALS_PREF, context.getString(R.string.long_term_goals_settings_hint));
-    }
 }

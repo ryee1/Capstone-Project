@@ -1,7 +1,6 @@
 package com.project.richard.insightjournal.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.project.richard.insightjournal.R;
 
@@ -49,7 +48,6 @@ public class TimerUtils {
     }
 
     public static long millisToMillisRemaining(long maxDuration, long duration){
-        Log.e("tag", "max: " + maxDuration + " dur: " + duration);
         return maxDuration - duration;
     }
 
@@ -59,7 +57,6 @@ public class TimerUtils {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(duration) -
                 TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration));
         long hours = TimeUnit.MILLISECONDS.toHours(duration);
-        Log.e(TAG, "hr: " + hours + " min: " + minutes + " sec: " + seconds + " dur: " + duration);
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 

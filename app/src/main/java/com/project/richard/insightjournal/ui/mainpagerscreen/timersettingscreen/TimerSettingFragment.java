@@ -12,6 +12,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +76,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
 
+        mCurrentPresetType = SharedPrefUtils.getTypePref(getContext());
         getLoaderManager().initLoader(LOADER_PRESET_ID, null, this);
         getLoaderManager().initLoader(LOADER_GOAL_ID, null, this);
 
@@ -106,8 +108,7 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onPause() {
-        //TODO
-        //SharedPrefUtils.addTitlePref(getContext(), mCurrentPresetType);
+        SharedPrefUtils.setTitlePref(getContext(), mCurrentPresetType);
         EventBus.getDefault().unregister(this);
         super.onPause();
     }
@@ -138,8 +139,17 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
         builder.setTitle("WWWWWWW")
                 .setItems(R.array.meditation_types, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
+                        switch (which) {
+                            case 0:
+                                mCurrentPresetType = PresetsColumns.SITTING_MEDITAION;
+                                break;
+                            case 1:
+                                mCurrentPresetType = PresetsColumns.WALKING_MEDITAION;
+                                break;
+                        }
+                        SharedPrefUtils.setTitlePref(getContext(), mCurrentPresetType);
+                        getLoaderManager().restartLoader(LOADER_GOAL_ID, null, TimerSettingFragment.this);
+                        getLoaderManager().restartLoader(LOADER_PRESET_ID, null, TimerSettingFragment.this);
                     }
                 }).show();
     }
@@ -172,17 +182,19 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader cursorLoader = null;
+        Log.e(TAG, mCurrentPresetType);
         if (id == LOADER_PRESET_ID) {
 
-            if (SharedPrefUtils.getTypePref(getContext()).equals(SharedPrefUtils.EMPTY_PRESET_PREF)) {
+            if (mCurrentPresetType.equals(SharedPrefUtils.EMPTY_PRESET_PREF)) {
                 cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null, null, null, null);
             } else {
                 cursorLoader = new CursorLoader(getContext(), LogsProvider.Presets.PRESETS, null,
-                        PresetsColumns.TYPE + " = " + '"' + SharedPrefUtils.getTypePref(getContext()) + '"', null, null);
+                        PresetsColumns.TYPE + " = " + '"' + mCurrentPresetType + '"', null, null);
             }
         }
         else if(id == LOADER_GOAL_ID){
-            cursorLoader = new CursorLoader(getContext(), LogsProvider.Goals.GOALS, null, null, null, null);
+            cursorLoader = new CursorLoader(getContext(), LogsProvider.Goals.GOALS, null,
+                    GoalsColumns.TYPE + " = '" + mCurrentPresetType + "'", null, null);
         }
         return cursorLoader;
     }

@@ -28,10 +28,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
@@ -137,17 +137,8 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
             mDigitalTimerView.setText(TimerUtils.millisToDigital(savedInstanceState.getLong(LONG_TIMER_DURATION)));
             mCircleTimerView.setProgress((float) savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
         }
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                .enableAutoManage(getActivity(), this)
-                .addApi(LocationServices.API)
-                .build();
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null) {
-            Log.e(TAG, mLastLocation.getLatitude() + " lat");
-        }
 
-        if(mRecordToggleOn){
+        if(mRecordToggleOn && mType.equals(PresetsColumns.SITTING_MEDITAION)){
             mTimerParentLayout.setOnTouchListener(new View.OnTouchListener() {
                 @Override public boolean onTouch(View v, MotionEvent event) {
                     mGestureDetector.onTouchEvent(event);
@@ -155,6 +146,27 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
                 }
             });
         }
+        else if(mRecordToggleOn && mType.equals(PresetsColumns.WALKING_MEDITAION)){
+
+        }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override public void onConnected(@Nullable Bundle bundle) {
+                        Log.e(TAG, "connected");
+                    }
+
+                    @Override public void onConnectionSuspended(int i) {
+                        Log.e(TAG, "connection suspended");
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e(TAG, "connection failed");
+                    }
+                })
+                .addApi(LocationServices.API)
+                .build();
 
 
         return view;
@@ -166,6 +178,7 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
         Intent intent = new Intent(getActivity(), TimerService.class);
         getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         getActivity().startService(intent);
+        mGoogleApiClient.connect();
     }
 
     @Override public void onPause() {
@@ -176,6 +189,7 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
             mBound = false;
             Log.e(TAG, "unbind service");
         }
+        mGoogleApiClient.disconnect();
 
         // Only stop the service if the timer hasn't been started yet.
         if (mTimerService.getDuration() == mMaxDuration) {
@@ -194,6 +208,7 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override public void onServiceConnected(ComponentName name, IBinder service) {
             mTimerService = ((TimerService.TimerBinder) service).getTimerService();
+            mTimerService.setmGoogleApiClient(mGoogleApiClient);
             mBound = true;
             mTimerService.background();
 

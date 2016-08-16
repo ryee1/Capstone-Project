@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.ui.introscreen.IntroActivity;
+import com.project.richard.insightjournal.utils.PermissionsUtils;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 import butterknife.BindView;
@@ -37,6 +38,8 @@ public class PagerActivity extends AppCompatActivity {
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), PagerActivity.this));
         tabLayout.setupWithViewPager(viewPager);
 
+        PermissionsUtils.checkAndRequestPermissions(this);
+
     }
 
     @Override
@@ -60,4 +63,5 @@ public class PagerActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
