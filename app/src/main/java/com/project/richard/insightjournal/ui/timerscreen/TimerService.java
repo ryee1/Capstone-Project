@@ -4,33 +4,20 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Binder;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.fitness.Fitness;
-import com.google.android.gms.fitness.data.DataPoint;
-import com.google.android.gms.fitness.data.DataSource;
-import com.google.android.gms.fitness.data.DataType;
-import com.google.android.gms.fitness.data.Field;
-import com.google.android.gms.fitness.data.Value;
-import com.google.android.gms.fitness.request.DataSourcesRequest;
 import com.google.android.gms.fitness.request.OnDataPointListener;
-import com.google.android.gms.fitness.request.SensorRequest;
-import com.google.android.gms.fitness.result.DataSourcesResult;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.events.OnPrepTickEvent;
 import com.project.richard.insightjournal.events.OnTickEvent;
 import com.project.richard.insightjournal.events.OnTickFinishedEvent;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.concurrent.TimeUnit;
 
 /*
  * Copyright (C) 2014 Google, Inc.
@@ -59,8 +46,9 @@ public class TimerService extends Service {
     private CountDownTimer mCountDownTimer;
     private long mDuration;
     private long mPrep;
-    private GoogleApiClient mGoogleApiClient;
     private OnDataPointListener mListener;
+
+    private Location mLastLocation;
 
 
     public class TimerBinder extends Binder {
@@ -107,13 +95,10 @@ public class TimerService extends Service {
                     mDuration = 0;
                     onTickFinishedEvent.finishedTick = mDuration;
                     EventBus.getDefault().post(onTickFinishedEvent);
-                    unregisterFitnessDataListener();
                     stopSelf();
                 }
             }.start();
         }
-        mGoogleApiClient.connect();
-        findFitnessDataSources();
 
     }
     public void pauseTimer() {
@@ -123,7 +108,6 @@ public class TimerService extends Service {
     public void stopTimer() {
         onTickFinishedEvent.finishedTick = mDuration;
         EventBus.getDefault().post(onTickFinishedEvent);
-        unregisterFitnessDataListener();
         stopSelf();
         if (mCountDownTimer != null)
             mCountDownTimer.cancel();
@@ -134,107 +118,6 @@ public class TimerService extends Service {
             mCountDownTimer.cancel();
         Log.e(TAG, "service destroyed");
         super.onDestroy();
-    }
-
-
-    public void setmGoogleApiClient(GoogleApiClient mGoogleApiClient) {
-        this.mGoogleApiClient = mGoogleApiClient;
-    }
-    private void findFitnessDataSources() {
-        // [START find_data_sources]
-        // Note: Fitness.SensorsApi.findDataSources() requires the ACCESS_FINE_LOCATION permission.
-
-        if(mListener != null){
-            Log.e(TAG, "mlistener not null");
-        }
-        else{
-            Log.e(TAG, "mlistener is null");
-        }
-        if(mGoogleApiClient == null){
-            Log.e(TAG, "client null");
-        }
-        else{
-            Log.e(TAG, "client not null");
-        }
-
-        Fitness.SensorsApi.findDataSources(mGoogleApiClient, new DataSourcesRequest.Builder()
-                // At least one datatype must be specified.
-                .setDataTypes(DataType.TYPE_STEP_COUNT_DELTA)
-                // Can specify whether data type is raw or derived.
-                .setDataSourceTypes(DataSource.TYPE_RAW)
-                .build())
-                .setResultCallback(new ResultCallback<DataSourcesResult>() {
-                    @Override
-                    public void onResult(DataSourcesResult dataSourcesResult) {
-                        Log.i(TAG, "Result: " + dataSourcesResult.getStatus().toString());
-                        for (DataSource dataSource : dataSourcesResult.getDataSources()) {
-                            Log.i(TAG, "Data source found: " + dataSource.toString());
-                            Log.i(TAG, "Data Source type: " + dataSource.getDataType().getName());
-
-                            //Let's register a listener to receive Activity data!
-                            if (dataSource.getDataType().equals(DataType.TYPE_STEP_COUNT_DELTA)
-                                    && mListener == null) {
-                                Log.i(TAG, "Data source for LOCATION_SAMPLE found!  Registering.");
-                                registerFitnessDataListener(dataSource,
-                                        DataType.TYPE_STEP_COUNT_DELTA);
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void registerFitnessDataListener(DataSource dataSource, DataType dataType) {
-        // [START register_data_listener]
-        Log.e(TAG, "test123: " + dataSource.toString() + "\n" + dataType.toString());
-        mListener = new OnDataPointListener() {
-            @Override
-            public void onDataPoint(DataPoint dataPoint) {
-                for (Field field : dataPoint.getDataType().getFields()) {
-                    Value val = dataPoint.getValue(field);
-                    Log.i(TAG, "Detected DataPoint field: " + field.getName());
-                    Log.i(TAG, "Detected DataPoint value: " + val);
-                }
-                Log.e(TAG, "ondatapoint ran");
-            }
-        };
-        Fitness.SensorsApi.add(
-                mGoogleApiClient,
-                new SensorRequest.Builder()
-                        .setDataSource(dataSource) // Optional but recommended for custom data sets.
-                        .setDataType(DataType.TYPE_STEP_COUNT_DELTA) // Can't be omitted.
-                        .setSamplingRate(3, TimeUnit.SECONDS)
-                        .build(),
-                mListener)
-                .setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        if (status.isSuccess()) {
-                            Log.i(TAG, "Listener registered!");
-                        } else {
-                            Log.i(TAG, "Listener not registered.");
-                        }
-                    }
-                });
-    }
-    private void unregisterFitnessDataListener() {
-        if (mListener == null) {
-            return;
-        }
-
-        Fitness.SensorsApi.remove(
-                mGoogleApiClient,
-                mListener)
-                .setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        if (status.isSuccess()) {
-                            Log.i(TAG, "Listener was removed!");
-                        } else {
-                            Log.i(TAG, "Listener was not removed.");
-                        }
-                    }
-                });
-        // [END unregister_data_listener]
     }
 
     public void setDuration(long newDuration) {
@@ -253,6 +136,10 @@ public class TimerService extends Service {
         this.mPrep = mPrep;
     }
 
+    public void setmLastLocation(Location mLastLocation) {
+        this.mLastLocation = mLastLocation;
+        Log.e(TAG, "location lat: " + mLastLocation.getLatitude());
+    }
 
     public void foreground(){
         startForeground(1, createNotification());

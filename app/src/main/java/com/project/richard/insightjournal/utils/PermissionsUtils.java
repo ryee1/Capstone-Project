@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 /**
  * Created by richard on 8/4/16.
@@ -30,13 +29,13 @@ public class PermissionsUtils {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
-    public static boolean checkPermissions(Context c) {
-        int permissionCheck = ContextCompat.checkSelfPermission(c,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+    public static boolean checkLocationPermissions(Context c) {
+        int permissionCheck = ActivityCompat.checkSelfPermission(c,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
         return permissionCheck == PackageManager.PERMISSION_GRANTED;
     }
 
-    private static void requestPermissions(Activity c) {
+    public static void requestLocationPermissions(Activity c) {
         boolean shouldProvideRationale =
                 ActivityCompat.shouldShowRequestPermissionRationale(c,
                         Manifest.permission.ACCESS_FINE_LOCATION);
@@ -64,14 +63,8 @@ public class PermissionsUtils {
         // sets the permission in a given state or the user denied the permission
         // previously and checked "Never ask again".
         ActivityCompat.requestPermissions(c,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 REQUEST_PERMISSIONS_REQUEST_CODE);
-    }
-
-    public static void checkAndRequestPermissions(Activity c){
-        if(!checkPermissions(c)){
-            requestPermissions(c);
-        }
 
     }
 }

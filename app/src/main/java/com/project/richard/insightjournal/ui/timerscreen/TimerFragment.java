@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -55,6 +56,7 @@ import com.project.richard.insightjournal.events.OnPrepTickEvent;
 import com.project.richard.insightjournal.events.OnTickEvent;
 import com.project.richard.insightjournal.events.OnTickFinishedEvent;
 import com.project.richard.insightjournal.ui.mainpagerscreen.PagerActivity;
+import com.project.richard.insightjournal.utils.PermissionsUtils;
 import com.project.richard.insightjournal.utils.TimerUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,7 +71,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimerFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
+public class TimerFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = TimerFragment.class.getSimpleName();
     private static final String BOOLEAN_TIMER_RUNNING = "boolean_timer_running";
@@ -87,6 +89,7 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
     private TimerService mTimerService;
     private Unbinder unbinder;
     private GoogleApiClient mGoogleApiClient;
+    private Location mLastKnownLocation;
 
     //threshold in milliseconds for session logging dialog screen to pop up
     private long mDialogThreshold = 10000;
@@ -138,15 +141,14 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
             mCircleTimerView.setProgress((float) savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
         }
 
-        if(mRecordToggleOn && mType.equals(PresetsColumns.SITTING_MEDITAION)){
+        if (mRecordToggleOn && mType.equals(PresetsColumns.SITTING_MEDITAION)) {
             mTimerParentLayout.setOnTouchListener(new View.OnTouchListener() {
                 @Override public boolean onTouch(View v, MotionEvent event) {
                     mGestureDetector.onTouchEvent(event);
                     return true;
                 }
             });
-        }
-        else if(mRecordToggleOn && mType.equals(PresetsColumns.WALKING_MEDITAION)){
+        } else if (mRecordToggleOn && mType.equals(PresetsColumns.WALKING_MEDITAION)) {
 
         }
 
@@ -154,6 +156,13 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override public void onConnected(@Nullable Bundle bundle) {
                         Log.e(TAG, "connected");
+                        if (PermissionsUtils.checkLocationPermissions(getContext())) {
+                            PermissionsUtils.requestLocationPermissions(getActivity());
+                        }
+                        mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                        if(mTimerService != null){
+                            mTimerService.setmLastLocation(mLastKnownLocation);
+                        }
                     }
 
                     @Override public void onConnectionSuspended(int i) {
@@ -208,7 +217,6 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override public void onServiceConnected(ComponentName name, IBinder service) {
             mTimerService = ((TimerService.TimerBinder) service).getTimerService();
-            mTimerService.setmGoogleApiClient(mGoogleApiClient);
             mBound = true;
             mTimerService.background();
 
@@ -230,22 +238,23 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
         }
     };
 
-    public boolean timerRan(){
+    public boolean timerRan() {
         return mTimerService.getDuration() != mMaxDuration;
     }
+
     @Override public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
 
     }
 
-    public void stopTimerOnBackpress(){
+    public void stopTimerOnBackpress() {
         mTimerService.stopTimer();
         mTimerRunning = false;
     }
 
     @Subscribe
-    public void onPrepTickEvent(OnPrepTickEvent event){
+    public void onPrepTickEvent(OnPrepTickEvent event) {
         mDigitalTimerView.setText(TimerUtils.millisToDigital(event.currentTick));
     }
 
@@ -259,14 +268,14 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
     public void onTickFinishedEvent(OnTickFinishedEvent event) {
         mTimerRunning = false;
         mDigitalTimerView.setText(TimerUtils.millisToDigital(event.finishedTick));
-        mCircleTimerView.setProgress((float)event.finishedTick / mMaxDuration * 100);
-        if(mMaxDuration - event.finishedTick < mDialogThreshold){
+        mCircleTimerView.setProgress((float) event.finishedTick / mMaxDuration * 100);
+        if (mMaxDuration - event.finishedTick < mDialogThreshold) {
             Intent intent = new Intent(getActivity(), PagerActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             return;
         }
-            StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
+        StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
                 TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
                 System.currentTimeMillis(), mType);
         dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
@@ -300,22 +309,23 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
     // code used from http://stackoverflow.com/a/4098447/3377155
     //
 
-    private class GestureListener extends GestureDetector.SimpleOnGestureListener{
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
         private final int SWIPE_MIN_DISTANCE = 40;
         private final int SWIPE_THRESHOLD_VELOCITY = 40;
+
         @Override public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 Log.e(TAG, "flinged");
                 return false; // Right to left
-            }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+            } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                 Log.e(TAG, "flinged");
                 return false; // Left to right
             }
 
-            if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+            if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                 Log.e(TAG, "flinged");
                 return false; // Bottom to top
-            }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+            } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
                 Log.e(TAG, "flinged");
                 return false; // Top to bottom
             }
