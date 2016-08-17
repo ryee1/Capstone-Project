@@ -275,6 +275,7 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
     @Subscribe
     public void onTickFinishedEvent(OnTickFinishedEvent event) {
         mTimerRunning = false;
+        String location = null;
         mDigitalTimerView.setText(TimerUtils.millisToDigital(event.finishedTick));
         mCircleTimerView.setProgress((float) event.finishedTick / mMaxDuration * 100);
         if (mMaxDuration - event.finishedTick < mDialogThreshold) {
@@ -283,13 +284,15 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
             startActivity(intent);
             return;
         }
-        StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
-                TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
-                System.currentTimeMillis(), mType);
-        dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
         if(mTimerService.getAddress() != null){
             Log.e(TAG, mTimerService.getAddress().getAddressLine(0));
+            location = mTimerService.getAddress().getAddressLine(0);
         }
+        StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
+                TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
+                System.currentTimeMillis(), mType, location);
+        dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
+
     }
 
     @Subscribe

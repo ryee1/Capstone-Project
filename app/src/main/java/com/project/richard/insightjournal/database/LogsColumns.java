@@ -18,4 +18,5 @@ public interface LogsColumns {
     @DataType(TEXT) @NotNull String TITLE = "title";
     @DataType(TEXT) String JOURNAL_ENTRY = "journal_entry";
     @DataType(TEXT) String GOALS = "goals";
+    @DataType(TEXT) String LOCATION = "location";
 }

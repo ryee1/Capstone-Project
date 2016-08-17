@@ -44,6 +44,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
     public static final String DATE_STOP_TIMER_DIALOG = "date_stop_timer_dialog";
     public static final String TITLE_STOP_TIMER_DIALOG = "title_stop_timer_dialog";
     public static final String JOURNAL_STOP_TIMER_DIALOG = "journal_stop_timer_dialog";
+    public static final String LOCATION_STOP_TIMER_DIALOG = "location_stop_timer_dialog";
 
 
     private static AsyncQueryHandler mAsyncQueryHandler;
@@ -55,12 +56,13 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
     @BindColor(R.color.colorNegativeGoal) int colorNegativeGoal;
     @BindColor(R.color.colorPositiveGoal) int colorPositiveGoal;
 
-    public static StopTimerDialogFragment newInstance(long duration, long date, String title) {
+    public static StopTimerDialogFragment newInstance(long duration, long date, String title, String location) {
         StopTimerDialogFragment f = new StopTimerDialogFragment();
         Bundle args = new Bundle();
         args.putLong(DURATION_STOP_TIMER_DIALOG, duration);
         args.putLong(DATE_STOP_TIMER_DIALOG, date);
         args.putString(TITLE_STOP_TIMER_DIALOG, title);
+        args.putString(LOCATION_STOP_TIMER_DIALOG, location);
         f.setArguments(args);
         return f;
     }
@@ -75,6 +77,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
         final long date = getArguments().getLong(DATE_STOP_TIMER_DIALOG);
         final String title = getArguments().getString(TITLE_STOP_TIMER_DIALOG);
         final String journal = getArguments().getString(JOURNAL_STOP_TIMER_DIALOG);
+        final String location = getArguments().getString(LOCATION_STOP_TIMER_DIALOG);
 
         mAsyncQueryHandler= new AsyncQueryHandler(getActivity().getContentResolver()){};
         builder.setView(view)
@@ -83,7 +86,8 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
                     @Override public void onClick(DialogInterface dialog, int which) {
                         mAsyncQueryHandler.startInsert(0, null, LogsProvider.Logs.LOGS,
                                 ContentValuesUtils.stopTimerDialogContentValues(duration, date,
-                                title, journalEditText.getText().toString(), hashMapToJson(mGoalsHashMap)));
+                                title, journalEditText.getText().toString(), hashMapToJson(mGoalsHashMap),
+                                location));
                         Intent intent = new Intent(getActivity(), PagerActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
