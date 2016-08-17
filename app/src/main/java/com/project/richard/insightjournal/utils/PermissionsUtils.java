@@ -31,7 +31,7 @@ public class PermissionsUtils {
 
     public static boolean checkLocationPermissions(Context c) {
         int permissionCheck = ActivityCompat.checkSelfPermission(c,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
+                Manifest.permission.ACCESS_FINE_LOCATION);
         return permissionCheck == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -63,7 +63,7 @@ public class PermissionsUtils {
         // sets the permission in a given state or the user denied the permission
         // previously and checked "Never ask again".
         ActivityCompat.requestPermissions(c,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_PERMISSIONS_REQUEST_CODE);
 
     }

@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -52,6 +53,7 @@ import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.database.PresetsColumns;
+import com.project.richard.insightjournal.events.OnAddressFetchedEvent;
 import com.project.richard.insightjournal.events.OnPrepTickEvent;
 import com.project.richard.insightjournal.events.OnTickEvent;
 import com.project.richard.insightjournal.events.OnTickFinishedEvent;
@@ -66,6 +68,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
 
 /**
@@ -159,9 +163,13 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
                         if (PermissionsUtils.checkLocationPermissions(getContext())) {
                             PermissionsUtils.requestLocationPermissions(getActivity());
                         }
-                        mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                        mLastKnownLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
                         if(mTimerService != null){
                             mTimerService.setmLastLocation(mLastKnownLocation);
+                            Intent intent = new Intent(getContext(), FetchAddressIntentService.class);
+                            intent.putExtra(FetchAddressIntentService.LATITUDE_EXTRA, mLastKnownLocation.getLatitude());
+                            intent.putExtra(FetchAddressIntentService.LONTITUDE_EXTRA, mLastKnownLocation.getLongitude());
+                            getContext().startService(intent);
                         }
                     }
 
@@ -279,6 +287,14 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
                 TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
                 System.currentTimeMillis(), mType);
         dialog.show(getActivity().getSupportFragmentManager(), StopTimerDialogFragment.class.getSimpleName());
+        if(mTimerService.getAddress() != null){
+            Log.e(TAG, mTimerService.getAddress().getAddressLine(0));
+        }
+    }
+
+    @Subscribe
+    public void onAddressFetchedEvent(OnAddressFetchedEvent event){
+        mTimerService.setAddress(event.address);
     }
 
 

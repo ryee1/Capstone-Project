@@ -26,14 +26,14 @@ public class FetchAddressIntentService extends IntentService {
     public static final String LONTITUDE_EXTRA = "LONGTITUDE_EXTRA";
 
 
-    public FetchAddressIntentService(String name) {
-        super(name);
+    public FetchAddressIntentService() {
+        super(FetchAddressIntentService.class.getSimpleName());
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        int latitude = intent.getIntExtra(LATITUDE_EXTRA, 0);
-        int longtitude = intent.getIntExtra(LONTITUDE_EXTRA, 0);
+        double latitude = intent.getDoubleExtra(LATITUDE_EXTRA, 0);
+        double longtitude = intent.getDoubleExtra(LONTITUDE_EXTRA, 0);
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         List<Address> addresses = null;
@@ -55,6 +55,7 @@ public class FetchAddressIntentService extends IntentService {
         } else {
             Address address = addresses.get(0);
             ArrayList<String> addressFragments = new ArrayList<String>();
+            Log.e(TAG, "address : " + address);
 
 //            // Fetch the address lines using getAddressLine,
 //            // join them, and send them to the thread.

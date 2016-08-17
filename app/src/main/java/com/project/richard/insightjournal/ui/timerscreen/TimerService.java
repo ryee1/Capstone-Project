@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.location.Address;
 import android.location.Location;
 import android.os.Binder;
 import android.os.CountDownTimer;
@@ -47,6 +48,7 @@ public class TimerService extends Service {
     private long mDuration;
     private long mPrep;
     private OnDataPointListener mListener;
+    private Address mAddress;
 
     private Location mLastLocation;
 
@@ -134,6 +136,14 @@ public class TimerService extends Service {
 
     public void setPrep(long mPrep) {
         this.mPrep = mPrep;
+    }
+
+    public Address getAddress() {
+        return mAddress;
+    }
+
+    public void setAddress(Address mAddress) {
+        this.mAddress = mAddress;
     }
 
     public void setmLastLocation(Location mLastLocation) {
