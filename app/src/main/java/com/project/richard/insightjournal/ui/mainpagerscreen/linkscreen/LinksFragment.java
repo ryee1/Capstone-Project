@@ -42,7 +42,7 @@ public class LinksFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_resources, container, false);
         ButterKnife.bind(this, view);
         Log.e("adcheck", getString(R.string.banner_ad_unit_id));
-        MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
+        MobileAds.initialize(getContext()   , getString(R.string.banner_ad_unit_id));
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         return view;
