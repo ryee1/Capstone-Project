@@ -6,8 +6,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
 
+import com.project.richard.insightjournal.events.OnAddressFetchedEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,18 +57,8 @@ public class FetchAddressIntentService extends IntentService {
             Log.e(TAG, "empty address");
         } else {
             Address address = addresses.get(0);
-            ArrayList<String> addressFragments = new ArrayList<String>();
-            Log.e(TAG, "address : " + address);
+            EventBus.getDefault().post(new OnAddressFetchedEvent(address));
 
-//            // Fetch the address lines using getAddressLine,
-//            // join them, and send them to the thread.
-//            for(int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-//                addressFragments.add(address.getAddressLine(i));
-//            }
-//            Log.i(TAG, getString(R.string.address_found));
-//            deliverResultToReceiver(Constants.SUCCESS_RESULT,
-//                    TextUtils.join(System.getProperty("line.separator"),
-//                            addressFragments));
         }
     }
 

@@ -7,4 +7,11 @@ import android.location.Address;
  */
 public class OnAddressFetchedEvent {
     public Address address;
+
+    public OnAddressFetchedEvent() {
+    }
+
+    public OnAddressFetchedEvent(Address address) {
+        this.address = address;
+    }
 }

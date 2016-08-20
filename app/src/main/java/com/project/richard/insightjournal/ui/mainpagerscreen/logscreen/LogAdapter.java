@@ -41,6 +41,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
     private boolean showAllViews = false;
     public static class LogViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.location_log_recyclerview) TextView location;
         @BindView(R.id.duration_log_recyclerview) TextView duration;
         @BindView(R.id.date_log_recyclerview) TextView date;
         @BindView(R.id.time_log_recyclerview) TextView time;
@@ -80,6 +81,10 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
         holder.title.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.TITLE))));
         if(mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY)).trim().length() > 0){
             holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
+        }
+        String location = mCursor.getString(mCursor.getColumnIndex(LogsColumns.LOCATION));
+        if(location != null){
+            holder.location.setText(String.format("%s", location));
         }
         else{
             holder.journal.setText(R.string.no_journal_entry_log_rv);

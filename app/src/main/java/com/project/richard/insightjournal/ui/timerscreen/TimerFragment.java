@@ -285,8 +285,11 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
             return;
         }
         if(mTimerService.getAddress() != null){
-            Log.e(TAG, mTimerService.getAddress().getAddressLine(0));
-            location = mTimerService.getAddress().getAddressLine(0);
+            Log.e(TAG, mTimerService.getAddress().getLocality());
+            location = mTimerService.getAddress().getLocality();
+        }
+        else{
+            Log.e(TAG, "location is null");
         }
         StopTimerDialogFragment dialog = StopTimerDialogFragment.newInstance(
                 TimerUtils.millisToMillisRemaining(mMaxDuration, event.finishedTick),
