@@ -12,7 +12,6 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.events.OnPrepTickEvent;
 import com.project.richard.insightjournal.events.OnTickEvent;
@@ -47,7 +46,6 @@ public class TimerService extends Service {
     private CountDownTimer mCountDownTimer;
     private long mDuration;
     private long mPrep;
-    private OnDataPointListener mListener;
     private Address mAddress;
 
     private Location mLastLocation;
