@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.ads.MobileAds;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.ui.introscreen.IntroActivity;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
@@ -37,6 +38,8 @@ public class PagerActivity extends AppCompatActivity {
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), PagerActivity.this));
         tabLayout.setupWithViewPager(viewPager);
 
+
+        MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
     }
 
     @Override

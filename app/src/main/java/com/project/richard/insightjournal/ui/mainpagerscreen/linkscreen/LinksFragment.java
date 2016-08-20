@@ -4,14 +4,12 @@ package com.project.richard.insightjournal.ui.mainpagerscreen.linkscreen;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.project.richard.insightjournal.R;
 
 import butterknife.BindView;
@@ -45,8 +43,6 @@ public class LinksFragment extends Fragment {
 
         String android_id = Settings.Secure.getString(getContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        Log.e("android id: ", android_id);
-        MobileAds.initialize(getContext(), "ca-app-pub-4867309821145579/1646554447");
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(android_id)
                 .build();
