@@ -27,4 +27,7 @@
     <string name="track_steps">Track Steps</string>
     <string name="preparation_timer_text_button">"Preparation Timer: "</string>
     <string name="duration_timer_text_button">"Duration: "</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-4867309821145579/1646554447</string>
+
 </resources>
