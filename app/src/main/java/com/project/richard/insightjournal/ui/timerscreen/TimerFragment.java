@@ -152,8 +152,6 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
                     return true;
                 }
             });
-        } else if (mRecordToggleOn && mType.equals(PresetsColumns.WALKING_MEDITAION)) {
-
         }
 
         mGoogleApiClient = new GoogleApiClient.Builder(getContext())

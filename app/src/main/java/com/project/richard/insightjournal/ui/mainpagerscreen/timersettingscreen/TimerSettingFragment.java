@@ -2,14 +2,12 @@ package com.project.richard.insightjournal.ui.mainpagerscreen.timersettingscreen
 
 
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -133,26 +131,26 @@ public class TimerSettingFragment extends Fragment implements LoaderManager.Load
     }
 
 
-    @OnClick(R.id.type_preset_button)
-    public void onTypeButtonClick(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("WWWWWWW")
-                .setItems(R.array.meditation_types, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                mCurrentPresetType = PresetsColumns.SITTING_MEDITAION;
-                                break;
-                            case 1:
-                                mCurrentPresetType = PresetsColumns.WALKING_MEDITAION;
-                                break;
-                        }
-                        SharedPrefUtils.setTitlePref(getContext(), mCurrentPresetType);
-                        getLoaderManager().restartLoader(LOADER_GOAL_ID, null, TimerSettingFragment.this);
-                        getLoaderManager().restartLoader(LOADER_PRESET_ID, null, TimerSettingFragment.this);
-                    }
-                }).show();
-    }
+//    @OnClick(R.id.type_preset_button)
+//    public void onTypeButtonClick(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setTitle("WWWWWWW")
+//                .setItems(R.array.meditation_types, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        switch (which) {
+//                            case 0:
+//                                mCurrentPresetType = PresetsColumns.SITTING_MEDITAION;
+//                                break;
+//                            case 1:
+//                                mCurrentPresetType = PresetsColumns.WALKING_MEDITAION;
+//                                break;
+//                        }
+//                        SharedPrefUtils.setTitlePref(getContext(), mCurrentPresetType);
+//                        getLoaderManager().restartLoader(LOADER_GOAL_ID, null, TimerSettingFragment.this);
+//                        getLoaderManager().restartLoader(LOADER_PRESET_ID, null, TimerSettingFragment.this);
+//                    }
+//                }).show();
+//    }
 
     @OnClick(R.id.duration_preset_button)
     public void onDurationButtonClick(View v) {
