@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsColumns;
 import com.project.richard.insightjournal.database.LogsProvider;
+import com.project.richard.insightjournal.database.PresetsColumns;
 import com.project.richard.insightjournal.utils.AnimUtils;
 import com.project.richard.insightjournal.utils.TimerUtils;
 
@@ -78,7 +79,9 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> {
         holder.duration.setText(TimerUtils.millisToDigital(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DURATION))));
         holder.date.setText(TimerUtils.unixTimeToDate(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
         holder.time.setText(TimerUtils.unixTimeToTime(mCursor.getLong(mCursor.getColumnIndex(LogsColumns.SESSION_DATETIME))));
-        holder.title.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.TITLE))));
+        if(mCursor.getString(mCursor.getColumnIndex(LogsColumns.TITLE)).equals(PresetsColumns.SITTING_MEDITAION)){
+            holder.title.setText(mContext.getResources().getString(R.string.sitting_meditation));
+        }
         if(mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY)).trim().length() > 0){
             holder.journal.setText(String.format("%s", mCursor.getString(mCursor.getColumnIndex(LogsColumns.JOURNAL_ENTRY))));
         }
