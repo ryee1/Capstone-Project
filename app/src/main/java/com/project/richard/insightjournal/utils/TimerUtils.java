@@ -52,12 +52,8 @@ public class TimerUtils {
     }
 
     public static String millisToDigital(long duration){
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(duration) -
-                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration));
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(duration) -
-                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration));
-        long hours = TimeUnit.MILLISECONDS.toHours(duration);
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return String.format("%02d:%02d:%02d", millisToHours(duration), millisToMinutes(duration),
+                millisToSeconds(duration));
     }
 
     public static String unixTimeToTime(long unixTime){
@@ -71,5 +67,17 @@ public class TimerUtils {
         DateFormat format = SimpleDateFormat.getDateInstance();
         format.setTimeZone(TimeZone.getDefault());
         return format.format(date);
+    }
+
+    public static long millisToHours(long duration){
+        return TimeUnit.MILLISECONDS.toHours(duration);
+    }
+    public static long millisToMinutes(long duration){
+        return TimeUnit.MILLISECONDS.toMinutes(duration) -
+                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration));
+    }
+    public static long millisToSeconds(long duration){
+        return TimeUnit.MILLISECONDS.toSeconds(duration) -
+                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration));
     }
 }
