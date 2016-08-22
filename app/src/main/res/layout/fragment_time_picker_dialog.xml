@@ -4,11 +4,6 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Duration          lalalalalala"
-        android:layout_marginBottom="16dp"/>
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
