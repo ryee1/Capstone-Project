@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -102,7 +101,6 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
     @BindView(R.id.circle_timer_view) CircularProgressBar mCircleTimerView;
     @BindView(R.id.digital_timer_view) TextView mDigitalTimerView;
     @BindView(R.id.btn_timer_start) Button mStartButton;
-    @BindView(R.id.btn_timer_stop) Button mStopButton;
 
     public static TimerFragment newInstance(String type, boolean toggleOn) {
         Bundle args = new Bundle();
@@ -143,6 +141,9 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
             mTimerRunning = savedInstanceState.getBoolean(BOOLEAN_TIMER_RUNNING);
             mDigitalTimerView.setText(TimerUtils.millisToDigital(savedInstanceState.getLong(LONG_TIMER_DURATION)));
             mCircleTimerView.setProgress((float) savedInstanceState.getLong(LONG_TIMER_DURATION) / mMaxDuration * 100);
+        }
+        else{
+            mDigitalTimerView.setText(TimerUtils.millisToDigital(mMaxDuration));
         }
 
         if (mRecordToggleOn && mType.equals(PresetsColumns.SITTING_MEDITAION)) {
@@ -233,6 +234,7 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
             }
 
             mCircleTimerView.setProgress((float) mTimerService.getDuration() / mMaxDuration * 100);
+            mDigitalTimerView.setText(TimerUtils.millisToDigital(mTimerService.getDuration()));
             //If service's duration doesn't match the maxduration, that means timer is already running
             if (timerRan()) {
                 mTimerRunning = true;

@@ -25,7 +25,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/digital_timer_view"
             android:layout_centerInParent="true"
-            android:text="TEST TIMER"
             />
 
     </RelativeLayout>
