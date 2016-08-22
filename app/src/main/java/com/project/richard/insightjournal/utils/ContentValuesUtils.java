@@ -1,7 +1,10 @@
 package com.project.richard.insightjournal.utils;
 
 import android.content.ContentValues;
+import android.content.Context;
 
+import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.database.GoalsColumns;
 import com.project.richard.insightjournal.database.LogsColumns;
 import com.project.richard.insightjournal.database.PresetsColumns;
 
@@ -29,5 +32,16 @@ public class ContentValuesUtils {
         cv.put(LogsColumns.GOALS, goalsJson);
         cv.put(LogsColumns.LOCATION, location);
         return cv;
+    }
+
+    public static ContentValues initialGoalsContentValues(Context c){
+        ContentValues cv = new ContentValues();
+        cv.put(GoalsColumns.GOALS, c.getString(R.string.initial_goal));
+        cv.put(GoalsColumns.TYPE, PresetsColumns.SITTING_MEDITAION);
+        return cv;
+    }
+
+    public static ContentValues initialPresetContentValues(){
+        return ContentValuesUtils.presetContentValues(PresetsColumns.SITTING_MEDITAION, 10000, 600000, 1);
     }
 }

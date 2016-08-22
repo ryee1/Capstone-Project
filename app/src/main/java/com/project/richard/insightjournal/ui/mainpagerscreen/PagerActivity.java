@@ -1,6 +1,5 @@
 package com.project.richard.insightjournal.ui.mainpagerscreen;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,7 +10,9 @@ import android.view.MenuItem;
 
 import com.google.android.gms.ads.MobileAds;
 import com.project.richard.insightjournal.R;
-import com.project.richard.insightjournal.ui.introscreen.IntroActivity;
+import com.project.richard.insightjournal.database.LogsProvider;
+import com.project.richard.insightjournal.database.PresetsColumns;
+import com.project.richard.insightjournal.utils.ContentValuesUtils;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 import butterknife.BindView;
@@ -31,8 +32,9 @@ public class PagerActivity extends AppCompatActivity {
 
         if(SharedPrefUtils.isFirstStart(this)){
             SharedPrefUtils.setFirstStart(this);
-            Intent i = new Intent(PagerActivity.this, IntroActivity.class);
-            startActivity(i);
+//            Intent i = new Intent(PagerActivity.this, IntroActivity.class);
+//            startActivity(i);
+            initializeFirstStart();
         }
         setSupportActionBar(toolbar);
         viewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), PagerActivity.this));
@@ -42,6 +44,13 @@ public class PagerActivity extends AppCompatActivity {
         MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
     }
 
+    private void initializeFirstStart(){
+        SharedPrefUtils.setTitlePref(this, PresetsColumns.SITTING_MEDITAION);
+        getContentResolver().insert(LogsProvider.Presets.PRESETS,
+                ContentValuesUtils.initialPresetContentValues());
+        getContentResolver().insert(LogsProvider.Goals.GOALS,
+                ContentValuesUtils.initialGoalsContentValues(this));
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
