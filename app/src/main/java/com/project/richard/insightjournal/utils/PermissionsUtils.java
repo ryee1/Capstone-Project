@@ -20,7 +20,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+import android.view.View;
 
 /**
  * Created by richard on 8/4/16.
@@ -35,36 +38,37 @@ public class PermissionsUtils {
         return permissionCheck == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void requestLocationPermissions(Activity c) {
+    public static void requestLocationPermissions(final Activity c, int viewId) {
         boolean shouldProvideRationale =
                 ActivityCompat.shouldShowRequestPermissionRationale(c,
                         Manifest.permission.ACCESS_FINE_LOCATION);
 
-        // Provide an additional rationale to the user. This would happen if the user denied the
-        // request previously, but didn't check the "Don't ask again" checkbox.
-//        if (shouldProvideRationale) {
-//            Log.i(TAG, "Displaying permission rationale to provide additional context.");
-//            Snackbar.make(
-//                    c.findViewById(R.id.main_activity_view),
-//                    R.string.permission_rationale,
-//                    Snackbar.LENGTH_INDEFINITE)
-//                    .setAction(R.string.ok, new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            // Request permission
-//                            ActivityCompat.requestPermissions(MainActivity.this,
-//                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                                    REQUEST_PERMISSIONS_REQUEST_CODE);
-//                        }
-//                    })
-//                    .show();
-//        } else {
-        // Request permission. It's possible this can be auto answered if device policy
-        // sets the permission in a given state or the user denied the permission
-        // previously and checked "Never ask again".
-        ActivityCompat.requestPermissions(c,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_PERMISSIONS_REQUEST_CODE);
+//         Provide an additional rationale to the user. This would happen if the user denied the
+//         request previously, but didn't check the "Don't ask again" checkbox.
+        if (shouldProvideRationale) {
+            Log.e("PermissionsUtils", "Displaying permission rationale to provide additional context.");
+            Snackbar.make(
+                    c.findViewById(viewId),
+                    "Location permissions requested for recording the city in the meditation log",
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction("ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Request permission
+                            ActivityCompat.requestPermissions(c,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    REQUEST_PERMISSIONS_REQUEST_CODE);
+                        }
+                    })
+                    .show();
+        } else {
+//         Request permission. It's possible this can be auto answered if device policy
+//         sets the permission in a given state or the user denied the permission
+//         previously and checked "Never ask again".
+            ActivityCompat.requestPermissions(c,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_PERMISSIONS_REQUEST_CODE);
 
+        }
     }
 }

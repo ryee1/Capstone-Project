@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,6 +14,7 @@ import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.database.PresetsColumns;
 import com.project.richard.insightjournal.utils.ContentValuesUtils;
+import com.project.richard.insightjournal.utils.PermissionsUtils;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 import butterknife.BindView;
@@ -29,7 +31,10 @@ public class PagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        if (!PermissionsUtils.checkLocationPermissions(this)) {
+            Log.e("PagerActivity", "permission needed");
+            PermissionsUtils.requestLocationPermissions(this, R.id.toolbar);
+        }
         if(SharedPrefUtils.isFirstStart(this)){
             SharedPrefUtils.setFirstStart(this);
 //            Intent i = new Intent(PagerActivity.this, IntroActivity.class);

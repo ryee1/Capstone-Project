@@ -120,7 +120,7 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_timer, container, false);
+        final View view = inflater.inflate(R.layout.fragment_timer, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         final GestureDetectorCompat mGestureDetector = new GestureDetectorCompat(getContext(), new GestureListener());
@@ -159,8 +159,9 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override public void onConnected(@Nullable Bundle bundle) {
                         Log.e(TAG, "connected");
-                        if (PermissionsUtils.checkLocationPermissions(getContext())) {
-                            PermissionsUtils.requestLocationPermissions(getActivity());
+                        if (!PermissionsUtils.checkLocationPermissions(getContext())) {
+                            Log.e(TAG, "permission needed");
+                            PermissionsUtils.requestLocationPermissions(getActivity(), R.id.timer_screen_parent_layout);
                         }
                         mLastKnownLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
                         if(mTimerService != null && mLastKnownLocation != null){
@@ -169,6 +170,9 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
                             intent.putExtra(FetchAddressIntentService.LATITUDE_EXTRA, mLastKnownLocation.getLatitude());
                             intent.putExtra(FetchAddressIntentService.LONTITUDE_EXTRA, mLastKnownLocation.getLongitude());
                             getContext().startService(intent);
+                        }
+                        else{
+                            Log.e(TAG, "location not fetched");
                         }
                     }
 
