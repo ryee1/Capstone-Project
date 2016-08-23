@@ -54,4 +54,9 @@
     <string name="breath_tracker_hint_textview">Swipe the screen on each breath</string>
     <string name="widget_time_since_session_text">Last session: \n</string>
 
+
+    <string name="shaila_catherine_hyperlink"><![CDATA[<a href=\"https://www.amazon.com/Focused-Fearless-Meditators-States-Clarity/dp/0861715608/ref=la_B001JSB6AU_1_1?s=books&ie=UTF8&qid=1471935963&sr=1-1\">
+        Focused and Fearless: A Meditator\'s Guide to States of Deep Joy, Calm, and Clarity - by Shaila Catherine</a>
+        ]]></string>
+
 </resources>

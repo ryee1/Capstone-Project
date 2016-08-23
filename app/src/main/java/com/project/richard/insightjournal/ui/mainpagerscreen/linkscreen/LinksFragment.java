@@ -4,9 +4,12 @@ package com.project.richard.insightjournal.ui.mainpagerscreen.linkscreen;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -27,11 +30,7 @@ public class LinksFragment extends Fragment {
         return fragment;
     }
 
-    public LinksFragment() {
-        // Required empty public constructor
-    }
-
-
+    @BindView(R.id.catherine_shaila_hyperlink) TextView shailaHyperlink;
     @BindView(R.id.adView) AdView mAdView;
 
     @Override
@@ -41,13 +40,15 @@ public class LinksFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_resources, container, false);
         ButterKnife.bind(this, view);
 
+        shailaHyperlink.setText(Html.fromHtml(getContext().getString(R.string.shaila_catherine_hyperlink)));
+        shailaHyperlink.setMovementMethod(LinkMovementMethod.getInstance());
+
         String android_id = Settings.Secure.getString(getContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(android_id)
                 .build();
         mAdView.loadAd(adRequest);
-
 
         return view;
     }
