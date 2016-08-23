@@ -27,9 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_toEndOf="@id/title_log_recyclerview"
-            android:layout_toRightOf="@id/title_log_recyclerview"/>
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <TextView
@@ -70,7 +68,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
-            android:elevation="4dp"
             android:gravity="center_horizontal"
             android:text="@string/log_rv_journal_text"/>
 
@@ -79,8 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:elevation="4dp"/>
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:layout_width="match_parent"
