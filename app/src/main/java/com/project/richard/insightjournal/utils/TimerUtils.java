@@ -1,6 +1,7 @@
 package com.project.richard.insightjournal.utils;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 
 import com.project.richard.insightjournal.R;
 
@@ -79,5 +80,9 @@ public class TimerUtils {
     public static long millisToSeconds(long duration){
         return TimeUnit.MILLISECONDS.toSeconds(duration) -
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration));
+    }
+
+    public static String millisToTime(long duration){
+        return DateUtils.getRelativeTimeSpanString(duration).toString();
     }
 }

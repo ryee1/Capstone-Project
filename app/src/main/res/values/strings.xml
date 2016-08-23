@@ -30,7 +30,7 @@
 
     <string name="banner_ad_unit_id">ca-app-pub-4867309821145579/1646554447</string>
     <string name="initial_goal">Meditate for the entire duration.</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Insight Journal widget</string>
     <string name="add_widget">Add widget</string>
     <string name="stop_timer_dialog_title">Log Session</string>
     <string name="stop_timer_dialog_confirm_text">Confirm</string>
@@ -52,5 +52,6 @@
     <string name="contentDescriptionNegativeToggle">Toggle if this goal has not been completed</string>
     <string name="contentDescriptionPositiveToggle">Toggle if this goal has been completed</string>
     <string name="breath_tracker_hint_textview">Swipe the screen on each breath</string>
+    <string name="widget_time_since_session_text">Last session: \n</string>
 
 </resources>
