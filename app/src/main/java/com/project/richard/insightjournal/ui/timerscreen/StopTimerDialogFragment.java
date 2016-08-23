@@ -27,6 +27,7 @@ import com.project.richard.insightjournal.database.GoalsColumns;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.ui.mainpagerscreen.PagerActivity;
 import com.project.richard.insightjournal.utils.ContentValuesUtils;
+import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -90,6 +91,9 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
                                 location));
                         Intent intent = new Intent(getActivity(), PagerActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        SharedPrefUtils.setLastSession(getContext(), date);
+
                         startActivity(intent);
                     }
                 })

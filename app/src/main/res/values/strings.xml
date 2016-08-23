@@ -30,5 +30,7 @@
 
     <string name="banner_ad_unit_id">ca-app-pub-4867309821145579/1646554447</string>
     <string name="initial_goal">Meditate for the entire duration.</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

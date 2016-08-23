@@ -60,7 +60,6 @@ public class GoalsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         mCursor.moveToPosition(position);
         final GoalsViewHolder goalHolder = (GoalsViewHolder) holder;
-        Log.e(TAG, mCursor.getString(mCursor.getColumnIndex(GoalsColumns.GOALS)));
         goalHolder.goalTextView.setText(mCursor.getString(mCursor.getColumnIndex(GoalsColumns.GOALS)));
         goalHolder.goalDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
