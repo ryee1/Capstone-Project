@@ -46,6 +46,7 @@ public class LinksFragment extends Fragment {
         String android_id = Settings.Secure.getString(getContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice(android_id)
                 .build();
         mAdView.loadAd(adRequest);
