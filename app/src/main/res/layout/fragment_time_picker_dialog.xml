@@ -36,13 +36,13 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Cancel"/>
+            android:text="@string/timer_picker_cancel_text"/>
         <TextView
             android:id="@+id/confirm_button_time_picker"
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Confirm"/>
+            android:text="@string/time_picker_confirm_text"/>
     </LinearLayout>
 </LinearLayout>

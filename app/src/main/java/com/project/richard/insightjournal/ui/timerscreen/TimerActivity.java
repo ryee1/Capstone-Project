@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
@@ -52,7 +51,6 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         TimerFragment f = (TimerFragment)getSupportFragmentManager().findFragmentById(R.id.timer_fragment_container);
-        Log.e(TAG, "timerfirstrunonbackpress: " + f.timerRan());
         if (f != null && f.timerRan()){
             f.stopTimerOnBackpress();
         }

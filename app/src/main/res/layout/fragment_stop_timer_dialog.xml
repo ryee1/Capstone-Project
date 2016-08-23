@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top|start"
-            android:hint="Enter your journal entry here"
+            android:hint="@string/edittext_journal_hint"
             android:minLines="4"/>
 
         <LinearLayout

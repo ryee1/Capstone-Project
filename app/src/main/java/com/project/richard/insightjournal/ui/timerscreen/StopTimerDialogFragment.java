@@ -13,7 +13,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -82,8 +81,8 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
 
         mAsyncQueryHandler= new AsyncQueryHandler(getActivity().getContentResolver()){};
         builder.setView(view)
-                .setMessage("Log Session")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                .setMessage(getContext().getString(R.string.stop_timer_dialog_title))
+                .setPositiveButton(getContext().getString(R.string.stop_timer_dialog_confirm_text), new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         mAsyncQueryHandler.startInsert(0, null, LogsProvider.Logs.LOGS,
                                 ContentValuesUtils.stopTimerDialogContentValues(duration, date,
@@ -97,7 +96,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
                         startActivity(intent);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getContext().getString(R.string.stop_timer_dialog_cancel_text), new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
                         getDialog().dismiss();
                     }
@@ -126,7 +125,6 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
     }
 
     @Override public void onLoadFinished(Loader<Cursor> loader, final Cursor data) {
-        Log.e(TAG, data.getCount() + " count");
         if(data.getCount() != 0){
             mGoalsHashMap = new LinkedHashMap<>();
             while(data.moveToNext()) {
@@ -145,10 +143,12 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
                             mGoalsHashMap.put(goal, false);
                             view.setBackgroundColor(colorNegativeGoal);
                             ((ImageButton) v).setImageResource(R.drawable.ic_thumb_down_black_18dp);
+                            v.setContentDescription(getContext().getString(R.string.contentDescriptionNegativeToggle));
                         }else {
                             mGoalsHashMap.put(goal, true);
                             view.setBackgroundColor(colorPositiveGoal);
                             ((ImageButton) v).setImageResource(R.drawable.ic_thumb_up_black_18dp);
+                            v.setContentDescription(getContext().getString(R.string.contentDescriptionPositiveToggle));
                         }
                     }
                 });

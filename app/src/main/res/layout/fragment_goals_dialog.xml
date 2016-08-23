@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minLines="5"
-        android:gravity="top|left"
-        android:hint="Enter your goals here"
+        android:gravity="top|start"
+        android:hint="@string/edittext_goals_hint"
         android:id="@+id/edittext_goals_dialog"/>
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Cancel"/>
+            android:text="@string/goal_dialog_cancel_text"/>
 
         <TextView
             android:id="@+id/confirm_goals_dialog"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Confirm"/>
+            android:text="@string/goal_dialog_confirm_text"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -27,7 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_toEndOf="@id/title_log_recyclerview"
+            android:layout_toRightOf="@id/title_log_recyclerview"/>
     </RelativeLayout>
 
     <TextView
@@ -51,7 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_toEndOf="@id/date_log_recyclerview"
+            android:layout_toRightOf="@id/date_log_recyclerview"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -68,7 +72,7 @@
             android:layout_marginTop="4dp"
             android:elevation="4dp"
             android:gravity="center_horizontal"
-            android:text="JOURNAL"/>
+            android:text="@string/log_rv_journal_text"/>
 
         <TextView
             android:id="@+id/journal_log_recyclerview"
@@ -84,7 +88,7 @@
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
             android:gravity="center_horizontal"
-            android:text="GOALS"/>
+            android:text="@string/log_rv_goals_text"/>
 
         <LinearLayout
             android:id="@+id/goals_container_log_recyclerview"
@@ -95,7 +99,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:orientation="horizontal">
 
             <ImageButton
@@ -105,7 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_mode_edit_black_18dp"/>
+                android:src="@drawable/ic_mode_edit_black_18dp"
+                android:contentDescription="@string/contentDescriptionEditLogButton"/>
 
             <ImageButton
                 android:id="@+id/log_rv_delete_button"
@@ -114,7 +119,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_delete_black_18dp"/>
+                android:src="@drawable/ic_delete_black_18dp"
+                android:contentDescription="@string/contentDescriptionDeleteLogButton"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

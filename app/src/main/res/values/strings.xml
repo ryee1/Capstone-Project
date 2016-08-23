@@ -32,5 +32,25 @@
     <string name="initial_goal">Meditate for the entire duration.</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="stop_timer_dialog_title">Log Session</string>
+    <string name="stop_timer_dialog_confirm_text">Confirm</string>
+    <string name="stop_timer_dialog_cancel_text">Cancel</string>
+    <string name="edittext_journal_hint">Enter your journal entry here</string>
+    <string name="timer_picker_cancel_text">Cancel</string>
+    <string name="time_picker_confirm_text">Confirm</string>
+    <string name="fragment_timer_start">Start</string>
+    <string name="fragment_timer_stop">Stop</string>
+    <string name="log_rv_goals_text">GOALS</string>
+    <string name="log_rv_journal_text">JOURNAL</string>
+    <string name="edittext_goals_hint">Enter your goals here</string>
+    <string name="goal_dialog_cancel_text">Cancel</string>
+    <string name="goal_dialog_confirm_text">Confirm</string>
+    <string name="contentDescriptionEditGoalButton">Edit goal</string>
+    <string name="contentDescriptionDeleteGoalButton">Delete goal</string>
+    <string name="contentDescriptionEditLogButton">Edit current meditation log.</string>
+    <string name="contentDescriptionDeleteLogButton">Delete current meditation log.</string>
+    <string name="contentDescriptionNegativeToggle">Toggle if this goal has not been completed</string>
+    <string name="contentDescriptionPositiveToggle">Toggle if this goal has been completed</string>
+    <string name="breath_tracker_hint_textview">Swipe the screen on each breath</string>
 
 </resources>
