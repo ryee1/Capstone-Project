@@ -3,7 +3,9 @@ package com.project.richard.insightjournal.ui.timerscreen;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
 import android.content.AsyncQueryHandler;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -25,6 +27,7 @@ import com.project.richard.insightjournal.R;
 import com.project.richard.insightjournal.database.GoalsColumns;
 import com.project.richard.insightjournal.database.LogsProvider;
 import com.project.richard.insightjournal.ui.mainpagerscreen.PagerActivity;
+import com.project.richard.insightjournal.ui.widget.ReminderWidget;
 import com.project.richard.insightjournal.utils.ContentValuesUtils;
 import com.project.richard.insightjournal.utils.SharedPrefUtils;
 
@@ -92,7 +95,7 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                         SharedPrefUtils.setLastSession(getContext(), date);
-
+                        updateReminderWidget();
                         startActivity(intent);
                     }
                 })
@@ -118,6 +121,16 @@ public class StopTimerDialogFragment extends DialogFragment implements LoaderMan
     private String hashMapToJson(HashMap<String, Boolean> hashMap){
         Gson gson = new Gson();
         return gson.toJson(hashMap);
+    }
+
+    private void updateReminderWidget(){
+        Intent intent = new Intent(getContext(), ReminderWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(getContext()).getAppWidgetIds(
+                new ComponentName(getContext(), ReminderWidget.class)
+        );
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        getContext().sendBroadcast(intent);
     }
 
     @Override public Loader<Cursor> onCreateLoader(int id, Bundle args) {

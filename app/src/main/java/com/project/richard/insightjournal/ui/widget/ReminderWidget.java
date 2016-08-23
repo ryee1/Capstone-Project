@@ -6,6 +6,8 @@ import android.content.Context;
 import android.widget.RemoteViews;
 
 import com.project.richard.insightjournal.R;
+import com.project.richard.insightjournal.utils.SharedPrefUtils;
+import com.project.richard.insightjournal.utils.TimerUtils;
 
 /**
  * Implementation of App Widget functionality.
@@ -15,10 +17,12 @@ public class ReminderWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
+        long millis = System.currentTimeMillis() - SharedPrefUtils.getLastSession(context);
+
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.reminder_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setTextViewText(R.id.appwidget_text, "Time since last session: " +
+                TimerUtils.millisToHours(millis));
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
