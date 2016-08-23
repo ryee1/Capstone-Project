@@ -146,7 +146,6 @@ public class TimerService extends Service {
 
     public void setmLastLocation(Location mLastLocation) {
         this.mLastLocation = mLastLocation;
-        Log.e(TAG, "location lat: " + mLastLocation.getLatitude());
     }
 
     public void foreground(){

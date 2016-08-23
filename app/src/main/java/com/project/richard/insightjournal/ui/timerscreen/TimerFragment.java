@@ -163,7 +163,7 @@ public class TimerFragment extends Fragment implements GoogleApiClient.OnConnect
                             PermissionsUtils.requestLocationPermissions(getActivity());
                         }
                         mLastKnownLocation = FusedLocationApi.getLastLocation(mGoogleApiClient);
-                        if(mTimerService != null){
+                        if(mTimerService != null && mLastKnownLocation != null){
                             mTimerService.setmLastLocation(mLastKnownLocation);
                             Intent intent = new Intent(getContext(), FetchAddressIntentService.class);
                             intent.putExtra(FetchAddressIntentService.LATITUDE_EXTRA, mLastKnownLocation.getLatitude());
